@@ -2,30 +2,19 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
+  Route
+//   Link
 } from "react-router-dom";
 
-import Home from './home/index'
+// Route functions
+import Home from './home/index';
+import Login from './login/index';
+import Signup from './signup/index';
 
 export default function App() {
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/signup">Sign Up</Link>
-          </li>
-          <li>
-            <Link to="/login">Log in</Link>
-          </li>
-        </ul>
-
         <Switch>
           <Route path="/signup">
             <Signup />
@@ -36,54 +25,8 @@ export default function App() {
           <Route path="/">
             <Home />
           </Route>
-          <Route path="/">
-
-          </Route>
         </Switch>
       </div>
     </Router>
   );
-}
-
-function Signup() {
-  return <h2>Sign up</h2>;
-}
-
-function Login() {
-  let match = useRouteMatch();
-
-  return (
-    <div>
-      <h2>Log in</h2>
-
-      <ul>
-        <li>
-          <Link to={`${match.url}/components`}>Components</Link>
-        </li>
-        <li>
-          <Link to={`${match.url}/props-v-state`}>
-            Props v. State
-          </Link>
-        </li>
-      </ul>
-
-      {/* The Topics page has its own <Switch> with more routes
-          that build on the /topics URL path. You can think of the
-          2nd <Route> here as an "index" page for all topics, or
-          the page that is shown when no topic is selected */}
-      <Switch>
-        <Route path={`${match.path}/:topicId`}>
-          <Topic />
-        </Route>
-        <Route path={match.path}>
-          <h3>Please select a topic.</h3>
-        </Route>
-      </Switch>
-    </div>
-  );
-}
-
-function Topic() {
-  let { topicId } = useParams();
-  return <h3>Requested topic ID: {topicId}</h3>;
 }
