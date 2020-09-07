@@ -7,6 +7,7 @@ export default function Login() {
       new LoginForm()
     );
   }
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,9 @@ class LoginForm extends React.Component {
   }
   submitHandler = (event) => {
     event.preventDefault();
+    this.setState({username: event.target.value});
     ReactDOM.render(<p>Logged in</p>, document.getElementById('logstate'));
+
   }
   loginHandler = (event) => {
     this.setState({username: event.target.value});
@@ -26,9 +29,9 @@ class LoginForm extends React.Component {
           <h2>Log in</h2>
           <p id="logstate">Not logged in. Click Login to change this to 'Logged in'.</p>
           <form onSubmit={this.submitHandler}>
-              <input type="text" id="user" placeholder="Username/Email"></input>
+              <input type="text" id="username" placeholder="Username/Email"></input>
               <br></br>
-              <input type="text" id="pass" placeholder="Password"></input>
+              <input type="text" id="password" placeholder="Password"></input>
               <br></br>
               <input type="submit" value="Login"></input>
           </form>
@@ -37,4 +40,4 @@ class LoginForm extends React.Component {
   }
 }
 
-ReactDOM.render(<LoginForm />, document.getElementById('root'));
+//ReactDOM.render(<LoginForm />, document.getElementById('root'));
