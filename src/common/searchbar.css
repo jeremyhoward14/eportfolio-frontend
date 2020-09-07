@@ -1,0 +1,19 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.row form {
+    margin: 5px;
+}
+
+.row form input {
+    height: 24px;
+    width: 300px;
+}
+
+.row button {
+    padding: 5px;
+    margin: 5px;
+}

@@ -1,0 +1,45 @@
+.header {
+    /* width: 100%; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    /* margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px; */
+    /* margin: 10px; */
+    background-color: #fffafc;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.header .left {
+    /* float: left; */
+    margin: 20px;
+}
+
+.header .left img {
+    width: 150pt;
+}
+
+.header .centre {
+    margin: auto;
+    /* width: 90%; */
+}
+
+.header .right {
+    /* float: right; */
+    /* margin-right: 20pt; */
+    margin: 10px;
+}
+
+.header .right .row * {
+    display: inline;
+    /* text-decoration: none; */
+    padding: 10px;
+}
+
+.header .right .row a {
+    text-decoration: none;
+    color: #454343;
+}
