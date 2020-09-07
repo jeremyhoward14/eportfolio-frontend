@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import "./index.css";
 import NavBar from '../common/navbar.js';
 import Centre from '../home/centre.js';
 import About from '../home/about.js';
@@ -7,7 +7,7 @@ import About from '../home/about.js';
 
 export default function Home() {
   return (
-    <div className="body">
+    <div className="homeBody">
       <NavBar isHome='true' />
       <Centre />
       <About />

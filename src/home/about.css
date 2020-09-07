@@ -1,10 +1,19 @@
 .aboutContainer {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 500px;
+    /* display: flex;
+    flex-direction: column; */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 .aboutContainer .card {
     background-color: #fffafc;
+    text-align: center;
+}
+
+/* Hide about section on mobile to avoid overlap of search bar */
+@media screen and (max-width: 700px) {
+    .aboutContainer {
+        display: none;
+    }
 }
