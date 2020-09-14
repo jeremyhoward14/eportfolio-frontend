@@ -11,6 +11,8 @@ import Home from './home/index';
 import Login from './login/index';
 import Signup from './signup/index';
 import Profile from './user/profile';
+import PeopleSearchPage from "./search/people";
+import ProjectsSearchPage from "./search/projects";
 // import GlobalStateProvider from "./store/GlobalStateProvider";
 
 export default function App() {
@@ -26,6 +28,12 @@ export default function App() {
             </Route>
             <Route path="/profile">
               <Profile />
+            </Route>
+            <Route path="/people">
+              <PeopleSearchPage search="Mark Zuckerberg"/>
+            </Route>
+            <Route path="/projects">
+              <ProjectsSearchPage search="React.js"/>
             </Route>
             <Route path="/">
               <Home />
