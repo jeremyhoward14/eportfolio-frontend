@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../common/navbar";
 import PeopleResult from "./peopleResult";
 import "./search.css";
-import peopleExample from "./peopleExample.json"
+import peopleExample from "../datasets/peopleExample.json"
 
 // export default function PeopleSearch() {
 //     return (
@@ -31,6 +31,4 @@ export default class PeopleSearchPage extends React.Component {
             </div>
         )
     }
-
-
 }
