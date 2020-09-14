@@ -14,7 +14,7 @@ export default class PeopleResult extends React.Component {
     render() {
         return (
             <div className="searchResult">
-                <img src={this.props.user.picture} alt={this.props.user.name}/>
+                <img src={this.props.user.image} alt={this.props.user.name}/>
                 <h3><a href={this.props.user.url}>{this.props.user.name}</a></h3>
                 <p><strong>{this.props.user.headline}</strong></p>
                 <p>{this.props.user.bio}</p>
