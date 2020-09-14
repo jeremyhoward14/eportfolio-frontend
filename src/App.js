@@ -11,6 +11,7 @@ import Home from './home/index';
 import Login from './login/index';
 import Signup from './signup/index';
 import Profile from './user/profile';
+import PeopleSearchPage from "./search/people";
 // import GlobalStateProvider from "./store/GlobalStateProvider";
 
 export default function App() {
@@ -26,6 +27,9 @@ export default function App() {
             </Route>
             <Route path="/profile">
               <Profile />
+            </Route>
+            <Route path="/people">
+              <PeopleSearchPage search="Mark Zuckerberg"/>
             </Route>
             <Route path="/">
               <Home />

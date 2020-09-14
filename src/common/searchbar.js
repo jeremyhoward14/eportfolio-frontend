@@ -1,5 +1,6 @@
 import React from "react";
 import './searchbar.css'
+import {Redirect} from "react-router-dom";
 
 export default function Searchbar() {
     return (
@@ -21,12 +22,12 @@ class SearchArea extends React.Component {
     }
 
     handlePeopleSubmit(event) {
-        event.preventDefault();
+        // event.preventDefault();
+        return <Redirect to="/home" />
     }
 
     handleProjectSubmit(event) {
-        event.preventDefault();
-        
+        event.preventDefault();        
     }
 
     render() {
