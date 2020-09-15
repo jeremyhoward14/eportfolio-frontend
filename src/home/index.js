@@ -8,7 +8,7 @@ import About from '../home/about.js';
 export default function Home() {
   return (
     <div className="homeBody">
-      <NavBar isHome='true' />
+      <NavBar isHome={true} />
       <Centre />
       <About />
     </div>

@@ -3,40 +3,51 @@ import {Link} from "react-router-dom";
 import Searchbar from './searchbar.js';
 import './navbar.css'
 
-export default function Navbar() {
-    return (
-        new NavBar()
-    //     <div>
-    //         <ul>
-    //             <li>
-    //             <Link to="/">Home</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/signup">Sign Up</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/login">Log in</Link>
-    //             </li>
-    //         </ul>
-    //   </div>
-      );  
-    }
+// export default function Navbar() {
+//     return (
+//         new NavBar()
+//     //     <div>
+//     //         <ul>
+//     //             <li>
+//     //             <Link to="/">Home</Link>
+//     //             </li>
+//     //             <li>
+//     //             <Link to="/signup">Sign Up</Link>
+//     //             </li>
+//     //             <li>
+//     //             <Link to="/login">Log in</Link>
+//     //             </li>
+//     //         </ul>
+//     //   </div>
+//       );  
+//     }
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.isHome = false;
+        // this.isHome = props.isHome;
         this.state = { 
-            isLoggedIn: false,
-            // isHome: false
-        };
-        
+            isLoggedIn: true,
+            isHome: props.isHome
+        };        
+
+        // bind methods
+        this.RightRender = this.RightRender.bind(this);
+        this.LoggedInRender = this.LoggedInRender.bind(this);
+        this.SearchRender = this.SearchRender.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState( {
+            userid: 1
+        })
     }
 
     LoggedInRender() {
+        let profilelink = '/profile/' + this.state.userid;
         return (
             <div className="row">
-                <Link to="/">
+                <Link to={profilelink}>
                     {/* should link to profile */}
                     {/* profile picture */}
                     {/* profile name */}
@@ -59,27 +70,35 @@ class NavBar extends React.Component {
         );
     }
 
+    RightRender(isLoggedIn) {
+        if (isLoggedIn) {
+            return (
+                <this.LoggedInRender userid={this.state.userid} />
+            )
+        }
+        else {
+            return (
+                <thisLoggedOutRender />
+            )
+        }
+    }
+
     SearchRender() {
-        return (
-            <Searchbar />
-        )
+        if (!this.props.isHome) {
+            return (
+                <Searchbar />
+            );
+        }
+        else {
+            return (null);
+        }
     }
 
     render() {
-        const isLoggedIn = this.state.isLoggedIn
-        let right;
-        if (isLoggedIn) {
-            right = <this.LoggedInRender />
-        }
-        else {
-            right = <this.LoggedOutRender />
-            
-        }
-        
         // should only render search bar in navbar if you're not on the home page
-        const isHome = this.props.isHome
+        // const isHome = this.state.isHome
         let centre;
-        if (!isHome) {
+        if (!this.state.isHome) {
             centre = <this.SearchRender />
         }
         else {
@@ -96,13 +115,17 @@ class NavBar extends React.Component {
                 </div>
                 {/* should contain search bar */}
                 <div className="centre">
-                    {centre}
+                    {/* {centre} */}
+                    <this.SearchRender />
                 </div>
                 {/* should show log in/sign up buttons OR profile button if logged in */}
                 <div className="right">
-                    {right}
+                    {/* {right} */}
+                    <this.RightRender isLoggedIn={this.state.isLoggedIn} />
                 </div>
             </div>            
         )
     }
 }
+
+export default NavBar;

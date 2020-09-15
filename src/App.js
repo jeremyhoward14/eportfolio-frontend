@@ -10,7 +10,7 @@ import {
 import Home from './home/index';
 import Login from './login/index';
 import Signup from './signup/index';
-import Profile from './user/profile';
+import ProfilePage from './user/profile';
 // import GlobalStateProvider from "./store/GlobalStateProvider";
 
 export default function App() {
@@ -24,8 +24,9 @@ export default function App() {
             <Route path="/login">
               <Login />
             </Route>
-            <Route path="/profile">
-              <Profile />
+            <Route path="/profile/:userid" render={(props) => <ProfilePage {...props} /> }>
+            {/* // component={ProfilePage}> */}
+              {/* <Profile /> */}
             </Route>
             <Route path="/">
               <Home />
