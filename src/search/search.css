@@ -2,16 +2,18 @@
     margin-top: 80px;
 }
 .searchDescription {
-    position: absolute;
-    width: 1200px;
+    position: relative;
+    width: 80%;
     height: 150px;
-    left: 120px;
-    top: 100px;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* margin-top: 100px; */
 }
 
 .searchResult {
     box-shadow: 0 0 5px 5px #dddddd;
-    margin: 10px
+    margin: 10px;
+
 }
 
 .searchResult h3, p, img {
