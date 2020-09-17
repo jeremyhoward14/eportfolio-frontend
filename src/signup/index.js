@@ -11,10 +11,11 @@ export default function Signup() {
 class SignupForm extends React.Component {
     constructor(props) {
         super(props);        
-        this.state = { email: '', first: '', last: '', password: '', confirm_password: ''};
+        this.state = {username: '', email: '', firstname: '', lastname: '', password: '', confirm_password: ''};
         this.handleFirstChange = this.handleFirstChange.bind(this);
         this.handleLastChange = this.handleLastChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
@@ -23,8 +24,9 @@ class SignupForm extends React.Component {
     submitHandler = (event) => {
         if (this.state.password === this.state.confirm_password) {
             ReactDOM.render(<p>Registration successful!</p>, document.getElementById('success'))
-            console.log(this.state.password);
+            console.log(this.state);
             console.log("Submitted");
+            //event.preventDefault();
         }
         else {
             event.preventDefault() // Don't redirect.
@@ -36,13 +38,16 @@ class SignupForm extends React.Component {
 
     // Value change handlers
     handleFirstChange = (e) => {
-        this.setState({first: e.target.value});
+        this.setState({firstname: e.target.value});
     }
     handleLastChange = (e) => {
-        this.setState({last: e.target.value});
+        this.setState({lastname: e.target.value});
     }
     handleEmailChange = (e) => {
         this.setState({email: e.target.value});
+    }
+    handleUsernameChange = (e) => {
+        this.setState({username: e.target.value});
     }
     handlePasswordChange = (e) => {
         this.setState({password: e.target.value});
@@ -58,12 +63,14 @@ class SignupForm extends React.Component {
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
                 <p id="success">All fields required.</p>
-                <form action="/profile" onSubmit={this.submitHandler}>
-                    <input type="text" id="first" placeholder="First name" value={this.state.first} onChange={this.handleFirstChange} required></input>
+                <form action="http://circlespace.herokuapp.com/users/signup" method="POST" onSubmit={this.submitHandler}>
+                    <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange} required></input>
                     <br></br>
-                    <input type="text" id="last" placeholder="Last name" value={this.state.last} onChange={this.handleLastChange} required></input>
+                    <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange} required></input>
                     <br></br>
                     <input type="text" id="email" placeholder="Email address" value={this.state.email} onChange={this.handleEmailChange} required></input>
+                    <br></br>
+                    <input type="text" id="username" placeholder="Username" value={this.state.username} onChange={this.handleUsernameChange} required></input>
                     <br></br>
                     <input type="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} required></input>
                     <br></br>
