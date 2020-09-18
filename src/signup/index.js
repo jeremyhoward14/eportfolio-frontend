@@ -22,11 +22,25 @@ class SignupForm extends React.Component {
       }
 
     submitHandler = (event) => {
+        event.preventDefault();
         if (this.state.password === this.state.confirm_password) {
             ReactDOM.render(<p>Registration successful!</p>, document.getElementById('success'))
-            console.log(this.state);
-            console.log("Submitted");
-            //event.preventDefault();
+            console.log(JSON.stringify(this.state));
+            fetch('http://circlespace.herokuapp.com/users/signup', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    email: this.state.email,
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    password: this.state.password
+                })
+            });
+           
         }
         else {
             event.preventDefault() // Don't redirect.
@@ -63,7 +77,7 @@ class SignupForm extends React.Component {
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
                 <p id="success">All fields required.</p>
-                <form action="http://circlespace.herokuapp.com/users/signup" method="POST" onSubmit={this.submitHandler}>
+                <form onSubmit={this.submitHandler}>
                     <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange} required></input>
                     <br></br>
                     <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange} required></input>
