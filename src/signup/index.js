@@ -22,10 +22,9 @@ class SignupForm extends React.Component {
       }
 
     submitHandler = (event) => {
-        event.preventDefault();
+        // User password and confirmation match
         if (this.state.password === this.state.confirm_password) {
-            ReactDOM.render(<p>Registration successful!</p>, document.getElementById('success'))
-            console.log(JSON.stringify(this.state));
+            // Try POST to API
             fetch('http://circlespace.herokuapp.com/users/signup', {
                 method: 'POST',
                 headers: {
@@ -39,13 +38,25 @@ class SignupForm extends React.Component {
                     lastname: this.state.lastname,
                     password: this.state.password
                 })
-            });
-           
+            // If successful, let the user know. If an error, 
+            }).then(function(response) {
+                if (response.status === "400") {
+                    event.preventDefault();
+                    ReactDOM.render(<p>Email or username taken. Please try again.</p>, document.getElementById('success'));
+                }
+                else {
+                    ReactDOM.render(<p>Registration successful.</p>, document.getElementById('success'));
+                }
+            }
+            ).catch(function(error) {
+                event.preventDefault();
+                ReactDOM.render(<span>Error! Please try again.</span>, document.getElementById('success'));
+            });           
         }
+        // Password and confirm_password don't match
         else {
             event.preventDefault() // Don't redirect.
-            ReactDOM.render(<p>Passwords didn't match!</p>, document.getElementById('success'))
-            console.log("Error: Passwords do not match.")
+            ReactDOM.render(<span>Passwords didn't match! Please try again.</span>, document.getElementById('success'))
         }
         
     }
@@ -77,7 +88,7 @@ class SignupForm extends React.Component {
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
                 <p id="success">All fields required.</p>
-                <form onSubmit={this.submitHandler}>
+                <form action='/people' onSubmit={this.submitHandler}>
                     <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange} required></input>
                     <br></br>
                     <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange} required></input>
