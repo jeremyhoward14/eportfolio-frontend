@@ -1,13 +1,13 @@
 import React from "react";
 import './login.css'
 import ReactDOM from "react-dom";
-// import Context from "../store/context"
+import { withRouter } from 'react-router-dom';
 
-export default function Login() {  
-    return (
-      <LoginForm />
-    );
-  }
+// export default function Login() {  
+//     return (
+//       <LoginForm />
+//     );
+//   }
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class LoginForm extends React.Component {
   submitHandler = (event) => {
     event.preventDefault();
       // Try POST to API
-      fetch('http://circlespace.herokuapp.com/users/login', {
+      fetch('https://api-circlespace.herokuapp.com/users/login', {
           method: 'POST',
           headers: {
               Accept: 'application/json',
@@ -31,21 +31,22 @@ class LoginForm extends React.Component {
               password: this.state.password
           })
       // If successful, let the user know. If an error, 
-      }).then(function(response) {
+      }).then( (response) => {
         console.log(response.status);
           if (response.status === 400) {
-              event.preventDefault();
               ReactDOM.render(<span>Incorrect credentials. Please try again.</span>, document.getElementById('success'));
+          }
+          else {
+            this.props.history.push('/')
           }
       }
       ).catch(function(error) {
-          event.preventDefault();
           console.log(error);
           ReactDOM.render(<span>Error! Please try again.</span>, document.getElementById('success'));
       });           
   }
   emailHandler = (event) => {
-    this.setState({username: event.target.value});
+    this.setState({email: event.target.value});
   }
   passwordHandler = (event) => {
     this.setState({password: event.target.value})
@@ -57,7 +58,7 @@ class LoginForm extends React.Component {
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
                 <p id="success"></p>
-                <form action="/people" onSubmit={this.submitHandler}>
+                <form onSubmit={this.submitHandler}>
                     <input type="text" id="email" placeholder="Email" onChange={this.emailHandler}></input>
                     <br></br>
                     <input type="password" id="password" placeholder="Password" onChange={this.passwordHandler}></input>
@@ -70,6 +71,7 @@ class LoginForm extends React.Component {
   }
 }
 
+export default withRouter(LoginForm);
 // Login Function with global state hooks using the Context API from ./store . Doesn't work atm.
 
 // export default function Login() {  

@@ -1,12 +1,7 @@
 import React from "react";
 import "../login/login.css"
 import ReactDOM from "react-dom";
-
-export default function Signup() {
-    return (
-        new SignupForm()
-    )
-}
+import {withRouter} from "react-router-dom";
 
 class SignupForm extends React.Component {
     constructor(props) {
@@ -22,10 +17,11 @@ class SignupForm extends React.Component {
       }
 
     submitHandler = (event) => {
+        event.preventDefault();
         // User password and confirmation match
         if (this.state.password === this.state.confirm_password) {
             // Try POST to API
-            fetch('http://circlespace.herokuapp.com/users/signup', {
+            fetch('https://api-circlespace.herokuapp.com/users/signup', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -39,18 +35,19 @@ class SignupForm extends React.Component {
                     password: this.state.password
                 })
             // If successful, let the user know. If an error, 
-            }).then(function(response) {
+            }).then( (response) => {
                 if (response.status === "400") {
                     event.preventDefault();
                     ReactDOM.render(<p>Email or username taken. Please try again.</p>, document.getElementById('success'));
                 }
                 else {
                     ReactDOM.render(<p>Registration successful.</p>, document.getElementById('success'));
+                    this.props.history.push('/')
                 }
             }
-            ).catch(function(error) {
-                event.preventDefault();
-                ReactDOM.render(<span>Error! Please try again.</span>, document.getElementById('success'));
+            ).catch( (error) => {
+                console.log(error);
+                ReactDOM.render(<span>Error! Please contact us for help.</span>, document.getElementById('success'));
             });           
         }
         // Password and confirm_password don't match
@@ -88,7 +85,7 @@ class SignupForm extends React.Component {
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
                 <p id="success">All fields required.</p>
-                <form action='/people' onSubmit={this.submitHandler}>
+                <form onSubmit={this.submitHandler}>
                     <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange} required></input>
                     <br></br>
                     <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange} required></input>
@@ -108,3 +105,5 @@ class SignupForm extends React.Component {
         );
     }
 }
+
+export default withRouter(SignupForm);
