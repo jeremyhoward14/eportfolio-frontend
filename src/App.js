@@ -8,8 +8,8 @@ import {
 
 // Route functions
 import Home from './home/index';
-import Login from './login/index';
-import Signup from './signup/index';
+import LoginForm from './login/index';
+import SignupForm from './signup/index';
 import Profile from './user/profile';
 import PeopleSearchPage from "./search/people";
 import ProjectsSearchPage from "./search/projects";
@@ -21,10 +21,10 @@ export default function App() {
         <div>
           <Switch>
             <Route path="/signup">
-              <Signup />
+              <SignupForm />
             </Route>
             <Route path="/login">
-              <Login />
+              <LoginForm />
             </Route>
             <Route path="/profile">
               <Profile />
