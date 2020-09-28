@@ -91,7 +91,7 @@ class NavBar extends React.Component {
                 {/* should contain logo which links back to home page */}
                 <div className="left">
                     <Link to="/">
-                        <img alt="CircleSpace" src="/logo.svg" />
+                        <img alt="CircleSpace" src="./Logo.svg" />
                     </Link>
                 </div>
                 {/* should contain search bar */}
