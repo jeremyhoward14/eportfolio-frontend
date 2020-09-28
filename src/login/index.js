@@ -3,19 +3,61 @@ import './login.css'
 import ReactDOM from "react-dom";
 import { withRouter } from 'react-router-dom';
 
-// export default function Login() {  
-//     return (
-//       <LoginForm />
-//     );
-//   }
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../actions/authActions';
+import { clearErrors } from '../actions/errorActions';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = { email: '', password: '', msg: null };
     this.emailHandler = this.emailHandler.bind(this);
     this.passwordHandler = this.passwordHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.submitHandlerTwo = this.submitHandlerTwo.bind(this);
+  }
+
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired
+  };
+
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props;
+    if (error !== prevProps.error) {
+        if (error.id === 'LOGIN_FAIL') {
+            this.setState({msg: error.msg.msg})
+        }
+        else {
+            this.setState({
+                msg: null
+            });
+        }
+    }
+
+    if (isAuthenticated) {
+        this.props.clearErrors();
+        this.props.history.push('/state-test');
+    }
+
+  }
+
+  submitHandlerTwo = (event) => {
+    event.preventDefault();
+
+    const {email, password} = this.state;
+
+        // Create user object
+        const user = {
+            email,
+            password
+        }
+
+        // Attempt to sign up
+        this.props.login(user);
   }
   submitHandler = (event) => {
     event.preventDefault();
@@ -61,7 +103,7 @@ class LoginForm extends React.Component {
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
                 <p id="success"></p>
-                <form onSubmit={this.submitHandler}>
+                <form onSubmit={this.submitHandlerTwo}>
                     <input type="text" id="email" placeholder="Email" onChange={this.emailHandler}></input>
                     <br></br>
                     <input type="password" id="password" placeholder="Password" onChange={this.passwordHandler}></input>
@@ -74,47 +116,9 @@ class LoginForm extends React.Component {
   }
 }
 
-export default withRouter(LoginForm);
-// Login Function with global state hooks using the Context API from ./store . Doesn't work atm.
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error
+})
 
-// export default function Login() {  
-//   const { globalState, globalDispatch } = useContext(Context);
-//   const onLogin = () => {
-//     globalDispatch({type: "LOGIN"})
-//   }
-//   const onLoggedIn = () => {
-//     globalDispatch({type: "LOGOUT"})
-//   }
-//   return (
-//     <div className="bg">
-//         <div className="container">
-//           <img alt="CircleSpace" src='./Logo.svg' />
-//           {globalState.isLoggedIn ? (
-//             <div>
-//               <h2>Logged in.</h2>
-//               <form action="/login">
-//                 <input type="submit" value="Continue?" onClick={onLoggedIn
-//               }></input>
-//               </form>
-//               <button onClick={onLoggedIn
-//               }>Logout</button>
-//             </div>
-//           ) : (
-//             <div>
-//               <h2>Log in</h2>
-//               <form action="/login">
-//                   <input type="text" id="username" placeholder="Email"></input>
-//                   <br></br>
-//                   <input type="text" id="password" placeholder="Password"></input>
-//                   <br></br>
-//                   <input type="submit" value="Login" onClick={onLogin
-//               }></input>
-//               </form>
-//               <button onClick={onLogin}>Login</button>
-//             </div>
-//           )
-//           }
-//       </div>
-//     </div>
-//   );
-// }
+export default connect(mapStateToProps, { login, clearErrors })(withRouter(LoginForm));

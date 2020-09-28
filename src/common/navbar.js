@@ -3,34 +3,22 @@ import {Link} from "react-router-dom";
 import Searchbar from './searchbar.js';
 import './navbar.css'
 
-export default function Navbar() {
-    return (
-        new NavBar()
-    //     <div>
-    //         <ul>
-    //             <li>
-    //             <Link to="/">Home</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/signup">Sign Up</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/login">Log in</Link>
-    //             </li>
-    //         </ul>
-    //   </div>
-      );  
-    }
+import { connect } from 'react-redux'
+import { logout } from '../actions/authActions'
+import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.isHome = false;
-        this.state = { 
-            isLoggedIn: false,
-            // isHome: false
-        };
-        
+        this.state = {
+            isLoggedIn: false
+        }
+    }
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        logout: PropTypes.func.isRequired
     }
 
     LoggedInRender() {
@@ -41,6 +29,9 @@ class NavBar extends React.Component {
                     {/* profile picture */}
                     {/* profile name */}
                     <h2>Profile</h2>
+                </Link>
+                <Link onClick={this.props.logout} href='#'>
+                    Logout
                 </Link>
             </div>
         );
@@ -66,9 +57,9 @@ class NavBar extends React.Component {
     }
 
     render() {
-        const isLoggedIn = this.state.isLoggedIn
+        const { isAuthenticated, user } = this.props.auth;
         let right;
-        if (isLoggedIn) {
+        if (isAuthenticated) {
             right = <this.LoggedInRender />
         }
         else {
@@ -106,3 +97,12 @@ class NavBar extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
+export default connect(
+    mapStateToProps,
+    { logout }
+)(NavBar)

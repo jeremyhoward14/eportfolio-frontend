@@ -1,23 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/itemActions';
+import { loadUser } from '../actions/authActions';
 import PropTypes from 'prop-types';
 
 class StateTest extends React.Component {
 
     componentDidMount() {
-        this.props.getItems();
+        this.props.loadUser();
     }
 
     render() {
-        const { items } = this.props.item;
+        //const user = this.props.user;
+        console.log(this.props.user);
         return (
             <div>
                 <h1>State Testing</h1>
                 <div>
-                {items.map(function(item, i){
-                            return <h2 key={i}>{item.name}</h2>;
-                        })}
+                <h3>Your token is:</h3>
                 </div>
                 
             </div>
@@ -27,12 +26,12 @@ class StateTest extends React.Component {
 }
 
 StateTest.propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
+    loadUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
-    item: state.item
+    user: state.user
 });
 
-export default connect(mapStateToProps, { getItems })(StateTest);
+export default connect(mapStateToProps, { loadUser })(StateTest);
