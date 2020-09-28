@@ -32,12 +32,15 @@ class LoginForm extends React.Component {
           })
       // If successful, let the user know. If an error, 
       }).then( (response) => {
-        console.log(response.status);
+        response.json().then( (data) => {
+          console.log(data);
+        })
           if (response.status === 400) {
               ReactDOM.render(<span>Incorrect credentials. Please try again.</span>, document.getElementById('success'));
           }
           else {
-            this.props.history.push('/')
+            console.log("success")
+            //this.props.history.push('/')
           }
       }
       ).catch(function(error) {
