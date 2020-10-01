@@ -3,10 +3,23 @@ import "../login/login.css"
 import ReactDOM from "react-dom";
 import {withRouter} from "react-router-dom";
 
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { signup } from '../actions/authActions';
+import { clearErrors } from '../actions/errorActions';
+
 class SignupForm extends React.Component {
     constructor(props) {
         super(props);        
-        this.state = {username: '', email: '', firstname: '', lastname: '', password: '', confirm_password: ''};
+        this.state = {
+            username: '', 
+            email: '', 
+            firstname: '', 
+            lastname: '', 
+            password: '', 
+            confirm_password: '',
+            msg: null
+        };
         this.handleFirstChange = this.handleFirstChange.bind(this);
         this.handleLastChange = this.handleLastChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -14,7 +27,52 @@ class SignupForm extends React.Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.submitHandlerTwo = this.submitHandlerTwo.bind(this);
       }
+
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        error: PropTypes.object.isRequired,
+        signup: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    };
+
+    componentDidUpdate(prevProps) {
+        const { error, isAuthenticated } = this.props;
+        if (error !== prevProps.error) {
+            if (error.id === 'REGISTER_FAIL') {
+                this.setState({msg: error.msg.msg})
+            }
+            else {
+                this.setState({
+                    msg: null
+                });
+            }
+        }
+
+        if (isAuthenticated) {
+            this.props.clearErrors();
+            this.props.history.push('/state-test');
+        }
+
+    }
+    submitHandlerTwo = event => {
+        event.preventDefault();
+
+        const {firstname, lastname, username, email, password} = this.state;
+
+        // Create user object
+        const newUser = {
+            firstname,
+            lastname,
+            username,
+            email,
+            password
+        }
+
+        // Attempt to sign up
+        this.props.signup(newUser);
+    }
 
     submitHandler = (event) => {
         event.preventDefault();
@@ -85,18 +143,21 @@ class SignupForm extends React.Component {
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
                 <p id="success">All fields required.</p>
-                <form onSubmit={this.submitHandler}>
-                    <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange} required></input>
+                <div>
+                    {this.state.msg ? ( <p>{this.state.msg}</p> ) : null}
+                </div>
+                <form onSubmit={this.submitHandlerTwo}>
+                    <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange}></input>
                     <br></br>
-                    <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange} required></input>
+                    <input type="text" id="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleLastChange}></input>
                     <br></br>
-                    <input type="text" id="email" placeholder="Email address" value={this.state.email} onChange={this.handleEmailChange} required></input>
+                    <input type="text" id="email" placeholder="Email address" value={this.state.email} onChange={this.handleEmailChange}></input>
                     <br></br>
-                    <input type="text" id="username" placeholder="Username" value={this.state.username} onChange={this.handleUsernameChange} required></input>
+                    <input type="text" id="username" placeholder="Username" value={this.state.username} onChange={this.handleUsernameChange}></input>
                     <br></br>
-                    <input type="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} required></input>
+                    <input type="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input>
                     <br></br>
-                    <input type="password" id="password_confirm" placeholder="Confirm password" value={this.state.confirm_password} onChange={this.handleConfirmPasswordChange} required></input>
+                    <input type="password" id="password_confirm" placeholder="Confirm password" value={this.state.confirm_password} onChange={this.handleConfirmPasswordChange}></input>
                     <br></br>
                     <input type="submit" value="Sign up"></input>
                 </form>
@@ -106,4 +167,9 @@ class SignupForm extends React.Component {
     }
 }
 
-export default withRouter(SignupForm);
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    error: state.error
+})
+
+export default connect(mapStateToProps, { signup, clearErrors })(withRouter(SignupForm));
