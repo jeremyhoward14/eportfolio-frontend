@@ -14,6 +14,7 @@ import {
 
 // Check token and load user
 export const loadUser = () => (dispatch, getState) => {
+    console.log("Running loadUser")
     // User loading 
     dispatch({type: USER_LOADING });
 
@@ -23,7 +24,7 @@ export const loadUser = () => (dispatch, getState) => {
             payload: res
         }))
         .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch(returnErrors(err, err));
             dispatch({
                 type: AUTH_ERROR
             })
@@ -39,7 +40,7 @@ export const signup = ({ firstname, lastname, username, email, password}) => dis
         }
     }
 
-    // Request body
+    // Request body 
     const body = JSON.stringify({ firstname, lastname, username, email, password })
 
     axios.post('https://api-circlespace.herokuapp.com/users/signup', body, config)
@@ -56,6 +57,7 @@ export const signup = ({ firstname, lastname, username, email, password}) => dis
 }
 
 export const login = ({email, password}) => dispatch => {
+    console.log('called login')
     // Headers
     const config = {
         headers: {
@@ -72,6 +74,7 @@ export const login = ({email, password}) => dispatch => {
         payload: res.data
     }))
     .catch(err => {
+        console.log(err);
         dispatch(returnErrors(err, err, 'LOGIN_FAIL'));
         dispatch({
             type: LOGIN_FAIL

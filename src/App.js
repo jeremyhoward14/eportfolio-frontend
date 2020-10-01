@@ -15,10 +15,11 @@ import SignupForm from './signup/index';
 import Profile from './user/profile';
 import PeopleSearchPage from "./search/people";
 import ProjectsSearchPage from "./search/projects";
-import StateTesting from "./redux-testing/index";
+import StateTest from "./redux-testing/index";
 
 class App extends React.Component {
   componentDidMount() {
+    console.log("Mounting App.js")
     store.dispatch(loadUser());
   }
   render() {
@@ -28,7 +29,7 @@ class App extends React.Component {
             <div>
               <Switch>
                 <Route path="/state-test">
-                  <StateTesting />
+                  <StateTest />
                 </Route>
                 <Route path="/signup">
                   <SignupForm />

@@ -4,7 +4,7 @@ import Searchbar from './searchbar.js';
 import './navbar.css'
 
 import { connect } from 'react-redux'
-import { logout } from '../actions/authActions'
+// import { logout } from '../actions/authActions'
 import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
@@ -24,15 +24,15 @@ class NavBar extends React.Component {
     LoggedInRender() {
         return (
             <div className="row">
-                <Link to="/">
+                <Link to="/state-test">
                     {/* should link to profile */}
                     {/* profile picture */}
                     {/* profile name */}
                     <h2>Profile</h2>
                 </Link>
-                <Link onClick={this.props.logout} href='#'>
+                {/* <Link onClick={this.props.logout} href='#'>
                     Logout
-                </Link>
+                </Link> */}
             </div>
         );
     }
@@ -57,7 +57,7 @@ class NavBar extends React.Component {
     }
 
     render() {
-        const { isAuthenticated, user } = this.props.auth;
+        const { isAuthenticated } = this.props.auth;
         let right;
         if (isAuthenticated) {
             right = <this.LoggedInRender />
@@ -104,5 +104,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { logout }
+    null
 )(NavBar)
