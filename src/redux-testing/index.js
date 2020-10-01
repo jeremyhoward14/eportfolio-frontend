@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 
 //import store from '../store';
 //import { loadUser } from '../actions/authActions';
@@ -16,16 +16,16 @@ class StateTest extends React.Component {
     render() {
         //const user = this.props.user;
         console.log(this.props.user);
-        const { data } = this.props.user;
+        const user = this.props.user;
         
         return (
             <div>
                 <h1>State Testing</h1>
                 <div>
-                    <p>Welcome <b>{data.firstname} {data.lastname}</b></p>
-                    <p>Your email: <b>{data.email}</b> </p>
-                    <p>Your username: <b>{data.username}</b> </p>
-                    <p> You have uploaded <b>{data.projects.length}</b> projects.</p>
+                    <p>Welcome <b>{user.firstname} {user.lastname}</b></p>
+                    <p>Your email: <b>{user.email}</b> </p>
+                    <p>Your username: <b>{user.username}</b> </p>
+                    <p>You have uploaded <b>{user.projects.length}</b> projects.</p>
                 </div>     
             </div>
         )

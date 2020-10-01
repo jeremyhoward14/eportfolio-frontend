@@ -4,7 +4,7 @@ import Searchbar from './searchbar.js';
 import './navbar.css'
 
 import { connect } from 'react-redux'
-import { logout } from '../actions/authActions'
+// import { logout } from '../actions/authActions'
 import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
