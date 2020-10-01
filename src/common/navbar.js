@@ -12,7 +12,7 @@ class NavBar extends React.Component {
         super(props);
         // this.isHome = props.isHome;
         this.state = { 
-            isLoggedIn: true,
+            isLoggedIn: false,
             isHome: props.isHome
         };        
 
@@ -72,7 +72,7 @@ class NavBar extends React.Component {
         }
         else {
             return (
-                <thisLoggedOutRender />
+                <this.LoggedOutRender />
             )
         }
     }
@@ -115,7 +115,7 @@ class NavBar extends React.Component {
                 {/* should show log in/sign up buttons OR profile button if logged in */}
                 <div className="right">
                     {/* {right} */}
-                    <this.RightRender isLoggedIn={this.state.isLoggedIn} />
+                    <this.RightRender />
                 </div>
             </div>            
         )

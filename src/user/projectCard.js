@@ -1,5 +1,6 @@
 import React from "react";
-import './projectCard.css'
+import './projectCard.css';
+import MediaCarousel from './mediaCarousel.js';
 
 class ProjectCard extends React.Component {
     constructor(props) {
@@ -14,11 +15,6 @@ class ProjectCard extends React.Component {
         );
     }
 
-    getProjectMedia() {
-        const proj_media = ["1", "2"];
-        return proj_media;
-    }
-
     getProjectDescription() {
         const proj_desc = "desc";
         return (
@@ -30,7 +26,7 @@ class ProjectCard extends React.Component {
         return (
             <div className="cardContainer">
                 <p>projid: {this.props.projid}</p>
-                <p>proj media: {this.getProjectMedia()}</p>
+                <MediaCarousel />
                 {this.getProjectName()}
                 {/* replace proj media with a project media component that displays the media*/}
                 {this.getProjectDescription()}

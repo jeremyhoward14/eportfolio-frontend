@@ -30,7 +30,7 @@ class ProfilePage extends React.Component {
   render() {
     // get projidlist from api using userid
     const projidList = [1, 2, 3, 4, 5];
-    const projList = projidList.map((projid) => <ProjectCard projid={projid} />)
+    const projList = projidList.map((projid, index) => <ProjectCard projid={projid} key={index} />)
 
     return (
         <div className="profileContainer">
