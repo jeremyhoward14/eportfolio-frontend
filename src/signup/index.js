@@ -1,7 +1,7 @@
 import React from "react";
 import "../login/login.css"
 import ReactDOM from "react-dom";
-import {withRouter} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -18,7 +18,8 @@ class SignupForm extends React.Component {
             lastname: '', 
             password: '', 
             confirm_password: '',
-            msg: null
+            msg: null,
+            readyToRedirect: false
         };
         this.handleFirstChange = this.handleFirstChange.bind(this);
         this.handleLastChange = this.handleLastChange.bind(this);
@@ -52,10 +53,11 @@ class SignupForm extends React.Component {
 
         if (isAuthenticated) {
             this.props.clearErrors();
-            this.props.history.push('/state-test');
+            this.setState({readyToRedirect: true});
         }
 
     }
+    
     submitHandlerTwo = event => {
         event.preventDefault();
 
@@ -137,6 +139,11 @@ class SignupForm extends React.Component {
     }
 
     render() {
+        if (this.state.readyToRedirect) {
+            return (
+                <Redirect to="/" />
+            )
+        }
         return (
             <div className="bg">
                 <div className="container">

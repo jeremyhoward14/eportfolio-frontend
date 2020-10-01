@@ -1,7 +1,7 @@
 import React from "react";
 import './login.css'
 import ReactDOM from "react-dom";
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -11,7 +11,11 @@ import { clearErrors } from '../actions/errorActions';
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', msg: null };
+    this.state = { 
+      email: '', 
+      password: '', 
+      msg: null,
+      readyToRedirect: false };
     this.emailHandler = this.emailHandler.bind(this);
     this.passwordHandler = this.passwordHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -40,7 +44,7 @@ class LoginForm extends React.Component {
 
     if (isAuthenticated) {
         this.props.clearErrors();
-        this.props.history.push('/state-test');
+        this.setState({readyToRedirect: true});
     }
 
   }
@@ -97,6 +101,12 @@ class LoginForm extends React.Component {
     this.setState({password: event.target.value})
   }
   render() {
+
+    if (this.state.readyToRedirect) {
+      return (
+        <Redirect to='/' />
+      );
+    }
     return (
       <div className="bg">
           <div className="container">
