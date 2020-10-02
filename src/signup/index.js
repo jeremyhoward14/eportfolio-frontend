@@ -60,20 +60,27 @@ class SignupForm extends React.Component {
     
     submitHandlerTwo = event => {
         event.preventDefault();
+        if (this.state.password === this.state.confirm_password) {
+            const {firstname, lastname, username, email, password} = this.state;
 
-        const {firstname, lastname, username, email, password} = this.state;
+            // Create user object
+            const newUser = {
+                firstname,
+                lastname,
+                username,
+                email,
+                password
+            }
 
-        // Create user object
-        const newUser = {
-            firstname,
-            lastname,
-            username,
-            email,
-            password
+            // Attempt to sign up
+            this.props.signup(newUser);
         }
-
-        // Attempt to sign up
-        this.props.signup(newUser);
+        
+        // Password and confirm_password don't match
+        else {
+            event.preventDefault() // Don't redirect.
+            ReactDOM.render(<span>Passwords didn't match! Please try again.</span>, document.getElementById('success'))
+        }
     }
 
     submitHandler = (event) => {
