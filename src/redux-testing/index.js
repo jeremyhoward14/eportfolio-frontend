@@ -1,8 +1,5 @@
 import React from 'react';
-// import { withRouter } from 'react-router-dom';
 
-//import store from '../store';
-//import { loadUser } from '../actions/authActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,20 +10,25 @@ class StateTest extends React.Component {
         user: PropTypes.object    
     };
 
+    // Render 'Welcome' while user state is loading
+    // Once user has loaded and is mapped to props, render their details
     render() {
-        //const user = this.props.user;
-        console.log(this.props.user);
         const user = this.props.user;
-        
         return (
             <div>
                 <h1>State Testing</h1>
-                <div>
-                    <p>Welcome <b>{user.firstname} {user.lastname}</b></p>
-                    <p>Your email: <b>{user.email}</b> </p>
-                    <p>Your username: <b>{user.username}</b> </p>
-                    <p>You have uploaded <b>{user.projects.length}</b> projects.</p>
-                </div>     
+                {
+                    user ? 
+                    (<div>
+                        <p>Welcome <b>{user.firstname} {user.lastname}</b></p>
+                        <p>Your email: <b>{user.email}</b> </p>
+                        <p>Your username: <b>{user.username}</b> </p>
+                        <p>You have uploaded <b>{user.projects.length}</b> projects.</p>
+                    </div>) :
+                    (<div>
+                        <p>Welcome</p>
+                    </div>) 
+                }
             </div>
         )
     }
