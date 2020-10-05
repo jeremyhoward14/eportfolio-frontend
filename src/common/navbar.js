@@ -3,29 +3,10 @@ import {Link} from "react-router-dom";
 import Searchbar from './searchbar.js';
 import './navbar.css'
 
-export default function Navbar() {
-    return (
-        new NavBar()
-    //     <div>
-    //         <ul>
-    //             <li>
-    //             <Link to="/">Home</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/signup">Sign Up</Link>
-    //             </li>
-    //             <li>
-    //             <Link to="/login">Log in</Link>
-    //             </li>
-    //         </ul>
-    //   </div>
-      );  
-    }
-
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.isHome = true;
+        this.isHome = false;
         this.state = { 
             isLoggedIn: false,
             // isHome: false
@@ -106,3 +87,5 @@ class NavBar extends React.Component {
         )
     }
 }
+
+export default NavBar;
