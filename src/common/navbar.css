@@ -19,7 +19,7 @@
 }
 
 .header .left img {
-    width: 150pt;
+    width: min(40vw, 150pt);
 }
 
 .header .centre {
@@ -42,4 +42,5 @@
 .header .right .row a {
     text-decoration: none;
     color: #454343;
+    font-size: min(3vw, 18px);
 }
