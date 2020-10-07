@@ -13,7 +13,7 @@ class MediaCarousel extends React.Component {
 
         // load media
         // fetch media URLs from database using API based off projid
-        const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg"]
+        const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg", "https://s6.postimg.cc/unjz87dz5/grd.png"]
 
         // map to divs
         const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} projid={this.projid} total={mediaURLs.length}/>)
@@ -32,12 +32,9 @@ class MediaCarousel extends React.Component {
     }
 
     showSlide() {
-        console.log("i've been called! index = %d", this.state.currentSlide);
         var slides = document.getElementsByClassName("mediaSlide " + this.projid);
 
-        console.log("slides length: %d", slides.length)
         if (slides.length !== 0){
-            console.log("trying to show slide with index %d", this.state.currentSlide)
             // show the slide with the given index
             slides[this.state.currentSlide].style.display = "block";
 
@@ -91,8 +88,8 @@ class MediaCarousel extends React.Component {
             <div className="mediaCarousel">
                 <this.initialiseSlides />
                 <div className="buttons">
-                    <button className="prevButton" onClick={this.prevSlide}>&#10094;</button>
-                    <button className="nextButton" onClick={this.nextSlide}>&#10095;</button>
+                    <a className="prevButton" onClick={this.prevSlide}>&#10094;</a>
+                    <a className="nextButton" onClick={this.nextSlide}>&#10095;</a>
                 </div>
             </div>
         )

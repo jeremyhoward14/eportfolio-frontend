@@ -28,6 +28,10 @@ class MediaSlide extends React.Component {
                 return(
                     <img src={this.url} />
                 )
+            case "png":
+                return(
+                    <img src={this.url} />
+                )
             case "pdf":
                 return(
                     <object data={this.url} type="application/pdf">
