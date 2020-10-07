@@ -8,6 +8,8 @@ class MediaSlide extends React.Component {
         this.index = props.index;
         this.total = props.total;
 
+        this.projid = props.projid;
+
         this.MediaDiv = this.MediaDiv.bind(this);
         this.getFiletype = this.getFiletype.bind(this);
     }
@@ -37,7 +39,7 @@ class MediaSlide extends React.Component {
 
     render() {
         return (
-            <div className="mediaSlide">
+            <div className={"mediaSlide " + this.projid}>
                 <div className="numbertext">{this.index + 1} / {this.total}</div>
                 <div className="media">
                     <this.MediaDiv />
