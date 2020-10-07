@@ -11,8 +11,22 @@ class MediaCarousel extends React.Component {
         }
         this.projid = props.projid;
 
+        // load media
+        // fetch media URLs from database using API based off projid
+        const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg"]
+
+        // map to divs
+        const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} projid={this.projid} total={mediaURLs.length}/>)
+
+        this.state = {
+            mediaList: mediaList,
+            numSlides: mediaList.length,
+            currentSlide: 0
+        }
+
         // bind functions
         this.showSlide = this.showSlide.bind(this);
+        this.initialiseSlides = this.initialiseSlides.bind(this);
         this.nextSlide = this.nextSlide.bind(this);
         this.prevSlide = this.prevSlide.bind(this);
     }
@@ -20,18 +34,6 @@ class MediaCarousel extends React.Component {
     showSlide() {
         console.log("i've been called! index = %d", this.state.currentSlide);
         var slides = document.getElementsByClassName("mediaSlide " + this.projid);
-
-        if (this.state.currentSlide < 0) {
-            this.setState({
-                currentSlide: slides.length - 1
-            });
-        }
-
-        if (this.state.currentSlide > (slides.length - 1)) {
-            this.setState({
-                currentSlide: 0
-            });
-        }
 
         console.log("slides length: %d", slides.length)
         if (slides.length !== 0){
@@ -63,7 +65,7 @@ class MediaCarousel extends React.Component {
     }
 
     prevSlide() {
-        if (this.state.currentSlide - 1 <= 0){
+        if (this.state.currentSlide - 1 < 0){
             this.setState({
                 currentSlide: this.state.numSlides - 1
             })
@@ -75,26 +77,19 @@ class MediaCarousel extends React.Component {
         }
     }
 
-    componentDidMount(){
-        // fetch media URLs from database using API based off projid
-        const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg"]
-
-        // map to divs
-        const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} projid={this.projid} total={mediaURLs.length}/>)
-
-        this.setState({
-            mediaList: mediaList,
-            numSlides: mediaList.length
-        });
+    initialiseSlides() {
+        return (
+            <div className="mediaSlides">
+                {this.state.mediaList}
+                {this.showSlide()}
+            </div>
+        )
     }
 
     render() {
         return (
             <div className="mediaCarousel">
-                <div className="mediaSlides">
-                    {this.state.mediaList}
-                    {this.showSlide()}
-                </div>
+                <this.initialiseSlides />
                 <div className="buttons">
                     <button className="prevButton" onClick={this.prevSlide}>&#10094;</button>
                     <button className="nextButton" onClick={this.nextSlide}>&#10095;</button>

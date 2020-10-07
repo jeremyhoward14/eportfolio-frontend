@@ -1,5 +1,6 @@
 .mediaSlide {
     height: 100%;
+    display: none;
 }
 
 .mediaSlide .media img {
