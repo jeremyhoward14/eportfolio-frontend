@@ -5,56 +5,99 @@ import MediaSlide from './mediaSlide.js';
 class MediaCarousel extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            currentSlide: 0,
+            numSlides: 0
+        }
+        this.projid = props.projid;
+
+        // bind functions
+        this.showSlide = this.showSlide.bind(this);
+        this.nextSlide = this.nextSlide.bind(this);
+        this.prevSlide = this.prevSlide.bind(this);
     }
 
+    showSlide() {
+        console.log("i've been called! index = %d", this.state.currentSlide);
+        var slides = document.getElementsByClassName("mediaSlide " + this.projid);
 
-    // getMediaDiv(url){
-    //     // get filetype
-    //     const filetype = this.getFiletype(url);
+        if (this.state.currentSlide < 0) {
+            this.setState({
+                currentSlide: slides.length - 1
+            });
+        }
 
-    //     // create div based on filetype
-    //     switch(filetype) {
-    //         case "jpeg":
-    //             return(
-    //                 <img src={url} />
-    //             )
-    //         case "pdf":
-    //             return(
-    //                 <object data={url} type="application/pdf">
-    //                     <embed src={url} type="application/pdf" />
-    //                 </object>
-    //             )
-    //     }
-    // }
+        if (this.state.currentSlide > (slides.length - 1)) {
+            this.setState({
+                currentSlide: 0
+            });
+        }
 
-    // mediaSlide(url, index, total) {
-    //     return (
-    //         <div className="mediaSlide">
-    //             <div className="numbertext">{index} / {total}</div>
-    //             <div className="media">
-    //                 <getMediaDiv URL={url} />
-    //             </div>
-    //             <p> test </p>
-    //         </div>
-    //     )
-    // }
+        console.log("slides length: %d", slides.length)
+        if (slides.length !== 0){
+            console.log("trying to show slide with index %d", this.state.currentSlide)
+            // show the slide with the given index
+            slides[this.state.currentSlide].style.display = "block";
 
+            // hide the other slides
+            var i;
+            for (i = 0; i < slides.length; i++){
+                if (i !== this.state.currentSlide) {
+                    slides[i].style.display = "none";
+                }
+            }
+        }   
+    }
 
-    render() { 
+    nextSlide() {
+        if (this.state.currentSlide + 1 >= this.state.numSlides){
+            this.setState({
+                currentSlide: 0
+            })
+        }
+        else {
+            this.setState({
+                currentSlide: this.state.currentSlide + 1
+            })
+        }
+    }
+
+    prevSlide() {
+        if (this.state.currentSlide - 1 <= 0){
+            this.setState({
+                currentSlide: this.state.numSlides - 1
+            })
+        }
+        else {
+            this.setState({
+                currentSlide: this.state.currentSlide - 1
+            })
+        }
+    }
+
+    componentDidMount(){
         // fetch media URLs from database using API based off projid
         const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg"]
 
         // map to divs
-        const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} total={mediaURLs.length}/>)
+        const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} projid={this.projid} total={mediaURLs.length}/>)
 
+        this.setState({
+            mediaList: mediaList,
+            numSlides: mediaList.length
+        });
+    }
+
+    render() {
         return (
             <div className="mediaCarousel">
                 <div className="mediaSlides">
-                    {mediaList}
+                    {this.state.mediaList}
+                    {this.showSlide()}
                 </div>
                 <div className="buttons">
-                    <a className="prevButton" onclick="plusSlides(-1)">&#10094;</a>
-                    <a className="nextButton" onclick="plusSlides(1)">&#10095;</a>
+                    <button className="prevButton" onClick={this.prevSlide}>&#10094;</button>
+                    <button className="nextButton" onClick={this.nextSlide}>&#10095;</button>
                 </div>
             </div>
         )
