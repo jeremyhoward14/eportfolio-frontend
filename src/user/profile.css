@@ -1,0 +1,14 @@
+.profileBody {
+    width: 100%;
+    display: table;
+}
+
+.profileBody .profileBioBody {
+    width: 300px;
+    display: table-cell;
+}
+
+.profileBody .profileCardsList {
+    width: 100%;
+    display: table-cell;
+}

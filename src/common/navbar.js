@@ -10,10 +10,16 @@ import PropTypes from 'prop-types';
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.isHome = true;
-        this.state = {
-            isLoggedIn: false
-        }
+        // this.isHome = props.isHome;
+        this.state = { 
+            isLoggedIn: true,
+            isHome: props.isHome
+        };        
+
+        // bind methods
+        this.RightRender = this.RightRender.bind(this);
+        this.LoggedInRender = this.LoggedInRender.bind(this);
+        this.SearchRender = this.SearchRender.bind(this);
     }
 
     static propTypes = {
@@ -21,10 +27,17 @@ class NavBar extends React.Component {
         logout: PropTypes.func.isRequired
     }
 
+    componentDidMount() {
+        this.setState( {
+            userid: 1
+        })
+    }
+
     LoggedInRender() {
+        let profilelink = '/profile/' + this.state.userid;
         return (
             <div className="row">
-                <Link to="/state-test">
+                <Link to={profilelink}>
                     {/* should link to profile */}
                     {/* profile picture */}
                     {/* profile name */}
@@ -50,27 +63,36 @@ class NavBar extends React.Component {
         );
     }
 
+    RightRender(isLoggedIn) {
+        const { isAuthenticated } = this.props.auth;
+        if (isAuthenticated) {
+            return (
+                <this.LoggedInRender userid={this.state.userid} />
+            )
+        }
+        else {
+            return (
+                <thisLoggedOutRender />
+            )
+        }
+    }
+
     SearchRender() {
-        return (
-            <Searchbar />
-        )
+        if (!this.props.isHome) {
+            return (
+                <Searchbar />
+            );
+        }
+        else {
+            return (null);
+        }
     }
 
     render() {
-        const { isAuthenticated } = this.props.auth;
-        let right;
-        if (isAuthenticated) {
-            right = <this.LoggedInRender />
-        }
-        else {
-            right = <this.LoggedOutRender />
-            
-        }
-        
         // should only render search bar in navbar if you're not on the home page
-        const isHome = this.isHome
+        // const isHome = this.state.isHome
         let centre;
-        if (!isHome) {
+        if (!this.state.isHome) {
             centre = <this.SearchRender />
         }
         else {
@@ -87,11 +109,13 @@ class NavBar extends React.Component {
                 </div>
                 {/* should contain search bar */}
                 <div className="centre">
-                    {centre}
+                    {/* {centre} */}
+                    <this.SearchRender />
                 </div>
                 {/* should show log in/sign up buttons OR profile button if logged in */}
                 <div className="right">
-                    {right}
+                    {/* {right} */}
+                    <this.RightRender isLoggedIn={this.state.isLoggedIn} />
                 </div>
             </div>            
         )
