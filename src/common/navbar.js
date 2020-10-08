@@ -104,7 +104,7 @@ class NavBar extends React.Component {
                 {/* should contain logo which links back to home page */}
                 <div className="left">
                     <Link to="/">
-                        <img alt="CircleSpace" src="./Logo.svg" />
+                        <img alt="CircleSpace" src="../Logo.svg" />
                     </Link>
                 </div>
                 {/* should contain search bar */}
@@ -115,7 +115,7 @@ class NavBar extends React.Component {
                 {/* should show log in/sign up buttons OR profile button if logged in */}
                 <div className="right">
                     {/* {right} */}
-                    <this.RightRender />
+                    <this.RightRender isLoggedIn={this.state.isLoggedIn} />
                 </div>
             </div>            
         )
