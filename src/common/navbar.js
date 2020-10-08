@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.isHome = false;
+        this.isHome = true;
         this.state = {
             isLoggedIn: false
         }
@@ -68,7 +68,7 @@ class NavBar extends React.Component {
         }
         
         // should only render search bar in navbar if you're not on the home page
-        const isHome = this.props.isHome
+        const isHome = this.isHome
         let centre;
         if (!isHome) {
             centre = <this.SearchRender />

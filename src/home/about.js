@@ -1,13 +1,7 @@
 import React from 'react';
 import '../home/about.css'
 
-export default function About() {
-    return (
-        new AboutArea()
-    );
-}
-
-class AboutArea extends React.Component {
+class About extends React.Component {
     render() {
         return(
             <div className="aboutContainer">
@@ -31,3 +25,5 @@ class AboutArea extends React.Component {
         )
     }
 }
+
+export default About;

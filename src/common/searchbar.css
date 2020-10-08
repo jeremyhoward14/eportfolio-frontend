@@ -10,7 +10,7 @@
 
 .row form input {
     height: 24px;
-    width: 300px;
+    width: min(300px, 50vw);
 }
 
 .row button {
