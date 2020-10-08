@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.isHome = false;
+        this.isHome = true;
         this.state = {
             isLoggedIn: false
         }

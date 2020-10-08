@@ -25,3 +25,10 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Hide about section on mobile to avoid overlap of search bar */
+@media screen and (max-width: 300px) {
+    .centralContainer .searchArea .row {
+        flex-direction: column;
+    }
+}
