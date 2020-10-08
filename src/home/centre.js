@@ -2,13 +2,13 @@ import React from 'react';
 import Searchbar from '../common/searchbar.js'
 import './centre.css'
 
-export default function Centre() {
-    return (
-        new CentralArea()
-    );
-}
+// export default function Centre() {
+//     return (
+//         new CentralArea()
+//     );
+// }
 
-class CentralArea extends React.Component {
+class Centre extends React.Component {
     render() {
         return(
             <div className="centralContainer">
@@ -23,3 +23,5 @@ class CentralArea extends React.Component {
         )
     }
 }
+
+export default Centre;

@@ -2,13 +2,13 @@ import React from "react";
 import './searchbar.css'
 import {Redirect} from "react-router-dom";
 
-export default function Searchbar() {
-    return (
-        new SearchArea()
-    );
-}
+// export default function Searchbar() {
+//     return (
+//         new SearchArea()
+//     );
+// }
 
-class SearchArea extends React.Component {
+class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {searchContents: ''}
@@ -42,3 +42,5 @@ class SearchArea extends React.Component {
         );
     }
 }
+
+export default SearchBar
