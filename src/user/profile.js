@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from '../common/navbar.js';
 import ProfileBio from './profileBio.js';
 import ProjectCard from './projectCard.js';
+import EditProjectsPane from './editProjectsPane.js';
 import './profile.css'
 
 // export default function Profile() {  
@@ -17,13 +18,25 @@ class ProfilePage extends React.Component {
     super(props);
     this.state = { 
       username: '',
+      isLoggedIn: true,
+      editPane: false
     };
+
+    this.showEditPane = this.showEditPane.bind(this);
   }
 
   componentDidMount() {
     this.setState( {
       userid: this.props.match.params.userid
     });
+  }
+
+  showEditPane() {
+    if (this.state.isLoggedIn) {
+      this.setState({
+        editPane: true
+      })
+    }
   }
   
 
