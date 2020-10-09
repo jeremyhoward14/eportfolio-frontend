@@ -25,6 +25,15 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>CircleSpace</title>
+    
+    <!-- Always use https for localStorage. http and https are treated as different origins and thus have
+    their own individual localStorages. This is run in the HTML <head> so that it checks before any React scripts are loaded. -->
+    <script>
+      var host = "circlespace.herokuapp.com";
+      if ((host === window.location.host) && (window.location.protocol !== "https:")){
+      window.location.protocol = "https";
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
