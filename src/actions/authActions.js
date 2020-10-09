@@ -57,7 +57,6 @@ export const signup = ({ firstname, lastname, username, email, password}) => dis
 }
 
 export const login = ({email, password}) => dispatch => {
-    console.log('called login')
     // Headers
     const config = {
         headers: {

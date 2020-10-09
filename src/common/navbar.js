@@ -4,7 +4,7 @@ import Searchbar from './searchbar.js';
 import './navbar.css'
 
 import { connect } from 'react-redux'
-// import { logout } from '../actions/authActions'
+import { logout } from '../actions/authActions'
 import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
@@ -24,7 +24,8 @@ class NavBar extends React.Component {
 
     static propTypes = {
         auth: PropTypes.object.isRequired,
-        logout: PropTypes.func.isRequired
+        logout: PropTypes.func.isRequired,
+        user: PropTypes.object
     }
 
     componentDidMount() {
@@ -34,7 +35,8 @@ class NavBar extends React.Component {
     }
 
     LoggedInRender() {
-        let profilelink = '/profile/' + this.state.userid;
+        const { username } = this.props.user;
+        let profilelink = '/profile/' + username;
         return (
             <div className="row">
                 <Link to={profilelink}>
@@ -42,6 +44,9 @@ class NavBar extends React.Component {
                     {/* profile picture */}
                     {/* profile name */}
                     <h2>Profile</h2>
+                </Link>
+                <Link onClick={this.props.logout} to='/'>
+                    <h2>Logout</h2>
                 </Link>
                 {/* <Link onClick={this.props.logout} href='#'>
                     Logout
@@ -123,10 +128,11 @@ class NavBar extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    user: state.auth.user
 })
 
 export default connect(
     mapStateToProps,
-    null
+    { logout }
 )(NavBar)
