@@ -63,7 +63,7 @@ class NavBar extends React.Component {
         );
     }
 
-    RightRender(isLoggedIn) {
+    RightRender() {
         const { isAuthenticated } = this.props.auth;
         if (isAuthenticated) {
             return (
