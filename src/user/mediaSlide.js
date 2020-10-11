@@ -18,7 +18,7 @@ class MediaSlide extends React.Component {
         return (this.url).split(/[#?]/)[0].split('.').pop().trim();
     }
 
-    MediaDiv(){
+    MediaDiv() {
         // get filetype
         const filetype = this.getFiletype();
 

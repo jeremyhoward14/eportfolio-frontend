@@ -100,8 +100,8 @@ class ProfilePage extends React.Component {
       console.log('userdata is set');
       userProjects = this.state.userdata.projects;
       console.log(userProjects);
-      projList = userProjects.map((projid, index) => <ProjectCard projid={projid} key={index} />)
-      console.log(projList)
+      projList = userProjects.map((project, index) => <ProjectCard projid={index} project={project} key={index} />)
+      console.log(projList);
     }
     
     // Check if this page is the logged in user's page to allow editing or not.

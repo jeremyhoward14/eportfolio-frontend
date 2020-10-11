@@ -9,14 +9,19 @@ class MediaCarousel extends React.Component {
             currentSlide: 0,
             numSlides: 0
         }
-        this.projid = props.projid;
+        // this.projid = props.projid;
 
         // load media
         // fetch media URLs from database using API based off projid
-        const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg", "https://s6.postimg.cc/unjz87dz5/grd.png"]
+        const attachments = this.props.project.attachments;
+        var URLs = []
+        for (let i=0; i<attachments.length; i++) {
+            URLs.push(attachments[i].url);
+        }
+        //const mediaURLs = ["https://arxiv.org/pdf/1505.04597.pdf", "https://miro.medium.com/max/2510/1*vkQ0hXDaQv57sALXAJquxA.jpeg", "https://s6.postimg.cc/unjz87dz5/grd.png"]
 
         // map to divs
-        const mediaList = mediaURLs.map((url, index) => <MediaSlide url={url} key={index} index={index} projid={this.projid} total={mediaURLs.length}/>)
+        const mediaList = URLs.map((url, index) => <MediaSlide url={url} key={index} index={index} project={this.props.project} total={URLs.length}/>)
 
         this.state = {
             mediaList: mediaList,
