@@ -23,6 +23,7 @@ class ProfilePage extends React.Component {
     };
 
     this.showEditPane = this.showEditPane.bind(this);
+    this.closeEditPane = this.closeEditPane.bind(this);
   }
 
   componentDidMount() {
@@ -32,11 +33,18 @@ class ProfilePage extends React.Component {
   }
 
   showEditPane() {
-    if (this.state.isLoggedIn) {
+    // if (this.state.isLoggedIn) {
+    if (true) {
       this.setState({
         editPane: true
       })
     }
+  }
+
+  closeEditPane(e) {
+    this.setState( {
+      editPane: false
+    })
   }
   
 
@@ -48,12 +56,21 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <div className="profileBody">
-            <div className="profileBioBody">
-              <ProfileBio userid={this.state.userid} />
-            </div>
-            <div className="projectCardsList">
-              {projList}
+          <EditProjectsPane onCancel={this.closeEditPane} showPane={this.state.editPane} projidList={projidList}/>
+          <div className="profilePageContainer">
+            <div className="profileBody">
+              <div className="profileBioBody">
+                <ProfileBio userid={this.state.userid} />
+              </div>
+              <div className="projectListContainer">
+                <div className="editButtons">
+                  <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
+                  <button className="editProfileButton">Edit Profile</button>
+                </div>
+                <div className="projectCardsList">
+                  {projList}
+                </div>
+              </div>            
             </div>
           </div>
         </div>
