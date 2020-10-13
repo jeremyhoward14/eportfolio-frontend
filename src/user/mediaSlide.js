@@ -24,6 +24,10 @@ class MediaSlide extends React.Component {
 
         // create div based on filetype
         switch(filetype) {
+            case "jpg":
+                return (
+                    <img src={this.url} />
+                )
             case "jpeg":
                 return(
                     <img src={this.url} />

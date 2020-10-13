@@ -9,14 +9,14 @@ class ProjectCard extends React.Component {
 
     // replace these getters with data from api
     getProjectName() {
-        const proj_name = "test proj";
+        const proj_name = this.props.project.title;
         return (
             <h3>{proj_name}</h3>
         );
     }
 
     getProjectDescription() {
-        const proj_desc = "desc";
+        const proj_desc = this.props.project.text;
         return (
             <p>{proj_desc}</p>
         );
