@@ -42,17 +42,53 @@ class MediaSlide extends React.Component {
                         <embed src={this.url} type="application/pdf" />
                     </object>
                 )
+            case "doc":
+                return(
+                    <object data={this.url} type="application/msword">
+                        <embed src={this.url} type="application/msword" />
+                    </object>
+                )
+            case "docx":
+                return (
+                    <object data={this.url} type="application/msword">
+                        <embed src={this.url} type="application/msword" />
+                    </object> 
+                )
         }
     }
 
     render() {
         return (
-            <div className={"mediaSlide " + this.projid}>
+            <div className={"mediaSlide " + (this.props.projid)}>
                 <div className="numbertext">{this.index + 1} / {this.total}</div>
-                <div className="media">
-                    <this.MediaDiv />
-                </div>
+                    <div className="media">
+                        <this.MediaDiv />
+                    </div>
             </div>
+            // <div>
+            //     { (this.props.index == 0) ? 
+            //         (<div className={"mediaSlide " + (this.props.projid)}>
+            //             <div className="numbertext">{this.index + 1} / {this.total}</div>
+            //             <div className="media">
+            //                 <this.MediaDiv />
+            //             </div>
+            //         </div>) : 
+            //         (<div className={"mediaSlide " + (this.props.projid)}>
+            //             <div className="numbertext">{this.index + 1} / {this.total}</div>
+            //             <div className="media">
+            //                 <this.MediaDiv />
+            //             </div>
+            //         </div>)
+            //     }
+            // </div>
+            
+            // <div className={"mediaSlide " + (this.props.projid)}>
+            //     {this.display()}
+            //     <div className="numbertext">{this.index + 1} / {this.total}</div>
+            //     <div className="media">
+            //         <this.MediaDiv />
+            //     </div>
+            // </div>
         )
     }
 }

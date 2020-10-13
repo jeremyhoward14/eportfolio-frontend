@@ -33,9 +33,9 @@ class EditProjectForm extends React.Component {
 
         return (
             <form>
-                <input type="text" id="name" placeholder="Project Name" value={this.state.name} onChange={this.handleNameChange}></input>
+                <input type="text" id="name" placeholder="Project Name" /*value={this.state.name}*/ onChange={this.handleNameChange}></input>
                 <br></br>
-                <textarea id="description" placeholder="Project Description" value={this.state.desc} onChange={this.handleDescChange}></textarea>
+                <textarea id="description" placeholder="Project Description" /*value={this.state.desc}*/ onChange={this.handleDescChange}></textarea>
                 <br></br>
                 <input type="file" id="file"></input>
             </form>

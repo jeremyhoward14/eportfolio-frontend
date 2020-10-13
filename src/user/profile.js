@@ -3,9 +3,9 @@ import NavBar from '../common/navbar.js';
 import ProfileBio from './profileBio.js';
 import ProjectCard from './projectCard.js';
 import EditProjectsPane from './editProjects/editProjectsPane.js';
+import EditBioPane from './editProjects/editBioPane.js';
 import './profile.css'
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 
 // Redux imports
 import { connect } from 'react-redux'
@@ -19,11 +19,15 @@ class ProfilePage extends React.Component {
       username: '',
       isLoggedIn: true,
       editPane: false,
-      userdata: {}
+      userdata: {},
+      bioPane: false
     };
 
     this.showEditPane = this.showEditPane.bind(this);
     this.closeEditPane = this.closeEditPane.bind(this);
+
+    this.showBioPane = this.showBioPane.bind(this);
+    this.closeBioPane = this.closeBioPane.bind(this);
   }
 
   // Redux state props
@@ -74,17 +78,26 @@ class ProfilePage extends React.Component {
   }
 
   showEditPane() {
-    // if (this.state.isLoggedIn) {
-    if (true) {
-      this.setState({
-        editPane: true
-      })
-    }
+    this.setState({
+      editPane: true
+    })
   }
 
-  closeEditPane(e) {
+  closeEditPane() {
     this.setState( {
       editPane: false
+    })
+  }
+
+  showBioPane() {
+    this.setState({
+      bioPane: true
+    })
+  }
+
+  closeBioPane() {
+    this.setState({
+      bioPane: false
     })
   }
   
@@ -100,7 +113,7 @@ class ProfilePage extends React.Component {
       console.log('userdata is set');
       userProjects = this.state.userdata.projects;
       console.log(userProjects);
-      projList = userProjects.map((project, index) => <ProjectCard projid={index} project={project} key={index} />)
+      projList = userProjects.map((project, index) => <ProjectCard projid={parseInt(index)} project={project} key={index} />)
       console.log(projList);
     }
     
@@ -118,7 +131,8 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane onCancel={this.closeEditPane} showPane={this.state.editPane} projidList={userProjects}/>
+          <EditProjectsPane onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
               <div className="profileBioBody">
@@ -130,7 +144,7 @@ class ProfilePage extends React.Component {
                 { editAllowed && (
                     <div className="editButtons">
                       <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
-                      <button className="editProfileButton">Edit Profile</button>
+                      <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
                     </div>
                   )
                 }
