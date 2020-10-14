@@ -2,6 +2,8 @@ import React from "react";
 import './login.css'
 import ReactDOM from "react-dom";
 import { Redirect, withRouter } from 'react-router-dom';
+import { Spinner } from 'reactstrap';
+//import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,6 +23,7 @@ class LoginForm extends React.Component {
     this.passwordHandler = this.passwordHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.submitHandlerTwo = this.submitHandlerTwo.bind(this);
+    this.spinner = this.spinner.bind(this);
   }
 
   static propTypes = {
@@ -104,6 +107,15 @@ class LoginForm extends React.Component {
   passwordHandler = (event) => {
     this.setState({password: event.target.value})
   }
+  spinner = () => {
+    return (
+      <>
+        <Spinner className="text-light">
+          <span className=" sr-only">Loading...</span>
+        </Spinner>
+      </>
+    )
+  }
   render() {
 
     if (this.state.readyToRedirect) {
@@ -116,6 +128,7 @@ class LoginForm extends React.Component {
           <div className="container">
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
+                <Spinner color="light" />
                 <p>{this.state.msg}</p>
                 {/* <p id="success"></p> */}
                 <form onSubmit={this.submitHandlerTwo}>

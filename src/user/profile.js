@@ -51,6 +51,7 @@ class ProfilePage extends React.Component {
         )
         .catch(err => {
             console.error(err);
+            this.props.history.push('/');
             // Handle user doesn't exist here
         });
   }
@@ -73,6 +74,7 @@ class ProfilePage extends React.Component {
         )
         .catch(err => {
             console.error(err);
+            this.props.history.push('/');
             // Handle user doesn't exist here
         });
   }
@@ -131,7 +133,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditProjectsPane projects={this.props.userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
           <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
