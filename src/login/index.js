@@ -14,8 +14,9 @@ class LoginForm extends React.Component {
     this.state = { 
       email: '', 
       password: '', 
-      msg: null,
-      readyToRedirect: false };
+      msg: '',
+      readyToRedirect: false,
+      loginText: "Login" };
     this.emailHandler = this.emailHandler.bind(this);
     this.passwordHandler = this.passwordHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -33,7 +34,8 @@ class LoginForm extends React.Component {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
         if (error.id === 'LOGIN_FAIL') {
-            this.setState({msg: error.msg.msg})
+          console.log(error);
+          this.setState({msg: error.msg.response.data.msg, loginText: "Login"})
         }
         else {
             this.setState({
@@ -51,7 +53,9 @@ class LoginForm extends React.Component {
 
   submitHandlerTwo = (event) => {
     event.preventDefault();
-
+    this.setState({
+      loginText: "Loading..."
+    })
     const {email, password} = this.state;
 
         // Create user object
@@ -112,13 +116,14 @@ class LoginForm extends React.Component {
           <div className="container">
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
-                <p id="success"></p>
+                <p>{this.state.msg}</p>
+                {/* <p id="success"></p> */}
                 <form onSubmit={this.submitHandlerTwo}>
                     <input type="text" id="email" placeholder="Email" onChange={this.emailHandler}></input>
                     <br></br>
                     <input type="password" id="password" placeholder="Password" onChange={this.passwordHandler}></input>
                     <br></br>
-                    <input type="submit" value="Login"></input>
+                    <input type="submit" value={this.state.loginText}></input>
                 </form>
           </div>
       </div>

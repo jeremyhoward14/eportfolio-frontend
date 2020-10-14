@@ -18,7 +18,8 @@ class SignupForm extends React.Component {
             lastname: '', 
             password: '', 
             confirm_password: '',
-            msg: null,
+            msg: "All fields required",
+            signupText: "Sign up",
             readyToRedirect: false
         };
         this.handleFirstChange = this.handleFirstChange.bind(this);
@@ -42,11 +43,12 @@ class SignupForm extends React.Component {
         const { error, isAuthenticated } = this.props;
         if (error !== prevProps.error) {
             if (error.id === 'REGISTER_FAIL') {
-                this.setState({msg: error.msg.msg})
+                console.log(error);
+                this.setState({msg: error.msg.msg, signupText: "Sign up"})
             }
             else {
                 this.setState({
-                    msg: null
+                    msg: "All fields required"
                 });
             }
         }
@@ -60,6 +62,7 @@ class SignupForm extends React.Component {
     
     submitHandlerTwo = event => {
         event.preventDefault();
+        this.setState({signupText: "Loading..."})
         if (this.state.password === this.state.confirm_password) {
             const {firstname, lastname, username, email, password} = this.state;
 
@@ -79,7 +82,7 @@ class SignupForm extends React.Component {
         // Password and confirm_password don't match
         else {
             event.preventDefault() // Don't redirect.
-            ReactDOM.render(<span>Passwords didn't match! Please try again.</span>, document.getElementById('success'))
+            this.setState({msg: "Passwords don't match!", signupText: "Sign up"})
         }
     }
 
@@ -156,10 +159,11 @@ class SignupForm extends React.Component {
                 <div className="container">
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>
-                <p id="success">All fields required.</p>
-                <div>
+                {/* <p id="success">All fields required.</p> */}
+                <p>{this.state.msg}</p>
+                {/* <div>
                     {this.state.msg ? ( <p>{this.state.msg}</p> ) : null}
-                </div>
+                </div> */}
                 <form onSubmit={this.submitHandlerTwo}>
                     <input type="text" id="firstname" placeholder="First name" value={this.state.firstname} onChange={this.handleFirstChange}></input>
                     <br></br>
@@ -173,7 +177,7 @@ class SignupForm extends React.Component {
                     <br></br>
                     <input type="password" id="password_confirm" placeholder="Confirm password" value={this.state.confirm_password} onChange={this.handleConfirmPasswordChange}></input>
                     <br></br>
-                    <input type="submit" value="Sign up"></input>
+                    <input type="submit" value={this.state.signupText}></input>
                 </form>
                 </div>
             </div>
