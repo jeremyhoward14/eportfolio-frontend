@@ -1,9 +1,9 @@
 import React from "react";
-import ProjectList from "./projectList.js";
-import EditProjectForm from "./editProjectForm.js";
+// import ProjectList from "./projectList.js";
+// import EditProjectForm from "./editProjectForm.js";
 import './editProjectsPane.css';
 
-class EditProjectsPane extends React.Component {
+class EditBioPane extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +11,6 @@ class EditProjectsPane extends React.Component {
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
-        this.selectProject = this.selectProject.bind(this);
     }
 
     createProjectHandler() {
@@ -30,12 +29,6 @@ class EditProjectsPane extends React.Component {
         this.props.onCancel(e.target.value);
     };
 
-    selectProject(projid) {
-        this.setState( {
-            projid: projid
-        });
-    }
-
     render() {
         if (!this.props.showPane){
             return null;
@@ -44,18 +37,11 @@ class EditProjectsPane extends React.Component {
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
                     <div className="editProjectsContainer">
-                        <div className="projectsList">
-                            <ProjectList onSelect={this.selectProject} projidList={[1, 2, 3, 4, 5]}/>
-                        </div>
-                        <div className="rightContainer">
-                            <div className="projectButtonsContainer">
-                                <button className="createProjectButton" onClick={this.createProjectHandler}>Create Project</button>
-                                <button className="deleteProjectButton" onClick={this.deleteProjectHandler}>Delete Project</button>
-                            </div>
-                            <div className="editProjectForm">
-                                <EditProjectForm projid={this.state.projid}/>
-                            </div>
-                        </div>
+                        <form>
+                            <textarea placeholder="Edit your bio" />
+                            <br></br>
+                            <input type="file"/>
+                        </form>
                     </div>
                     
                     <div className="overlayButtonsContainer">
@@ -68,4 +54,4 @@ class EditProjectsPane extends React.Component {
     }
 }
 
-export default EditProjectsPane;
+export default EditBioPane;

@@ -9,14 +9,14 @@ class ProjectCard extends React.Component {
 
     // replace these getters with data from api
     getProjectName() {
-        const proj_name = "test proj";
+        const proj_name = this.props.project.title;
         return (
             <h3>{proj_name}</h3>
         );
     }
 
     getProjectDescription() {
-        const proj_desc = "desc";
+        const proj_desc = this.props.project.text;
         return (
             <p>{proj_desc}</p>
         );
@@ -25,8 +25,8 @@ class ProjectCard extends React.Component {
     render() {
         return (
             <div className="cardContainer">
-                <p>projid: {this.props.projid}</p>
-                <MediaCarousel projid={this.props.projid} />
+                {/* <p>projid: {this.props.projid}</p> */}
+                <MediaCarousel projid={this.props.projid} project={this.props.project} />
                 {this.getProjectName()}
                 {/* replace proj media with a project media component that displays the media*/}
                 {this.getProjectDescription()}

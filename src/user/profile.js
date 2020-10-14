@@ -3,15 +3,14 @@ import NavBar from '../common/navbar.js';
 import ProfileBio from './profileBio.js';
 import ProjectCard from './projectCard.js';
 import EditProjectsPane from './editProjects/editProjectsPane.js';
+import EditBioPane from './editProjects/editBioPane.js';
 import './profile.css'
+import axios from 'axios';
 
-// export default function Profile() {  
-//     return (
-//       <div className="profileBody">
-//         <ProfilePage userid={1}/>
-//       </div>
-//     );
-//   }
+// Redux imports
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -19,54 +18,138 @@ class ProfilePage extends React.Component {
     this.state = { 
       username: '',
       isLoggedIn: true,
-      editPane: false
+      editPane: false,
+      userdata: {},
+      bioPane: false
     };
 
     this.showEditPane = this.showEditPane.bind(this);
     this.closeEditPane = this.closeEditPane.bind(this);
+
+    this.showBioPane = this.showBioPane.bind(this);
+    this.closeBioPane = this.closeBioPane.bind(this);
+  }
+
+  // Redux state props
+  static propTypes = {
+    auth: PropTypes.object.isRequired,
+    user: PropTypes.object
   }
 
   componentDidMount() {
     this.setState( {
       userid: this.props.match.params.userid
     });
+
+    axios.get('https://api-circlespace.herokuapp.com/users/'+this.props.match.params.userid)
+        .then(res => {
+            this.setState({
+              userdata: res.data
+            });
+            console.log(this.state.userdata);
+          }
+        )
+        .catch(err => {
+            console.error(err);
+            this.props.history.push('/');
+            // Handle user doesn't exist here
+        });
+  }
+
+  // Fetch user data when new props are received from URL as component doesn't remount between props changes,
+  // i.e. (going between different profiles).
+  // e.g. if I'm on profile/jim, then click on "Profile" in the navbar to go to my profile, profile/jack, 
+  // then the component doesn't remount.
+  // Thus we need to fetch user data again
+
+  componentWillReceiveProps(newProps) {
+    // get projidlist from api using userid
+    axios.get('https://api-circlespace.herokuapp.com/users/'+newProps.match.params.userid)
+        .then(res => {
+            this.setState({
+              userdata: res.data
+            });
+            console.log(this.state.userdata);
+          }
+        )
+        .catch(err => {
+            console.error(err);
+            this.props.history.push('/');
+            // Handle user doesn't exist here
+        });
   }
 
   showEditPane() {
-    // if (this.state.isLoggedIn) {
-    if (true) {
-      this.setState({
-        editPane: true
-      })
-    }
+    this.setState({
+      editPane: true
+    })
   }
 
-  closeEditPane(e) {
+  closeEditPane() {
     this.setState( {
       editPane: false
+    })
+  }
+
+  showBioPane() {
+    this.setState({
+      bioPane: true
+    })
+  }
+
+  closeBioPane() {
+    this.setState({
+      bioPane: false
     })
   }
   
 
   render() {
-    // get projidlist from api using userid
-    const projidList = [1, 2, 3, 4, 5];
-    const projList = projidList.map((projid, index) => <ProjectCard projid={projid} key={index} />)
+    //const userProjects = this.state.userdata.projects;
+    //console.log(userProjects);
+    //const projidList = [1, 2, 3, 4, 5];
+    var userProjects = [];
+    var projList = [];
 
+    if (Object.keys(this.state.userdata).length > 0) {
+      console.log('userdata is set');
+      userProjects = this.state.userdata.projects;
+      console.log(userProjects);
+      projList = userProjects.map((project, index) => <ProjectCard projid={parseInt(index)} project={project} key={index} />)
+      console.log(projList);
+    }
+    
+    // Check if this page is the logged in user's page to allow editing or not.
+    var editAllowed;
+    const user = this.props.user;
+    if (this.props.auth.isAuthenticated && user !== null) {
+      editAllowed = (this.props.match.params.userid === user.username);
+    }
+    else {
+      editAllowed = false;
+    }
+
+    // Render
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane onCancel={this.closeEditPane} showPane={this.state.editPane} projidList={projidList}/>
+          <EditProjectsPane projects={this.props.userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
               <div className="profileBioBody">
-                <ProfileBio userid={this.state.userid} />
+                <ProfileBio 
+                  user={this.state.userdata} 
+                  userid={this.state.userid} />
               </div>
               <div className="projectListContainer">
-                <div className="editButtons">
-                  <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
-                  <button className="editProfileButton">Edit Profile</button>
-                </div>
+                { editAllowed && (
+                    <div className="editButtons">
+                      <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
+                      <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                    </div>
+                  )
+                }
                 <div className="projectCardsList">
                   {projList}
                 </div>
@@ -79,6 +162,12 @@ class ProfilePage extends React.Component {
 
 }
 
-//ReactDOM.render(<LoginForm />, document.getElementById('root'));
+const mapStateToProps = state => ({
+  auth: state.auth,
+  user: state.auth.user
+});
 
-export default ProfilePage
+export default connect(
+  mapStateToProps,
+  null
+)(ProfilePage);
