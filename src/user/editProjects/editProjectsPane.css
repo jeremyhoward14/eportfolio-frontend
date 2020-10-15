@@ -20,3 +20,44 @@
     background-color: white;
     vertical-align: middle;
 }
+
+.listEntry {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.listEntryProject {
+    width: 70%;
+    height: 100px;
+    margin-left: 7.5%;
+    margin-right: 2.5%;
+}
+
+.listEntryDelete {
+    width: 10%;
+    height: 50px;
+    margin-left: 2.5%;
+    margin-right: 7.5%;
+}
+
+.projectButtonsContainer {
+    text-align: center;
+}
+
+.projectButtonsContainer button {
+    width: 40%;
+    height: 75px;
+    /* margin-right: 5%;
+    margin-left: 5%; */
+}
+
+.overlayButtonsContainer button {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* .editProjectForm {
+    text-align: center;
+} */

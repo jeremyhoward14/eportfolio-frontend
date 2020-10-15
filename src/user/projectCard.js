@@ -26,7 +26,11 @@ class ProjectCard extends React.Component {
         return (
             <div className="cardContainer">
                 {/* <p>projid: {this.props.projid}</p> */}
-                <MediaCarousel projid={this.props.projid} project={this.props.project} />
+                {
+                    (this.props.project.attachments.length > 0) && (
+                        <MediaCarousel projid={this.props.projid} project={this.props.project} />
+                    )
+                }
                 {this.getProjectName()}
                 {/* replace proj media with a project media component that displays the media*/}
                 {this.getProjectDescription()}

@@ -19,7 +19,7 @@ class ProfilePage extends React.Component {
       username: '',
       isLoggedIn: true,
       editPane: false,
-      userdata: {},
+      userdata: null,
       bioPane: false
     };
 
@@ -105,6 +105,9 @@ class ProfilePage extends React.Component {
   
 
   render() {
+    if (this.state.userdata == null) {
+      return null;
+    }
     //const userProjects = this.state.userdata.projects;
     //console.log(userProjects);
     //const projidList = [1, 2, 3, 4, 5];
@@ -133,7 +136,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane projects={this.props.userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditProjectsPane projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
           <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">

@@ -128,7 +128,7 @@ class LoginForm extends React.Component {
           <div className="container">
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
-                <Spinner color="light" />
+                {/* <Spinner color="light" /> */}
                 <p>{this.state.msg}</p>
                 {/* <p id="success"></p> */}
                 <form onSubmit={this.submitHandlerTwo}>
