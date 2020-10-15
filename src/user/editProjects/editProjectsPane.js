@@ -6,10 +6,11 @@ import './editProjectsPane.css';
 class EditProjectsPane extends React.Component {
     constructor(props) {
         super(props);
+    
+        
         this.state = {
-            projid: null
+            projid: null,
         }
-
         this.cancelHandler = this.cancelHandler.bind(this);
         this.selectProject = this.selectProject.bind(this);
     }
@@ -20,18 +21,12 @@ class EditProjectsPane extends React.Component {
         // then select it
     }
 
-    deleteProjectHandler() {
-        // TODO
-        // should delete a project in the database, refresh the projid list
-        // then select the next project in the list
-    }
-
     cancelHandler(e) {
         this.props.onCancel(e.target.value);
     };
 
     selectProject(projid) {
-        this.setState( {
+        this.setState({
             projid: projid
         });
     }
@@ -45,12 +40,11 @@ class EditProjectsPane extends React.Component {
                 <div className="editProjectsOverlayContainer">
                     <div className="editProjectsContainer">
                         <div className="projectsList">
-                            <ProjectList onSelect={this.selectProject} projidList={[1, 2, 3, 4, 5]}/>
+                            <ProjectList onSelect={this.selectProject} projidList={this.props.projects}/>
                         </div>
                         <div className="rightContainer">
                             <div className="projectButtonsContainer">
                                 <button className="createProjectButton" onClick={this.createProjectHandler}>Create Project</button>
-                                <button className="deleteProjectButton" onClick={this.deleteProjectHandler}>Delete Project</button>
                             </div>
                             <div className="editProjectForm">
                                 <EditProjectForm projid={this.state.projid}/>
@@ -59,8 +53,9 @@ class EditProjectsPane extends React.Component {
                     </div>
                     
                     <div className="overlayButtonsContainer">
-                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
                         <button className="confirmButton">Confirm Changes</button>
+                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
+                        
                     </div>
                 </div>
             </div>

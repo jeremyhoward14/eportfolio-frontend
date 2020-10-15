@@ -15,7 +15,7 @@ class MediaSlide extends React.Component {
     }
 
     getFiletype() {
-        return (this.url).split(/[#?]/)[0].split('.').pop().trim();
+        return (this.props.url).split(/[#?]/)[0].split('.').pop().trim();
     }
 
     MediaDiv() {
@@ -24,28 +24,25 @@ class MediaSlide extends React.Component {
 
         // create div based on filetype
         switch(filetype) {
+            case "JPG":
             case "jpg":
-                return (
-                    <img src={this.url} />
-                )
+            case "JPEG":
             case "jpeg":
-                return(
-                    <img src={this.url} />
-                )
+            case "PNG":
             case "png":
                 return(
-                    <img src={this.url} />
+                    <img src={this.props.url} />
                 )
             case "pdf":
                 return(
-                    <object data={this.url} type="application/pdf">
-                        <embed src={this.url} type="application/pdf" />
+                    <object data={this.props.url} type="application/pdf">
+                        <embed src={this.props.url} type="application/pdf" />
                     </object>
                 )
             case "doc":
                 return(
-                    <object data={this.url} type="application/msword">
-                        <embed src={this.url} type="application/msword" />
+                    <object data={this.props.url} type="application/msword">
+                        <embed src={this.props.url} type="application/msword" />
                     </object>
                 )
             case "docx":
@@ -58,12 +55,17 @@ class MediaSlide extends React.Component {
     }
 
     render() {
+        if (this.props.url == null) {
+            return null;
+        }
         return (
             <div className={"mediaSlide " + (this.props.projid)}>
                 <div className="numbertext">{this.index + 1} / {this.total}</div>
                     <div className="media">
-                        <this.MediaDiv />
+                        {this.MediaDiv()}
                     </div>
+
+
             </div>
             // <div>
             //     { (this.props.index == 0) ? 
