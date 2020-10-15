@@ -10,7 +10,7 @@ import axios from 'axios';
 // Redux imports
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-
+import { API_DOMAIN } from "../config.js";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class ProfilePage extends React.Component {
       userid: this.props.match.params.userid
     });
 
-    axios.get('https://api-circlespace.herokuapp.com/users/'+this.props.match.params.userid)
+    axios.get(API_DOMAIN+'/users/'+this.props.match.params.userid)
         .then(res => {
             this.setState({
               userdata: res.data
@@ -64,7 +64,7 @@ class ProfilePage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     // get projidlist from api using userid
-    axios.get('https://api-circlespace.herokuapp.com/users/'+newProps.match.params.userid)
+    axios.get(API_DOMAIN+'/users/'+newProps.match.params.userid)
         .then(res => {
             this.setState({
               userdata: res.data

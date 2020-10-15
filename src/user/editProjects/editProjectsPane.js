@@ -3,6 +3,7 @@ import ProjectList from "./projectList.js";
 import EditProjectForm from "./editProjectForm.js";
 import './editProjectsPane.css';
 import axios from 'axios'
+import { API_DOMAIN } from "../../config"
 
 // Redux imports
 import { connect } from 'react-redux'
@@ -18,7 +19,10 @@ class EditProjectsPane extends React.Component {
             showCreateForm: false,
             createTitle: "",
             createText: "",
-            createTags: []
+            createTags: [],
+            createSubmitText: "Create Project",
+            attachmentsCount: 0,
+            files: []
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -28,6 +32,9 @@ class EditProjectsPane extends React.Component {
         this.createTagsChange = this.createTagsChange.bind(this);
         this.createTextChange = this.createTextChange.bind(this);
         this.createTitleChange = this.createTitleChange.bind(this);
+        this.attachmentsCountChange = this.attachmentsCountChange.bind(this);
+        this.fileInputs = this.fileInputs.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
     }
 
     static propTypes = {
@@ -36,6 +43,9 @@ class EditProjectsPane extends React.Component {
 
     createProjectHandler(event) {
         event.preventDefault();
+        this.setState({
+            createSubmitText: "Creating..."
+        })
         const config = {
             headers: {
                 "Content-type": "application/json",
@@ -47,12 +57,35 @@ class EditProjectsPane extends React.Component {
             "text": this.state.createText,
             "tags": [] // insert tags here when schema has changed
         }
-        var self = this;
-        axios.post('https://api-circlespace.herokuapp.com/projects/create', body, config)
+        axios.post(API_DOMAIN+'/projects/create', body, config)
         .then(res => {
             console.log(res);
+
             // POST request to add attachments
-            self.props.history.push(window.location.pathname); // refresh user profile
+            for (let i=0; i<this.state.attachmentsCount; i++) {
+                var input = document.getElementById(this.state.files[i].index);
+                var fileBody = new FormData();
+                fileBody.append(this.state.files[i].index, input.files[0]);
+                const fileConfig = {
+                    headers: {
+                        "accept": "application/json",
+                        "Content-type": "multipart/form-data",
+                        "x-auth-token": this.props.auth.token
+                    }
+                }
+                axios.post(API_DOMAIN+'/files/'+this.state.createTitle+'/upload', fileBody, fileConfig)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            }
+            
+            this.props.history.push(window.location.pathname); // refresh user profile
+            this.setState({
+                createSubmitText: "Create Project"
+            })
         })
         .catch(err => {
             console.error(err);
@@ -78,6 +111,23 @@ class EditProjectsPane extends React.Component {
         this.setState({createTags: tags});
     }
 
+    attachmentsCountChange = (event) => {
+        this.setState({attachmentsCount: event.target.value})
+    }
+
+    handleFileChange = (event) => {
+        var tempFiles = this.state.files;
+        for (let i=0; i<tempFiles.length; i++) {
+            if (tempFiles[i].index === event.target.id) {
+                tempFiles.splice(i, i+1);
+                break;
+            }
+        }
+        tempFiles.push({"index": event.target.id, "filename": event.target.value})
+        this.setState({files: tempFiles});
+        console.log(this.state.files);
+    }
+
     cancelHandler(e) {
         this.props.onCancel(e.target.value);
     };
@@ -87,6 +137,21 @@ class EditProjectsPane extends React.Component {
             projid: projid
         });
     }
+
+    fileInputs() {
+        var inputs = []
+        for (let i=0; i<this.state.attachmentsCount; i++) {
+            inputs.push(
+                <div key={i}>
+                    <input onChange={this.handleFileChange} type="file" id={"file "+String(i)}/>
+                    <br></br>
+                </div>
+                
+            )
+        }
+        return inputs;
+    }
+
 
     render() {
         if (!this.props.showPane){
@@ -114,9 +179,14 @@ class EditProjectsPane extends React.Component {
                                                 <br></br>
                                                 <div>
                                                     <h3> Attachments: </h3>
-                                                    <div>{this.state.attachments}</div>
+                                                    <label>Number of attachments: </label>
+                                                    <input type="number" min="0" max="10" onChange={this.attachmentsCountChange} />
+                                                    <div>
+                                                        {this.fileInputs()}
+                                                    </div>
+                                                    
                                                 </div>
-                                                <input type="submit" value="Create Project" />
+                                                <input type="submit" value={this.state.createSubmitText} />
                                             </form>
                                         </div>
                                     )

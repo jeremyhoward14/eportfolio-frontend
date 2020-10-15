@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_DOMAIN } from '../config';
 import { returnErrors } from "./errorActions";
 
 import {
@@ -17,7 +18,7 @@ export const loadUser = () => (dispatch, getState) => {
     // User loading 
     dispatch({type: USER_LOADING });
 
-    axios.get('https://api-circlespace.herokuapp.com/posts', tokenConfig(getState))
+    axios.get(API_DOMAIN+'/posts', tokenConfig(getState))
         .then(res => dispatch({
             type: USER_LOADED,
             payload: res
@@ -42,7 +43,7 @@ export const signup = ({ firstname, lastname, username, email, password}) => dis
     // Request body 
     const body = JSON.stringify({ firstname, lastname, username, email, password })
 
-    axios.post('https://api-circlespace.herokuapp.com/users/signup', body, config)
+    axios.post(API_DOMAIN+'/users/signup', body, config)
     .then(res => dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
@@ -66,7 +67,7 @@ export const login = ({email, password}) => dispatch => {
     // Request body
     const body = JSON.stringify({ email, password });
 
-    axios.post('https://api-circlespace.herokuapp.com/users/login', body, config)
+    axios.post(API_DOMAIN+'/users/login', body, config)
     .then(res => dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

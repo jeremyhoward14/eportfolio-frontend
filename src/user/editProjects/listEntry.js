@@ -81,7 +81,7 @@ class ListEntry extends React.Component {
                                 <br></br>
                                 <textarea placeholder={this.props.project.text} />
                                 <br></br>
-                                <textarea placeholder={this.props.project.tags[0].tag} />
+                                <textarea placeholder={"Tags will go here when dev deployment works."} />
                                 <br></br>
                                 <div>
                                     <h3> Attachments: </h3>
