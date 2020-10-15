@@ -46,11 +46,11 @@ class ProfilePage extends React.Component {
             this.setState({
               userdata: res.data
             });
-            console.log(this.state.userdata);
+            //console.log(this.state.userdata);
           }
         )
         .catch(err => {
-            console.error(err);
+            //console.error(err);
             this.props.history.push('/');
             // Handle user doesn't exist here
         });
@@ -113,11 +113,11 @@ class ProfilePage extends React.Component {
     var projList = [];
 
     if (Object.keys(this.state.userdata).length > 0) {
-      console.log('userdata is set');
+      //console.log('userdata is set');
       userProjects = this.state.userdata.projects;
-      console.log(userProjects);
+      //console.log(userProjects);
       projList = userProjects.map((project, index) => <ProjectCard projid={parseInt(index)} project={project} key={index} />)
-      console.log(projList);
+      //console.log(projList);
     }
     
     // Check if this page is the logged in user's page to allow editing or not.

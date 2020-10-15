@@ -22,7 +22,8 @@ class EditProjectsPane extends React.Component {
             createTags: [],
             createSubmitText: "Create Project",
             attachmentsCount: 0,
-            files: []
+            files: [],
+            uploads: []
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -60,12 +61,17 @@ class EditProjectsPane extends React.Component {
         axios.post(API_DOMAIN+'/projects/create', body, config)
         .then(res => {
             console.log(res);
-
+            var allfiles = []
             // POST request to add attachments
-            for (let i=0; i<this.state.attachmentsCount; i++) {
+            for (var i=0; i<this.state.attachmentsCount; i++) {
                 var input = document.getElementById(this.state.files[i].index);
+                console.log(input.files)
                 var fileBody = new FormData();
-                fileBody.append(this.state.files[i].index, input.files[0]);
+                fileBody.append(this.state.files[i].name, input.files[0]);
+                //console.log(fileBody.entries());
+                for(var pair of fileBody.entries()) {
+                    console.log(pair[0]+', '+pair[1]);
+                }
                 const fileConfig = {
                     headers: {
                         "accept": "application/json",
@@ -73,19 +79,22 @@ class EditProjectsPane extends React.Component {
                         "x-auth-token": this.props.auth.token
                     }
                 }
+                console.log(fileConfig);
                 axios.post(API_DOMAIN+'/files/'+this.state.createTitle+'/upload', fileBody, fileConfig)
                 .then(res => {
                     console.log(res);
+                    allfiles.push(res);
+                    this.setState({
+                        uploads: allfiles
+                    })
+                    
                 })
                 .catch(err => {
                     console.error(err);
                 })
             }
+
             
-            this.props.history.push(window.location.pathname); // refresh user profile
-            this.setState({
-                createSubmitText: "Create Project"
-            })
         })
         .catch(err => {
             console.error(err);
@@ -123,7 +132,7 @@ class EditProjectsPane extends React.Component {
                 break;
             }
         }
-        tempFiles.push({"index": event.target.id, "filename": event.target.value})
+        tempFiles.push({"index": event.target.id, "name": event.target.name, "filename": event.target.value})
         this.setState({files: tempFiles});
         console.log(this.state.files);
     }
@@ -143,7 +152,7 @@ class EditProjectsPane extends React.Component {
         for (let i=0; i<this.state.attachmentsCount; i++) {
             inputs.push(
                 <div key={i}>
-                    <input onChange={this.handleFileChange} type="file" id={"file "+String(i)}/>
+                    <input onChange={this.handleFileChange} type="file" name="userFile" id={"file "+String(i)}/>
                     <br></br>
                 </div>
                 
@@ -156,6 +165,12 @@ class EditProjectsPane extends React.Component {
     render() {
         if (!this.props.showPane){
             return null;
+        }
+        if ((this.state.uploads.length === this.state.attachmentsCount) && (this.state.uploads.length > 0)) {
+            this.setState({
+                createSubmitText: "Create Project"
+            })
+            this.props.history.push(window.location.pathname); // refresh user profile 
         }
         return (
             <div className="editProjectsOverlay">
