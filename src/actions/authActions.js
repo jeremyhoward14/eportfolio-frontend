@@ -14,7 +14,6 @@ import {
 
 // Check token and load user
 export const loadUser = () => (dispatch, getState) => {
-    console.log("Running loadUser");
     // User loading 
     dispatch({type: USER_LOADING });
 

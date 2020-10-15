@@ -8,6 +8,9 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 100;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
 }
 
 .editProjectsOverlay .editProjectsOverlayContainer {
@@ -19,6 +22,7 @@
     width: 90vw;
     background-color: white;
     vertical-align: middle;
+
 }
 
 .listEntry {

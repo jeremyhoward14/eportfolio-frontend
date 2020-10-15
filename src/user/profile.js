@@ -108,9 +108,7 @@ class ProfilePage extends React.Component {
     if (this.state.userdata == null) {
       return null;
     }
-    //const userProjects = this.state.userdata.projects;
-    //console.log(userProjects);
-    //const projidList = [1, 2, 3, 4, 5];
+
     var userProjects = [];
     var projList = [];
 
@@ -136,7 +134,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
           <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
@@ -146,10 +144,15 @@ class ProfilePage extends React.Component {
                   userid={this.state.userid} />
               </div>
               <div className="projectListContainer">
-                { editAllowed && (
+                { editAllowed ? (
                     <div className="editButtons">
                       <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
                       <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                    </div>
+                  ) :
+                  (
+                    <div className="editButtons">
+                      <button>Add {this.state.userdata.firstname} to your Circle</button>
                     </div>
                   )
                 }
