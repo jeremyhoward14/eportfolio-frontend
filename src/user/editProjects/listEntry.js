@@ -12,11 +12,14 @@ class ListEntry extends React.Component {
         const attachments = URLs.map((url) => <p>{url}</p>)
 
         this.state = {
+            urls: URLs,
             showEdit: false,
             attachments: attachments
         }
+
         this.onProjectSelect = this.onProjectSelect.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
+        this.convertFileURLs = this.convertFileURLs.bind(this);
     }
 
     getProjName(project){
@@ -34,7 +37,25 @@ class ListEntry extends React.Component {
     }
 
     getFileName(url) {
-        url.reverse();
+        var urlChars = url.split('').reverse();
+        var filename = []
+        for (let i=0; i<urlChars.length; i++) {
+            if (urlChars[i] === '/') {
+                break;
+            }
+            filename.push(urlChars[i]);
+        }
+        filename.reverse();
+        return filename.join('');
+    }
+
+    convertFileURLs() {
+        var convertedAttachments = []
+        for (let i=0; i<this.state.urls.length; i++) {
+            convertedAttachments.push(this.getFileName(this.state.urls[i]))
+        }
+        var attachments = convertedAttachments.map((url) => <li>{url}</li>)
+        return attachments;
     }
 
     handleSubmit(event) {
@@ -60,9 +81,15 @@ class ListEntry extends React.Component {
                                 <br></br>
                                 <textarea placeholder={this.props.project.text} />
                                 <br></br>
+                                <textarea placeholder={"Tags will go here when dev deployment works."} />
+                                <br></br>
                                 <div>
                                     <h3> Attachments: </h3>
-                                    <div>{this.state.attachments}</div>
+                                    <div>
+                                        <ul>
+                                            {this.convertFileURLs()}
+                                        </ul>
+                                    </div>
                                 </div>
                                 <input type="submit" value="Save" />
                             </form>

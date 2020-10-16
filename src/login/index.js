@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions/authActions';
 import { clearErrors } from '../actions/errorActions';
+import { API_DOMAIN } from "../config";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -73,7 +74,7 @@ class LoginForm extends React.Component {
   submitHandler = (event) => {
     event.preventDefault();
       // Try POST to API
-      fetch('https://api-circlespace.herokuapp.com/users/login', {
+      fetch(API_DOMAIN+'/users/login', {
           method: 'POST',
           headers: {
               Accept: 'application/json',

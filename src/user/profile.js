@@ -10,7 +10,7 @@ import axios from 'axios';
 // Redux imports
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-
+import { API_DOMAIN } from "../config.js";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -41,16 +41,16 @@ class ProfilePage extends React.Component {
       userid: this.props.match.params.userid
     });
 
-    axios.get('https://api-circlespace.herokuapp.com/users/'+this.props.match.params.userid)
+    axios.get(API_DOMAIN+'/users/'+this.props.match.params.userid)
         .then(res => {
             this.setState({
               userdata: res.data
             });
-            console.log(this.state.userdata);
+            //console.log(this.state.userdata);
           }
         )
         .catch(err => {
-            console.error(err);
+            //console.error(err);
             this.props.history.push('/');
             // Handle user doesn't exist here
         });
@@ -64,12 +64,12 @@ class ProfilePage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     // get projidlist from api using userid
-    axios.get('https://api-circlespace.herokuapp.com/users/'+newProps.match.params.userid)
+    axios.get(API_DOMAIN+'/users/'+newProps.match.params.userid)
         .then(res => {
             this.setState({
               userdata: res.data
             });
-            console.log(this.state.userdata);
+            //console.log(this.state.userdata);
           }
         )
         .catch(err => {
@@ -108,18 +108,16 @@ class ProfilePage extends React.Component {
     if (this.state.userdata == null) {
       return null;
     }
-    //const userProjects = this.state.userdata.projects;
-    //console.log(userProjects);
-    //const projidList = [1, 2, 3, 4, 5];
+
     var userProjects = [];
     var projList = [];
 
     if (Object.keys(this.state.userdata).length > 0) {
-      console.log('userdata is set');
+      //console.log('userdata is set');
       userProjects = this.state.userdata.projects;
-      console.log(userProjects);
+      //console.log(userProjects);
       projList = userProjects.map((project, index) => <ProjectCard projid={parseInt(index)} project={project} key={index} />)
-      console.log(projList);
+      //console.log(projList);
     }
     
     // Check if this page is the logged in user's page to allow editing or not.
@@ -136,7 +134,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+          <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
           <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
@@ -146,10 +144,15 @@ class ProfilePage extends React.Component {
                   userid={this.state.userid} />
               </div>
               <div className="projectListContainer">
-                { editAllowed && (
+                { editAllowed ? (
                     <div className="editButtons">
                       <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
                       <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                    </div>
+                  ) :
+                  (
+                    <div className="editButtons">
+                      <button>Add {this.state.userdata.firstname} to your Circle</button>
                     </div>
                   )
                 }
