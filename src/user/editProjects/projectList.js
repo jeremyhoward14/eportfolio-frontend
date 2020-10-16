@@ -15,13 +15,6 @@ class ProjectList extends React.Component {
         if (prevProps.projidList !== this.props.projidList) {
             this.setState({projects: this.props.projidList});
         }
-        console.log(this.state.projects);
-
-        console.log("update");
-        console.log(this.state.projects);
-        // this.setState({
-        //     projects: 
-        // })
     }
     // should probably "componentDidUpdate()" to get projects rather than passing them via props.
     // Then a project will add visually as soon as the user creates one

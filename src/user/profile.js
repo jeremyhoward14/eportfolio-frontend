@@ -69,7 +69,7 @@ class ProfilePage extends React.Component {
             this.setState({
               userdata: res.data
             });
-            console.log(this.state.userdata);
+            //console.log(this.state.userdata);
           }
         )
         .catch(err => {

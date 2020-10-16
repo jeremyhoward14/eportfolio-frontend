@@ -23,7 +23,8 @@ class EditProjectsPane extends React.Component {
             createSubmitText: "Create Project",
             attachmentsCount: 0,
             files: [],
-            uploads: []
+            uploads: [],
+            numUploads: 0
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -80,18 +81,27 @@ class EditProjectsPane extends React.Component {
                     }
                 }
                 console.log(fileConfig);
-                axios.post(API_DOMAIN+'/files/'+this.state.createTitle+'/upload', fileBody, fileConfig)
-                .then(res => {
-                    console.log(res);
-                    allfiles.push(res);
-                    this.setState({
-                        uploads: allfiles
-                    })
+                async function postFile(self, fileBody, fileConfig) {
+                    let create = await axios.post(API_DOMAIN+'/files/'+self.state.createTitle+'/upload', fileBody, fileConfig)
                     
-                })
-                .catch(err => {
-                    console.error(err);
-                })
+                    if (create) {
+                        self.setState({
+                            numUploads: self.state.numUploads + 1
+                        })
+                        if (self.state.numUploads == self.state.attachmentsCount) {
+                            self.setState({
+                                createSubmitText: "Create Project"
+                            });
+                            self.props.history.push(window.location.pathname);
+                            self.setState({
+                                showCreateForm: false
+                            })
+                        }
+                    }
+                }
+
+                postFile(this, fileBody, fileConfig);
+                
             }
 
             
@@ -199,6 +209,7 @@ class EditProjectsPane extends React.Component {
                                                     <div>
                                                         {this.fileInputs()}
                                                     </div>
+                                                    <p>Files uploaded: {this.state.numUploads} / {this.state.attachmentsCount}</p>
                                                     
                                                 </div>
                                                 <input type="submit" value={this.state.createSubmitText} />

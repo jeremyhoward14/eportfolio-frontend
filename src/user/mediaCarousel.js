@@ -37,9 +37,7 @@ class MediaCarousel extends React.Component {
     }
 
     showSlide() {
-        //console.log(this.props.projid);
         var slides = document.getElementsByClassName("mediaSlide " + this.props.projid);
-        console.log("length: "+slides.length);
         if (slides.length !== 0){
             // show the slide with the given index
             slides[this.state.currentSlide].style.display = "block";
@@ -81,7 +79,6 @@ class MediaCarousel extends React.Component {
     }
 
     initialiseSlides() {
-        console.log(this.state.mediaList);
         return (
             <div className="mediaSlides">
                 {this.state.mediaList}
