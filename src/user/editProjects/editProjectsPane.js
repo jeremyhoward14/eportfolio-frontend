@@ -41,7 +41,7 @@ class EditProjectsPane extends React.Component {
 
     static propTypes = {
         auth: PropTypes.object.isRequired
-      }
+    }
 
     createProjectHandler(event) {
         event.preventDefault();

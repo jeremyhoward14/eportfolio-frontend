@@ -1,4 +1,10 @@
 import React from "react";
+import axios from 'axios';
+import { API_DOMAIN } from "../../config";
+
+// Redux imports
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 class ListEntry extends React.Component {
     constructor(props) {
@@ -20,6 +26,10 @@ class ListEntry extends React.Component {
         this.onProjectSelect = this.onProjectSelect.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
         this.convertFileURLs = this.convertFileURLs.bind(this);
+    }
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired
     }
 
     getProjName(project){
@@ -64,7 +74,13 @@ class ListEntry extends React.Component {
     }
 
     deleteProject() {
-        console.log("Deleting project...")
+        console.log("Deleting project...");
+        const config = {
+            headers: {
+                'x-auth-token': this.props.auth.token
+            }
+        }
+        axios.post(API_DOMAIN+'/projects/delete/'+this.props.project.title, config)
     }
 
     render() {
@@ -102,4 +118,11 @@ class ListEntry extends React.Component {
     }
 }
 
-export default ListEntry;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+  
+export default connect(
+mapStateToProps,
+null
+)(ListEntry);
