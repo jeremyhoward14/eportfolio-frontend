@@ -24,7 +24,7 @@ class ProjectList extends React.Component {
     }
 
     render() {
-        const projNameList = this.state.projects.map((project, index) => <ListEntry project={project} key={index} onSelect={this.selectHandler}/>)
+        const projNameList = this.state.projects.map((project, index) => <ListEntry history={this.props.history} project={project} key={project.title} onSelect={this.selectHandler}/>)
         return (
             <div className="projNameList">
                 {projNameList}
