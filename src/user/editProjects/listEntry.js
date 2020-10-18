@@ -176,12 +176,15 @@ class ListEntry extends React.Component {
     deleteProject() {
         const config = {
             headers: {
-                'x-auth-token': this.props.auth.token
+                "x-auth-token": this.props.auth.token
             }
         }
         async function postDelete(self) {
-
-            let res = await axios.post(API_DOMAIN+'/projects/delete/'+self.props.project.title, config);
+            const body = {}
+            var req_url = API_DOMAIN+'/projects/delete/'+self.props.project.title;
+            console.log(req_url);
+            let res = await axios.post(req_url, body, config);
+            console.log(res);
             if (res) {
                 self.props.history.push(window.location.pathname);
             }  
@@ -243,6 +246,7 @@ class ListEntry extends React.Component {
     }
 
     render() {
+        //console.log(this.props.project.title);
         return (
             <div className="listEntry">
                 <button className="listEntryProject" onClick={this.onProjectSelect}>{this.props.project.title}</button>
