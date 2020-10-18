@@ -24,13 +24,14 @@ class ListEntry extends React.Component {
             title: this.props.project.title,
             text: this.props.project.text,
             tags: this.props.project.tags,
-            createSubmitText: "Create Project",
+            uploadText: "Upload attachments",
             attachmentsCount: 0,
             files: [],
             uploads: [],
             numUploads: 0,
             timeoutText: "",
-            saveProjectText: "Save Project Information"
+            saveProjectText: "Save Project Information",
+            timeoutText: ""
         }
 
         this.onProjectSelect = this.onProjectSelect.bind(this);
@@ -102,10 +103,22 @@ class ListEntry extends React.Component {
         var titleAndTags = ((this.props.project.title !== this.state.title) && (this.props.project.text === this.state.text) && (this.props.project.tags !== this.state.tags));
         var textAndTags = ((this.props.project.title === this.state.title) && (this.props.project.text !== this.state.text) && (this.props.project.tags !== this.state.tags));
         var titleTextTags = ((this.props.project.title !== this.state.title) && (this.props.project.text !== this.state.text) && (this.props.project.tags !== this.state.tags));
+        
+        var trimmedTitle = this.state.title;
+        trimmedTitle = trimmedTitle.trim();
+
+        if (trimmedTitle.length < 3) {
+            this.setState({
+                timeoutText: "Project title must be at least 3 characters long.",
+                saveProjectText: "Save Project Information"
+            })
+            return null;
+        }
+        
         // Set body
         if (titleOnly) {
             body = {
-                "title": this.state.title
+                "title": trimmedTitle
             }
         }
         else if (textOnly) {
@@ -120,13 +133,13 @@ class ListEntry extends React.Component {
         }
         else if (titleAndText) {
             body = {
-                "title": this.state.title,
+                "title": trimmedTitle,
                 "text": this.state.text
             }
         }
         else if (titleAndTags) {
             body = {
-                "title": this.state.title,
+                "title": trimmedTitle,
                 "tags": this.state.tags
             }
         }
@@ -138,7 +151,7 @@ class ListEntry extends React.Component {
         }
         else if (titleTextTags) {
             body = {
-                "title": this.state.title,
+                "title": trimmedTitle,
                 "text": this.state.text,
                 "tags": this.state.tags
             }
@@ -156,6 +169,9 @@ class ListEntry extends React.Component {
             }
         }
         var body = this.createProjectInfoBody();
+        if (body === null) {
+            return;
+        }
         console.log(body);
         async function postProjectInfo(self) {
             self.setState({
@@ -269,17 +285,23 @@ class ListEntry extends React.Component {
                                 <br></br>
                                 <input type="submit" value={this.state.saveProjectText} />
                             </form>
+                            {
+                                (this.state.timeoutText.length > 0) && (
+                                    <p>{this.state.timeoutText}</p>
+                                )
+                            }
+                            <div>
+                                <h3> Current Attachments: </h3>
                                 <div>
-                                    <h3> Current Attachments: </h3>
-                                    <div>
-                                        <ul>
-                                            {this.convertFileURLs()}
-                                        </ul>
-                                    </div>
-                                    <div>
+                                    <ul>
+                                        {this.convertFileURLs()}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <form onSubmit={this.createProjectHandler}>
                                         <h3> Upload Attachments: </h3>
                                         <label>Number of attachments: </label>
-                                        <input type="number" min="0" max="10" onChange={this.attachmentsCountChange} />
+                                        <input type="number" placeholder="0" min="0" max={10 - this.state.urls.length} onChange={this.attachmentsCountChange} />
                                         <div>
                                             {this.fileInputs()}
                                         </div>
@@ -289,13 +311,12 @@ class ListEntry extends React.Component {
                                                 <p>Files uploaded: {this.state.numUploads} of {this.state.attachmentsCount}</p>
                                             )
                                         }
-                                        {
-                                            (this.state.timeoutText.length > 0) && (
-                                                <p>{this.state.timeoutText}</p>
-                                            )
-                                        }
-                                    </div>
+                                        <div>
+                                            <input type="submit" value={this.state.uploadText} />
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
                         </div>
                     )
                 }
