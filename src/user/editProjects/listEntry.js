@@ -31,7 +31,8 @@ class ListEntry extends React.Component {
             numUploads: 0,
             timeoutText: "",
             saveProjectText: "Save Project Information",
-            timeoutText: ""
+            timeoutText: "",
+            showConfirmDelete: false
         }
 
         this.onProjectSelect = this.onProjectSelect.bind(this);
@@ -44,6 +45,7 @@ class ListEntry extends React.Component {
         this.attachmentsCountChange = this.attachmentsCountChange.bind(this);
         this.fileInputs = this.fileInputs.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.confirmDelete = this.confirmDelete.bind(this);
     }
 
     static propTypes = {
@@ -189,6 +191,11 @@ class ListEntry extends React.Component {
 
     }
 
+    confirmDelete() {
+        this.setState({
+            showConfirmDelete: !this.state.showConfirmDelete
+        })
+    }
     deleteProject() {
         const config = {
             headers: {
@@ -266,8 +273,22 @@ class ListEntry extends React.Component {
         return (
             <div className="listEntry">
                 <button className="listEntryProject" onClick={this.onProjectSelect}>{this.props.project.title}</button>
-                <button className="listEntryDelete" onClick={this.deleteProject}>Delete</button>
-
+                <button className="listEntryDelete" onClick={this.confirmDelete}>Delete</button>
+                {
+                    this.state.showConfirmDelete && (
+                        <div className="editProjectsOverlay">
+                            <div className="editProjectsOverlayContainer">
+                                <div className="confirmDeletion">
+                                    <h3>Delete {this.props.project.title}</h3>
+                                    <p>Are you sure you want to delete this project?</p>
+                                    <button onClick={this.deleteProject}>Yes</button>
+                                    <button onClick={this.confirmDelete}>No</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    )
+                }
                 {
                     this.state.showEdit && (
                         <div className="editProjectForm">
@@ -320,7 +341,6 @@ class ListEntry extends React.Component {
                         </div>
                     )
                 }
-
             </div>
         )
     }

@@ -15,6 +15,7 @@
 
 .editProjectsOverlay .editProjectsOverlayContainer {
     top: 10vh;
+    bottom: 90vh;
     position: relative;
     padding: 20px;
     margin-left: auto;
@@ -64,6 +65,9 @@
     background: none;
 }
 
+.confirmDeletion {
+    text-align: center;
+}
 /* .editProjectForm {
     text-align: center;
 } */
