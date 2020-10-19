@@ -20,7 +20,9 @@ class ProfilePage extends React.Component {
       isLoggedIn: true,
       editPane: false,
       userdata: null,
-      bioPane: false
+      bioPane: false,
+      inCircle: false,
+      authCircle: []
     };
 
     this.showEditPane = this.showEditPane.bind(this);
@@ -28,6 +30,11 @@ class ProfilePage extends React.Component {
 
     this.showBioPane = this.showBioPane.bind(this);
     this.closeBioPane = this.closeBioPane.bind(this);
+
+    this.checkIfInCircle = this.checkIfInCircle.bind(this);
+
+    //this.getAuthCircle = this.getAuthCircle.bind(this);
+    
   }
 
   // Redux state props
@@ -47,7 +54,7 @@ class ProfilePage extends React.Component {
             this.setState({
               userdata: res.data
             });
-            //console.log(this.state.userdata);
+            //this.getAuthCircle();
           }
         )
         .catch(err => {
@@ -55,6 +62,7 @@ class ProfilePage extends React.Component {
             this.props.history.push('/');
             // Handle user doesn't exist here
         });
+
   }
 
   // Fetch user data when new props are received from URL as component doesn't remount between props changes,
@@ -77,7 +85,6 @@ class ProfilePage extends React.Component {
         .catch(err => {
             console.error(err);
             this.props.history.push('/');
-            // Handle user doesn't exist here
         });
   }
 
@@ -104,18 +111,44 @@ class ProfilePage extends React.Component {
       bioPane: false
     })
   }
-  
-  getCircle() {
-    axios.get(API_DOMAIN+"/circle/"+this.props.user.username)
-    .then(res => {
-        //console.log(res);
-        this.setState({
-            circle: res.data
-        })
-    })
-    .catch(err => {
-        console.log(err)
-    })
+
+  // // Get the circle of the authenticated user
+  // getAuthCircle() {
+  //   axios.get(API_DOMAIN+"/circle/"+this.props.user.username)
+  //   .then(res => {
+  //       //console.log(res);
+  //       this.setState({
+  //           authCircle: res.data
+  //       })
+  //       this.checkIfInCircle();
+  //   })
+  //   .catch(err => {
+  //       console.log(err)
+  //   })
+  // }
+
+  // Check if this user is in the authenticated user's circle to determine Add/Remove button
+  checkIfInCircle() {
+    
+
+    if (this.props.user) {
+      var userCircle = this.state.userdata.circle;
+      if (this.props.user.circle) { // Check that we have received the circle array of the authenticated user
+        var authCircle = this.props.user.circle;
+      
+      
+        for (let i=0; i<authCircle.length; i++) {
+          for (let j=0; j<userCircle.length; i++) {
+            if (authCircle[i] === userCircle[i]) {
+              return true;
+            }
+          }
+        }
+
+      }
+    }
+    
+    return false;
   }
 
   mapCircle() {
@@ -137,6 +170,7 @@ class ProfilePage extends React.Component {
     var projList = [];
 
     if (Object.keys(this.state.userdata).length > 0) {
+      // this.checkIfInCircle();
       //console.log('userdata is set');
       userProjects = this.state.userdata.projects;
       //console.log(userProjects);
@@ -175,9 +209,15 @@ class ProfilePage extends React.Component {
                     </div>
                   ) :
                   (
+                    this.checkIfInCircle() ? 
+                    <div className="editButtons">
+                      <button>Remove {this.state.userdata.firstname} from your Circle</button>
+                    </div>
+                    :
                     <div className="editButtons">
                       <button>Add {this.state.userdata.firstname} to your Circle</button>
                     </div>
+                    
                   )
                 }
                 <div className="projectCardsList">

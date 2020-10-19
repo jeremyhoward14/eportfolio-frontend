@@ -6,18 +6,13 @@ import './profileBio.css';
 
 class ProfileBio extends React.Component {
 
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
 
-        this.state = {
-            circle: []
-        }
-    }
-
-    componentDidMount() {
-        this.getCircle();
-        console.log(this.state.circle);
-    }
+    //     this.state = {
+    //         circle: this.props.user.circle
+    //     }
+    // }
 
     getCircle() {
         axios.get(API_DOMAIN+"/circle/"+this.props.user.username)
@@ -33,7 +28,8 @@ class ProfileBio extends React.Component {
     }
 
     mapCircle() {
-        var circle = this.state.circle.map((user) => (
+        console.log(this.props.user.circle);
+        var circle = this.props.user.circle.map((user) => (
             <div key={user} className="circleEntry">
                 <a href={"/profile/"+user}>{user}</a>
             </div>
@@ -86,7 +82,7 @@ class ProfileBio extends React.Component {
                    )
                 }
                 {
-                    (this.state.circle.length > 0) ? (
+                    (this.props.user.circle.length > 0) ? (
                         <div>
                             <h3>{this.props.user.firstname}'s Circle</h3>
                             {this.mapCircle()}
@@ -94,6 +90,7 @@ class ProfileBio extends React.Component {
                     ) :
                     (
                         <div>
+                            <h3>{this.props.user.firstname}'s Circle</h3>
                             <p>{this.props.user.firstname} has not added anyone to their circle.</p>
                         </div>
                     )
