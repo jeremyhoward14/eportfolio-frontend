@@ -83,9 +83,10 @@ class NavBar extends React.Component {
     }
 
     SearchRender() {
-        if (!this.props.isHome) {
+        if (!this.state.isHome) {
+            console.log("displaying searchbar");
             return (
-                <Searchbar />
+                <Searchbar peopleRedirect={false} projectRedirect={false} />
             );
         }
         else {
@@ -96,12 +97,16 @@ class NavBar extends React.Component {
     render() {
         // should only render search bar in navbar if you're not on the home page
         // const isHome = this.state.isHome
-        let centre;
+        // let centre;
+        // if (!this.state.isHome) {
+        //     centre = <Searchbar />
+        // }
+        // else {
+        //     centre = null
+        // }
+
         if (!this.state.isHome) {
-            centre = <this.SearchRender />
-        }
-        else {
-            centre = null
+            console.log("not at home");
         }
 
         return (

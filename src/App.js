@@ -41,11 +41,11 @@ class App extends React.Component {
                 {/* // component={ProfilePage}> */}
                   {/* <Profile /> */}
                 </Route>
-                <Route path="/people">
-                  <PeopleSearchPage search="Mark Zuckerberg"/>
+                <Route path="/people" render={(props) => <PeopleSearchPage {...props} /> }>
+                  {/* <PeopleSearchPage search="Mark Zuckerberg"/> */}
                 </Route>
-                <Route path="/projects">
-                  <ProjectsSearchPage search="React.js"/>
+                <Route path="/projects" render={(props) => <ProjectsSearchPage {...props} />}>
+                  {/* <ProjectsSearchPage search="React.js"/> */}
                 </Route>
                 <Route path="/">
                   <Home />
