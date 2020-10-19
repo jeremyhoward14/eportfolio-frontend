@@ -43,6 +43,7 @@ class ProfilePage extends React.Component {
 
     axios.get(API_DOMAIN+'/users/'+this.props.match.params.userid)
         .then(res => {
+          //console.log(res.data);
             this.setState({
               userdata: res.data
             });
@@ -66,6 +67,7 @@ class ProfilePage extends React.Component {
     // get projidlist from api using userid
     axios.get(API_DOMAIN+'/users/'+newProps.match.params.userid)
         .then(res => {
+          //console.log(res.data);
             this.setState({
               userdata: res.data
             });

@@ -46,8 +46,23 @@ class ListEntry extends React.Component {
         this.fileInputs = this.fileInputs.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.confirmDelete = this.confirmDelete.bind(this);
+        this.uploadAttachments = this.uploadAttachments.bind(this);
     }
 
+    // componentDidUpdate() {
+    //     var URLs = []
+    //     for (let i=0; i<this.props.project.attachments.length; i++) {
+    //         URLs.push(this.props.project.attachments[i].url);
+    //     }
+
+    //     // map to divs
+    //     const attachments = URLs.map((url) => <p>{url}</p>)
+
+    //     this.setState({
+    //         urls: URLs,
+    //         attachments: attachments
+    //     })
+    // }
     static propTypes = {
         auth: PropTypes.object.isRequired
     }
@@ -92,6 +107,12 @@ class ListEntry extends React.Component {
                 <button>Delete attachment</button>
             </li>
         ))
+        if (attachments.length === 0) {
+            var message = (
+                <p>This projects doesn't have any attachments yet. Add some to show off your work!</p>
+            )
+            return message;
+        }
         return attachments;
     }
 
@@ -163,7 +184,6 @@ class ListEntry extends React.Component {
     }
     handleInfoSubmit(event) {
         event.preventDefault();
-        console.log("Submitting edits with API...");
         const config = {
             headers: {
                 "Content-type": "application/json",
@@ -268,7 +288,93 @@ class ListEntry extends React.Component {
         return inputs;
     }
 
+    uploadAttachments(event) {
+        event.preventDefault();
+        this.setState({
+            uploadText: "Uploading..."
+        })
+
+        var timeout = false;
+        function startTimeout(){
+            setTimeout(function(){ 
+                timeout = true; 
+            }, 30000);
+        }
+        startTimeout();
+        // POST request to add attachments
+        for (var i=0; i<this.state.attachmentsCount; i++) {
+            console.log(this.state.attachmentsCount);
+            console.log(this.state.numUploads);
+            // Time out if not finished after 30 seconds
+            if (timeout) {
+                this.setState({
+                    uploadText: "Upload Attachments",
+                    timeoutText: "Sorry! Our server timed out. Please try again."
+                    // Delete project that was just created with API here.
+                });
+                this.props.history.push(window.location.pathname);
+                break;
+            }
+
+            var input = document.getElementById(this.state.files[i].index);
+            var fileBody = new FormData();
+            fileBody.append(this.state.files[i].name, input.files[0]);
+
+            const fileConfig = {
+                headers: {
+                    "accept": "application/json",
+                    "Content-type": "multipart/form-data",
+                    "x-auth-token": this.props.auth.token
+                }
+            }
+            console.log(fileConfig);
+            async function postFile(self, fileBody, fileConfig) {
+                let upload = await axios.post(API_DOMAIN+'/files/'+self.state.title+'/upload', fileBody, fileConfig)
+                
+                if (upload) {
+                    self.setState({
+                        numUploads: self.state.numUploads + 1
+                    })
+                    if (self.state.numUploads >= self.state.attachmentsCount) {
+
+                        // Update file upload list
+                        // var URLs = []
+                        // for (let i=0; i<this.props.project.attachments.length; i++) {
+                        //     URLs.push(this.props.project.attachments[i].url);
+                        // }
+
+                        // // map to divs
+                        // const attachments = URLs.map((url) => <p>{url}</p>)
+
+                        console.log("Hit upload refresh")
+                        self.setState({
+                            uploadText: "Upload Attachments",
+                            numUploads: 0,
+                            attachmentsCount: 0,
+                            showEdit: false
+                        });
+                        console.log("Refreshing")
+                        self.props.history.push(window.location.pathname);
+                        window.location.reload();
+                        console.log("refreshed")
+                        
+                    }
+                }
+            }
+            postFile(this, fileBody, fileConfig);            
+        } 
+    }
+
     render() {
+        if ((this.state.numUploads === this.state.attachmentsCount) && (this.state.numUploads > 0)) {
+            console.log("Hit render refresh")
+            this.setState({
+                uploadText: "Upload Attachments",
+                numUploads: 0,
+                attachmentsCount: 0
+            })
+            this.props.history.push(window.location.pathname); // refresh user profile 
+        }
         //console.log(this.props.project.title);
         return (
             <div className="listEntry">
@@ -319,8 +425,8 @@ class ListEntry extends React.Component {
                                     </ul>
                                 </div>
                                 <div>
-                                    <form onSubmit={this.createProjectHandler}>
-                                        <h3> Upload Attachments: </h3>
+                                    <form onSubmit={this.uploadAttachments}>
+                                        <h3> Upload Attachments (page will refresh): </h3>
                                         <label>Number of attachments: </label>
                                         <input type="number" placeholder="0" min="0" max={10 - this.state.urls.length} onChange={this.attachmentsCountChange} />
                                         <div>
