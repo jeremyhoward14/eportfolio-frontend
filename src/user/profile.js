@@ -105,6 +105,28 @@ class ProfilePage extends React.Component {
     })
   }
   
+  getCircle() {
+    axios.get(API_DOMAIN+"/circle/"+this.props.user.username)
+    .then(res => {
+        //console.log(res);
+        this.setState({
+            circle: res.data
+        })
+    })
+    .catch(err => {
+        console.log(err)
+    })
+  }
+
+  mapCircle() {
+    var circle = this.state.circle.map((user) => (
+        <div key={user} className="circleEntry">
+            <a href={"/profile/"+user}>{user}</a>
+        </div>
+    ))
+
+    return circle;
+  }
 
   render() {
     if (this.state.userdata == null) {
