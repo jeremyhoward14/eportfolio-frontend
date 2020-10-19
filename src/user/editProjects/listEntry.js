@@ -47,40 +47,22 @@ class ListEntry extends React.Component {
         this.handleFileChange = this.handleFileChange.bind(this);
         this.confirmDelete = this.confirmDelete.bind(this);
         this.uploadAttachments = this.uploadAttachments.bind(this);
+        this.deleteAttachment = this.deleteAttachment.bind(this);
     }
 
-    // componentDidUpdate() {
-    //     var URLs = []
-    //     for (let i=0; i<this.props.project.attachments.length; i++) {
-    //         URLs.push(this.props.project.attachments[i].url);
-    //     }
-
-    //     // map to divs
-    //     const attachments = URLs.map((url) => <p>{url}</p>)
-
-    //     this.setState({
-    //         urls: URLs,
-    //         attachments: attachments
-    //     })
-    // }
+    // Prop type for redux state (used to get jwt of user)
     static propTypes = {
         auth: PropTypes.object.isRequired
     }
 
-    getProjName(project){
-        // call for name from api
-        var projname = project;
-        return projname;
-    }
-
+    // Select a project when clicking on it, and show its edit options
     onProjectSelect(){
-        //this.props.onSelect(this.props.project);
-        // switch the value of showEdit on Button Click
         this.setState({
             showEdit: !this.state.showEdit
         })
     }
 
+    // Get the file name from an S3 link
     getFileName(url) {
         var urlChars = url.split('').reverse();
         var filename = []
@@ -94,17 +76,21 @@ class ListEntry extends React.Component {
         return filename.join('');
     }
 
+    // Return decoded strings of file names in an HTML list with an option to delete that attachment
     convertFileURLs() {
         var convertedAttachments = []
         for (let i=0; i<this.state.urls.length; i++) {
-            convertedAttachments.push(this.getFileName(this.state.urls[i]))
+            var decoded = decodeURI(this.state.urls[i])
+            //console.log(decoded);
+            convertedAttachments.push(this.getFileName(decoded))
         }
-        var attachments = convertedAttachments.map((url) => (
+
+        var attachments = convertedAttachments.map((url, index) => (
             <li key={url}>
                 <div>
                     {url}
                 </div>
-                <button>Delete attachment</button>
+                <button onClick={ () => {this.deleteAttachment(this.state.urls[index])}}>Delete attachment</button>
             </li>
         ))
         if (attachments.length === 0) {
@@ -116,6 +102,7 @@ class ListEntry extends React.Component {
         return attachments;
     }
 
+    // Dynamically create the request body for updating a project's title, text and/or tags
     createProjectInfoBody() {
         var body = {};
         // booleans to check what to send based on whether state equals props
@@ -182,6 +169,8 @@ class ListEntry extends React.Component {
 
         return body;
     }
+
+    // Submit a POST request to change a project's title, text and/or tags
     handleInfoSubmit(event) {
         event.preventDefault();
         const config = {
@@ -211,11 +200,14 @@ class ListEntry extends React.Component {
 
     }
 
+    // Show overlay to confirm deletion of a project
     confirmDelete() {
         this.setState({
             showConfirmDelete: !this.state.showConfirmDelete
         })
     }
+
+    // Submit POST request to delete a project after user confirmation
     deleteProject() {
         const config = {
             headers: {
@@ -235,6 +227,7 @@ class ListEntry extends React.Component {
         postDelete(this);
     }
 
+    // Project title change handler
     titleChange = (event) => {
         this.setState({title: event.target.value});
         this.setState({
@@ -242,6 +235,7 @@ class ListEntry extends React.Component {
         })
     }
 
+    // Project description change handler
     textChange = (event) => {
         this.setState({text: event.target.value});
         this.setState({
@@ -249,6 +243,7 @@ class ListEntry extends React.Component {
         })
     }
     
+    // Project tags change handler
     tagsChange = (event) => {
         var tags = event.target.value.split(', ');
         this.setState({tags: tags});
@@ -257,10 +252,12 @@ class ListEntry extends React.Component {
         })
     }
 
+    // Attachment count change handler (from number input)
     attachmentsCountChange = (event) => {
         this.setState({attachmentsCount: event.target.value})
     }
 
+    // Handle file input changes
     handleFileChange = (event) => {
         var tempFiles = this.state.files;
         for (let i=0; i<tempFiles.length; i++) {
@@ -274,6 +271,7 @@ class ListEntry extends React.Component {
         console.log(this.state.files);
     }
 
+    // Dynamically create file input HTML elements based on number of selected attachments
     fileInputs() {
         var inputs = []
         for (let i=0; i<this.state.attachmentsCount; i++) {
@@ -288,6 +286,7 @@ class ListEntry extends React.Component {
         return inputs;
     }
 
+    // Submit POST request to upload attachments from edit project menu
     uploadAttachments(event) {
         event.preventDefault();
         this.setState({
@@ -365,21 +364,16 @@ class ListEntry extends React.Component {
         } 
     }
 
+    deleteAttachment(url) {
+        console.log(url);
+    }
+
     render() {
-        if ((this.state.numUploads === this.state.attachmentsCount) && (this.state.numUploads > 0)) {
-            console.log("Hit render refresh")
-            this.setState({
-                uploadText: "Upload Attachments",
-                numUploads: 0,
-                attachmentsCount: 0
-            })
-            this.props.history.push(window.location.pathname); // refresh user profile 
-        }
-        //console.log(this.props.project.title);
         return (
             <div className="listEntry">
                 <button className="listEntryProject" onClick={this.onProjectSelect}>{this.props.project.title}</button>
                 <button className="listEntryDelete" onClick={this.confirmDelete}>Delete</button>
+                {/* Overlay to show/hide confirm delete window. -Show if this.state.showConfirmDelete === true */}
                 {
                     this.state.showConfirmDelete && (
                         <div className="editProjectsOverlay">
@@ -395,6 +389,8 @@ class ListEntry extends React.Component {
                         </div>
                     )
                 }
+
+                {/* Edit pane. Show if this.state.showEdit === true */}
                 {
                     this.state.showEdit && (
                         <div className="editProjectForm">
