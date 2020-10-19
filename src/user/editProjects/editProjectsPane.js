@@ -46,9 +46,20 @@ class EditProjectsPane extends React.Component {
 
     createProjectHandler(event) {
         event.preventDefault();
+        var trimmedTitle = this.state.createTitle;
+        trimmedTitle = trimmedTitle.trim();
         this.setState({
-            createSubmitText: "Creating..."
+            createSubmitText: "Creating...",
+            createTitle: trimmedTitle
         })
+        if (trimmedTitle.length < 3) {
+            this.setState({
+                timeoutText: "Project title must be at least 3 characters long.",
+                createSubmitText: "Create Project"
+            })
+            return;
+        }
+
         const config = {
             headers: {
                 "Content-type": "application/json",
@@ -56,7 +67,7 @@ class EditProjectsPane extends React.Component {
             }
         }
         const body = {
-            "title": this.state.createTitle,
+            "title": trimmedTitle,
             "text": this.state.createText,
             "tags": [] // insert tags here when schema has changed
         }
@@ -113,9 +124,11 @@ class EditProjectsPane extends React.Component {
                         self.setState({
                             numUploads: self.state.numUploads + 1
                         })
-                        if (self.state.numUploads === self.state.attachmentsCount) {
+                        if (self.state.numUploads >= self.state.attachmentsCount) {
                             self.setState({
-                                createSubmitText: "Create Project"
+                                createSubmitText: "Create Project",
+                                numUploads: 0,
+                                attachmentsCount: 0
                             });
                             self.props.history.push(window.location.pathname);
                             self.setState({
@@ -204,15 +217,21 @@ class EditProjectsPane extends React.Component {
         if (!this.props.showPane){
             return null;
         }
-        if ((this.state.uploads.length === this.state.attachmentsCount) && (this.state.uploads.length > 0)) {
+        if ((this.state.numUploads=== this.state.attachmentsCount) && (this.state.numUploads > 0)) {
             this.setState({
-                createSubmitText: "Create Project"
+                createSubmitText: "Create Project",
+                numUploads: 0
             })
             this.props.history.push(window.location.pathname); // refresh user profile 
         }
         return (
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
+                    <div className="overlayButtonsContainer">
+                        <button className="cancelButton" onClick={this.cancelHandler}>X</button> 
+                    </div>
+                    <br></br>
+                    <br></br>
                     <div className="editProjectsContainer">
                         <div className="projectsList">
                             <ProjectList history={this.props.history} onSelect={this.selectProject} projidList={this.props.projects}/>
@@ -233,7 +252,7 @@ class EditProjectsPane extends React.Component {
                                                 <div>
                                                     <h3> Attachments: </h3>
                                                     <label>Number of attachments: </label>
-                                                    <input type="number" min="0" max="10" onChange={this.attachmentsCountChange} />
+                                                    <input type="number" placeholder="0" min="0" max="10" onChange={this.attachmentsCountChange} />
                                                     <div>
                                                         {this.fileInputs()}
                                                     </div>
@@ -259,12 +278,6 @@ class EditProjectsPane extends React.Component {
                                 <EditProjectForm projid={this.state.projid}/>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div className="overlayButtonsContainer">
-                        <button className="confirmButton">Confirm Changes</button>
-                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
-                        
                     </div>
                 </div>
             </div>
