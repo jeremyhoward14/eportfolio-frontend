@@ -93,7 +93,7 @@ class EditProjectsPane extends React.Component {
 
             // POST request to add attachments
             for (var i=0; i<this.state.attachmentsCount; i++) {
-                
+
                 // Time out if not finished after 30 seconds
                 if (timeout) {
                     this.setState({
@@ -125,6 +125,7 @@ class EditProjectsPane extends React.Component {
                             numUploads: self.state.numUploads + 1
                         })
                         if (self.state.numUploads >= self.state.attachmentsCount) {
+                            console.log("Hit upload refresh")
                             self.setState({
                                 createSubmitText: "Create Project",
                                 numUploads: 0,
@@ -217,10 +218,11 @@ class EditProjectsPane extends React.Component {
         if (!this.props.showPane){
             return null;
         }
-        if ((this.state.numUploads=== this.state.attachmentsCount) && (this.state.numUploads > 0)) {
+        if ((this.state.numUploads === this.state.attachmentsCount) && (this.state.numUploads > 0)) {
             this.setState({
                 createSubmitText: "Create Project",
-                numUploads: 0
+                numUploads: 0,
+                attachmentsCount: 0
             })
             this.props.history.push(window.location.pathname); // refresh user profile 
         }
