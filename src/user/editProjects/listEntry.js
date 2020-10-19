@@ -90,7 +90,7 @@ class ListEntry extends React.Component {
                 <div>
                     {url}
                 </div>
-                <button onClick={ () => {this.deleteAttachment(this.state.urls[index])}}>Delete attachment</button>
+                <button onClick={ () => {this.deleteAttachment(this.state.urls[index])}}>Delete</button>
             </li>
         ))
         if (attachments.length === 0) {
@@ -366,6 +366,22 @@ class ListEntry extends React.Component {
 
     deleteAttachment(url) {
         console.log(url);
+        const body = {
+            "fileurl": url
+        }
+        const config = {
+            headers: {
+                "x-auth-token": this.props.auth.token
+            }
+        }
+        axios.post(API_DOMAIN+"/files/"+this.props.project.title+"/delete", body, config)
+        .then(res => {
+            console.log(res);
+            window.location.reload();
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
