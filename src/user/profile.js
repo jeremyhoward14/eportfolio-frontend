@@ -22,7 +22,9 @@ class ProfilePage extends React.Component {
       userdata: null,
       bioPane: false,
       inCircle: false,
-      authCircle: []
+      authCircle: [],
+      adding: false,
+      removing: false
     };
 
     this.showEditPane = this.showEditPane.bind(this);
@@ -32,7 +34,8 @@ class ProfilePage extends React.Component {
     this.closeBioPane = this.closeBioPane.bind(this);
 
     this.checkIfInCircle = this.checkIfInCircle.bind(this);
-
+    this.addToCircle = this.addToCircle.bind(this);
+    this.removeFromCircle = this.removeFromCircle.bind(this);
     //this.getAuthCircle = this.getAuthCircle.bind(this);
     
   }
@@ -112,6 +115,56 @@ class ProfilePage extends React.Component {
     })
   }
 
+  addToCircle= (e) => {
+    e.preventDefault();
+    this.setState({
+      adding: true
+    })
+    const config = {
+      headers: {
+        'x-auth-token': this.props.auth.token
+      }
+    }
+
+    const body = {}
+
+    axios.post(API_DOMAIN+"/circle/add/"+this.props.match.params.userid, body, config)
+    .then(res => {
+      console.log(res);
+      window.location.reload();
+    })
+    .catch(err => {
+      console.log(err);
+      window.location.reload();
+    })
+
+    //alert("Added");
+  }
+
+  removeFromCircle= (e) => {
+    e.preventDefault();
+    this.setState({
+      removing: true
+    })
+    const config = {
+      headers: {
+        'x-auth-token': this.props.auth.token
+      }
+    }
+
+    const body = {}
+
+    axios.post(API_DOMAIN+"/circle/remove/"+this.props.match.params.userid, body, config)
+    .then(res => {
+      console.log(res);
+      window.location.reload();
+    })
+    .catch(err => {
+      console.log(err);
+      window.location.reload();
+    })
+  }
+
   // // Get the circle of the authenticated user
   // getAuthCircle() {
   //   axios.get(API_DOMAIN+"/circle/"+this.props.user.username)
@@ -130,7 +183,6 @@ class ProfilePage extends React.Component {
   // Check if this user is in the authenticated user's circle to determine Add/Remove button
   checkIfInCircle() {
     
-
     if (this.props.user) {
       var userCircle = this.state.userdata.circle;
       if (this.props.user.circle) { // Check that we have received the circle array of the authenticated user
@@ -138,11 +190,14 @@ class ProfilePage extends React.Component {
       
       
         for (let i=0; i<authCircle.length; i++) {
-          for (let j=0; j<userCircle.length; i++) {
-            if (authCircle[i] === userCircle[i]) {
-              return true;
-            }
+          if (authCircle[i] === this.state.userdata.username) {
+            return true;
           }
+          // for (let j=0; j<userCircle.length; i++) {
+          //   if (authCircle[i] === userCircle[i]) {
+          //     return true;
+          //   }
+          // }
         }
 
       }
@@ -211,11 +266,26 @@ class ProfilePage extends React.Component {
                   (
                     this.checkIfInCircle() ? 
                     <div className="editButtons">
-                      <button>Remove {this.state.userdata.firstname} from your Circle</button>
+                      {
+                        this.state.removing ? (
+                          <button>Removing...</button>
+                        ) :
+                        (
+                          <button onClick={this.removeFromCircle}>Remove {this.state.userdata.firstname} from your Circle</button>
+                        )
+                      }
+                      
                     </div>
                     :
                     <div className="editButtons">
-                      <button>Add {this.state.userdata.firstname} to your Circle</button>
+                      {
+                        this.state.adding ? (
+                          <button>Adding..</button>
+                        ) :
+                        (
+                          <button onClick={this.addToCircle}>Add {this.state.userdata.firstname} to your Circle</button>
+                        )
+                      }  
                     </div>
                     
                   )

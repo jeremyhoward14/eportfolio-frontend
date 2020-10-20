@@ -28,7 +28,6 @@ class ProfileBio extends React.Component {
     }
 
     mapCircle() {
-        console.log(this.props.user.circle);
         var circle = this.props.user.circle.map((user) => (
             <div key={user} className="circleEntry">
                 <a href={"/profile/"+user}>{user}</a>
