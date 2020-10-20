@@ -69,7 +69,7 @@ class EditProjectsPane extends React.Component {
         const body = {
             "title": trimmedTitle,
             "text": this.state.createText,
-            "tags": [] // insert tags here when schema has changed
+            "tags": this.state.createTags // insert tags here when schema has changed
         }
 
         var timeout = false;

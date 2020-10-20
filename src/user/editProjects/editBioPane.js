@@ -1,30 +1,23 @@
 import React from "react";
-// import ProjectList from "./projectList.js";
-// import EditProjectForm from "./editProjectForm.js";
 import './editProjectsPane.css';
 
 class EditBioPane extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            projid: null
+            changePicture: false
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
+        this.showProfilePicEdit = this.showProfilePicEdit.bind(this);
     }
 
-    createProjectHandler() {
-        // TODO
-        // should create a project in the database, refresh the projid list
-        // then select it
+    showProfilePicEdit(e) {
+        e.preventDefault();
+        this.setState({
+            changePicture: !this.state.changePicture
+        })
     }
-
-    deleteProjectHandler() {
-        // TODO
-        // should delete a project in the database, refresh the projid list
-        // then select the next project in the list
-    }
-
     cancelHandler(e) {
         this.props.onCancel(e.target.value);
     };
@@ -36,18 +29,35 @@ class EditBioPane extends React.Component {
         return (
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
+                <div className="overlayButtonsContainer">
+                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
+                    </div>
                     <div className="editProjectsContainer">
                         <form>
-                            <textarea placeholder="Edit your bio" />
+                            <label>Name: </label>
                             <br></br>
-                            <input type="file"/>
+                            <input type="text" placeholder="First name"/>
+                            <br></br>
+                            <input type="text" placeholder="Last name"/>
+                            <br></br>
+                            <label>Bio: </label>
+                            <br></br>
+                            <textarea placeholder=""/>
+                            <br></br>
+                            <button onClick={this.showProfilePicEdit}>Edit Profile Picture</button>
+                            {
+                                this.state.changePicture && (
+                                    <div>
+                                        <label>Upload Profile Picture: </label>
+                                        <input type="file"/>
+                                    </div>
+                                )
+                            }
+                            
                         </form>
                     </div>
                     
-                    <div className="overlayButtonsContainer">
-                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
-                        <button className="confirmButton">Confirm Changes</button>
-                    </div>
+
                 </div>
             </div>
         )
