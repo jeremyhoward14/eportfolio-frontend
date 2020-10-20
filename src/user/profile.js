@@ -257,39 +257,41 @@ class ProfilePage extends React.Component {
                   userid={this.state.userid} />
               </div>
               <div className="projectListContainer">
-                { editAllowed ? (
-                    <div className="editButtons">
-                      <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
-                      <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
-                    </div>
-                  ) :
-                  (
-                    this.checkIfInCircle() ? 
-                    <div className="editButtons">
-                      {
-                        this.state.removing ? (
-                          <button>Removing...</button>
-                        ) :
-                        (
-                          <button onClick={this.removeFromCircle}>Remove {this.state.userdata.firstname} from your Circle</button>
-                        )
-                      }
-                      
-                    </div>
-                    :
-                    <div className="editButtons">
-                      {
-                        this.state.adding ? (
-                          <button>Adding..</button>
-                        ) :
-                        (
-                          <button onClick={this.addToCircle}>Add {this.state.userdata.firstname} to your Circle</button>
-                        )
-                      }  
-                    </div>
-                    
+                {
+                  this.props.auth.isAuthenticated && (
+                    editAllowed ? (
+                      <div className="editButtons">
+                        <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
+                        <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                      </div>
+                    ) :
+                    (
+                      this.checkIfInCircle() ? 
+                      <div className="editButtons">
+                        {
+                          this.state.removing ? (
+                            <button>Removing...</button>
+                          ) :
+                          (
+                            <button onClick={this.removeFromCircle}>Remove {this.state.userdata.firstname} from your Circle</button>
+                          )
+                        }
+                      </div>
+                      :
+                      <div className="editButtons">
+                        {
+                          this.state.adding ? (
+                            <button>Adding..</button>
+                          ) :
+                          (
+                            <button onClick={this.addToCircle}>Add {this.state.userdata.firstname} to your Circle</button>
+                          )
+                        }  
+                      </div>  
+                    )
                   )
                 }
+                
                 <div className="projectCardsList">
                   {projList}
                 </div>
