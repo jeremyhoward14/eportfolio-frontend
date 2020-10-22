@@ -1,9 +1,19 @@
+@keyframes bioSlideInLeft {
+    from {left: -200px;}
+    to {left: 0px;}
+}
+
 .bioContainer {
     padding: 5pt;
     margin-left: 30pt;
     margin-right: 30pt;
+    position: relative;
+    animation: bioSlideInLeft 2s;
 }
 
 .circleEntry {
     margin: 5px;
+    position: relative;
+    animation: bioSlideInLeft 0.5s;
 }
+

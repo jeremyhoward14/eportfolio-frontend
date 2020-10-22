@@ -230,7 +230,7 @@ class EditProjectsPane extends React.Component {
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
                     <div className="overlayButtonsContainer">
-                        <button className="cancelButton" onClick={this.cancelHandler}>X</button> 
+                        <button className="cancelButton" onClick={this.cancelHandler}><i class="material-icons">close</i></button> 
                     </div>
                     <br></br>
                     <br></br>
@@ -275,9 +275,6 @@ class EditProjectsPane extends React.Component {
                                         </div>
                                     )
                                 }
-                            </div>
-                            <div className="editProjectForm">
-                                <EditProjectForm projid={this.state.projid}/>
                             </div>
                         </div>
                     </div>

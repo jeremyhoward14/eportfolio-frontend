@@ -3,5 +3,11 @@
     width: 90%;
     margin: 40pt;
     padding: 20pt;
-    background-color: #fffafc;
+    box-shadow: 0 0 3px 3px #ecb2b2;
+    animation: projectsOpacity 3s;
+}
+
+@keyframes projectsOpacity {
+    from {opacity: 0%;}
+    to {opacity: 100%;}
 }

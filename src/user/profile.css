@@ -12,3 +12,35 @@
     width: 100%;
     display: table-cell;
 }
+
+.circleEntry {
+    box-shadow: 0 0 3px 3px #ecb2b2;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.circleEntry a, h4 {
+    text-decoration: none;
+}
+
+.circleEntry img {
+    max-height: 100px;
+}
+
+.userEmail a {
+    text-decoration: none;
+}
+
+.editButtons button {
+    background: none;
+    border: 1px solid darkgrey;
+    padding: 5px;
+    margin: 10px;
+}
+
+.editButtons button:hover {
+    border: 1px solid black;
+}
+

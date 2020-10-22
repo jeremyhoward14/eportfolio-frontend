@@ -86,11 +86,9 @@ class ListEntry extends React.Component {
         }
 
         var attachments = convertedAttachments.map((url, index) => (
-            <li key={url}>
-                <div>
-                    {url}
-                </div>
-                <button onClick={ () => {this.deleteAttachment(this.state.urls[index])}}>Delete</button>
+            <li className="attachment" key={url}>
+                {url}
+                <button className="listEntryDelete" onClick={ () => {this.deleteAttachment(this.state.urls[index])}}><i class="material-icons">delete</i></button>
             </li>
         ))
         if (attachments.length === 0) {
@@ -388,7 +386,7 @@ class ListEntry extends React.Component {
         return (
             <div className="listEntry">
                 <button className="listEntryProject" onClick={this.onProjectSelect}>{this.props.project.title}</button>
-                <button className="listEntryDelete" onClick={this.confirmDelete}>Delete</button>
+                <button className="listEntryDelete" onClick={this.confirmDelete}><i class="material-icons">delete</i></button>
                 {/* Overlay to show/hide confirm delete window. -Show if this.state.showConfirmDelete === true */}
                 {
                     this.state.showConfirmDelete && (
@@ -410,51 +408,56 @@ class ListEntry extends React.Component {
                 {
                     this.state.showEdit && (
                         <div className="editProjectForm">
-                            <form onSubmit={this.handleInfoSubmit}>
-                                <h3>Project Information</h3>
-                                <label>Project Title: </label>
-                                <input type="text" onChange={this.titleChange} placeholder={this.props.project.title}/>
-                                <br></br>
-                                <label>Project Description: </label>
-                                <textarea placeholder={this.props.project.text} onChange={this.textChange}/>
-                                <br></br>
-                                <label>Project Tags (comma separated, e.g. "software, tech, javascript"): </label>
-                                <textarea onChange={this.tagsChange} placeholder={this.props.project.tags} />
-                                <br></br>
-                                <br></br>
-                                <input type="submit" value={this.state.saveProjectText} />
-                            </form>
-                            {
-                                (this.state.timeoutText.length > 0) && (
-                                    <p>{this.state.timeoutText}</p>
-                                )
-                            }
-                            <div>
+                            <div className="column">
+                                <form onSubmit={this.handleInfoSubmit}>
+                                    <h3>Project Information</h3>
+                                    <label>Project Title: </label>
+                                    <br></br><br></br>
+                                    <input type="text" onChange={this.titleChange} placeholder={this.props.project.title}/>
+                                    <br></br><br></br>
+                                    <label>Project Description: </label>
+                                    <br></br><br></br>
+                                    <textarea placeholder={this.props.project.text} onChange={this.textChange}/>
+                                    <br></br><br></br>
+                                    <label>Project Tags (comma separated, e.g. "software, tech, javascript"): </label>
+                                    <br></br><br></br>
+                                    <textarea onChange={this.tagsChange} placeholder={this.props.project.tags} />
+                                    <br></br>
+                                    <br></br>
+                                    <input type="submit" value={this.state.saveProjectText} />
+                                </form>
+                                {
+                                    (this.state.timeoutText.length > 0) && (
+                                        <p>{this.state.timeoutText}</p>
+                                    )
+                                }
+                            </div>
+                            
+                            <div className="column">
                                 <h3> Current Attachments: </h3>
                                 <div>
                                     <ul>
                                         {this.convertFileURLs()}
                                     </ul>
                                 </div>
-                                <div>
-                                    <form onSubmit={this.uploadAttachments}>
-                                        <h3> Upload Attachments (page will refresh): </h3>
-                                        <label>Number of attachments: </label>
-                                        <input type="number" placeholder="0" min="0" max={10 - this.state.urls.length} onChange={this.attachmentsCountChange} />
-                                        <div>
-                                            {this.fileInputs()}
-                                        </div>
-                                        {
-                                            (this.state.attachmentsCount > 0) &&
-                                            (
-                                                <p>Files uploaded: {this.state.numUploads} of {this.state.attachmentsCount}</p>
-                                            )
-                                        }
-                                        <div>
-                                            <input type="submit" value={this.state.uploadText} />
-                                        </div>
-                                    </form>
-                                </div>
+
+                                <form onSubmit={this.uploadAttachments}>
+                                    <h3> Upload Attachments (page will refresh): </h3>
+                                    <label>Number of attachments: </label>
+                                    <input type="number" placeholder="0" min="0" max={10 - this.state.urls.length} onChange={this.attachmentsCountChange} />
+                                    <div>
+                                        {this.fileInputs()}
+                                    </div>
+                                    {
+                                        (this.state.attachmentsCount > 0) &&
+                                        (
+                                            <p>Files uploaded: {this.state.numUploads} of {this.state.attachmentsCount}</p>
+                                        )
+                                    }
+                                    <div>
+                                        <input type="submit" value={this.state.uploadText} />
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     )
