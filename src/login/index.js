@@ -1,7 +1,7 @@
 import React from "react";
 import './login.css'
 import ReactDOM from "react-dom";
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -126,6 +126,9 @@ class LoginForm extends React.Component {
     }
     return (
       <div className="bg">
+        <div className="backButton">
+                    <Link to="/">&#8592; Back to Home</Link>
+                </div>
           <div className="container">
             <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Log in</h2>
@@ -139,6 +142,8 @@ class LoginForm extends React.Component {
                     <br></br>
                     <input type="submit" value={this.state.loginText}></input>
                 </form>
+                <br></br>
+                <button id="forgotPassword">Forgot password?</button>
           </div>
       </div>
     );

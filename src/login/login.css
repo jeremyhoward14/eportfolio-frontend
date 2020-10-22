@@ -35,7 +35,7 @@ input[type=submit] {
     border: 2px solid black;
     border-radius: 5px;
     padding: 4px;
-    cursor: auto;
+    cursor: pointer;
 }
 
 input[type=submit]:focus {
@@ -48,4 +48,29 @@ input[type=text]:focus, input[type=password]:focus {
     box-sizing: border-box;
     outline: none;
     border-bottom: 2px solid #E97A7A;
+}
+
+.backButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    /* border: 2px solid black;
+    border-radius: 5px; */
+}
+
+.backButton a {
+    text-decoration: none;
+    margin: 5px;
+}
+
+.backButton a:hover {
+    text-decoration: underline;
+}
+
+#forgotPassword {
+    background: none;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 4px;
+    cursor: pointer;
 }
