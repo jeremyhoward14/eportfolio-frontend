@@ -88,9 +88,10 @@ class MediaCarousel extends React.Component {
     }
 
     render() {
+        this.showSlide();
         return (
             <div className="mediaCarousel">
-                <this.initialiseSlides />
+                {this.initialiseSlides()}
                 <div className="buttons">
                     <a className="prevButton" onClick={this.prevSlide}>&#10094;</a>
                     <a className="nextButton" onClick={this.nextSlide}>&#10095;</a>
