@@ -218,7 +218,12 @@ class ProfilePage extends React.Component {
 
   render() {
     if (this.state.userdata == null) {
-      return null;
+      return (
+        <div className='loadingScreen'>
+          <i className="material-icons w3-spin">refresh</i>
+        </div>
+      )
+      
     }
 
     var userProjects = [];

@@ -13,7 +13,8 @@ class EditBioPane extends React.Component {
             lastname: this.props.user.lastname,
             bio: this.props.user.bio.text,
             picture: {},
-            changeDPText: "Upload"
+            changeDPText: "Upload",
+            loading: false
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -58,7 +59,8 @@ class EditBioPane extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         this.setState({
-            saveBioText: "Saving..."
+            saveBioText: "Saving...",
+            loading: true
         })
 
         var nameBody = {
@@ -101,7 +103,8 @@ class EditBioPane extends React.Component {
         event.preventDefault();
 
         this.setState({
-            changeDPText: "Uploading..."
+            changeDPText: "Uploading...",
+            loading: true
         })
 
         var input = document.getElementById(this.state.picture.index);
@@ -133,6 +136,13 @@ class EditBioPane extends React.Component {
         }
         return (
             <div className="editProjectsOverlay">
+                { 
+                        this.state.loading && (
+                            <div className='loadingScreen'>
+                                <i className="material-icons w3-spin">refresh</i>
+                            </div>
+                        )
+                }
                 <div className="editProjectsOverlayContainer">
                 <div className="overlayButtonsContainer">
                     <button className="cancelButton" onClick={this.cancelHandler}><i className="material-icons">close</i></button> 
@@ -180,6 +190,8 @@ class EditBioPane extends React.Component {
                             </div>
                         )
                     }
+
+                    
                     
                     
 
