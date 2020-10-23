@@ -248,7 +248,7 @@ class ProfilePage extends React.Component {
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
           <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
-          <EditBioPane onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
+          <EditBioPane history={this.props.history} auth={this.props.auth} user={this.state.userdata} onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
           <div className="profilePageContainer">
             <div className="profileBody">
               <div className="profileBioBody">

@@ -74,7 +74,7 @@
     text-align: center;
 }
 
-.editProjectForm {
+.editProjectForm, .editBioForm {
     box-sizing: border-box;
     margin: 5%;
 }
@@ -93,13 +93,13 @@
 }
 
 /* Clear floats after the columns */
-.editProjectForm:after {
+.editProjectForm:after, .editBioForm:after {
     content: "";
     display: table;
     clear: both;
 }
 
-.editProjectForm textarea, .projectButtonsContainer textarea {
+.editProjectForm textarea, .projectButtonsContainer textarea, .editBioForm textarea {
     width: 60%;
 	height: 120px;
 	border: 3px solid #cccccc;
@@ -142,4 +142,9 @@
 
 .attachment {
     list-style-type: none;
+}
+
+.editBioForm img {
+    max-width: 100%;
+    max-height: 200px;
 }
