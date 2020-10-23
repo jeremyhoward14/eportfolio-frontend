@@ -413,15 +413,15 @@ class ListEntry extends React.Component {
                                     <h3>Project Information</h3>
                                     <label>Project Title: </label>
                                     <br></br><br></br>
-                                    <input type="text" onChange={this.titleChange} placeholder={this.props.project.title}/>
+                                    <input type="text" onChange={this.titleChange} defaultValue={this.props.project.title}/>
                                     <br></br><br></br>
                                     <label>Project Description: </label>
                                     <br></br><br></br>
-                                    <textarea placeholder={this.props.project.text} onChange={this.textChange}/>
+                                    <textarea defaultValue={this.props.project.text} onChange={this.textChange}/>
                                     <br></br><br></br>
                                     <label>Project Tags (comma separated, e.g. "software, tech, javascript"): </label>
                                     <br></br><br></br>
-                                    <textarea onChange={this.tagsChange} placeholder={this.props.project.tags} />
+                                    <textarea onChange={this.tagsChange} defaultValue={this.props.project.tags} />
                                     <br></br>
                                     <br></br>
                                     <input type="submit" value={this.state.saveProjectText} />

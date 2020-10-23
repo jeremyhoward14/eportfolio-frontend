@@ -1,4 +1,3 @@
-import Axios from "axios";
 import React from "react";
 import axios from 'axios';
 import { API_DOMAIN } from "../config";
@@ -13,20 +12,40 @@ class ProfileBio extends React.Component {
             circleList: []
         }
 
+        this.renderCategory = this.renderCategory.bind(this);
+
         //this.mapCircle();
     }
 
+    
     componentDidMount() {
         this.mapCircle();
     }
-    getSnapshotBeforeUpdate() {
-        return this.state;
-    }
-    componentDidUpdate() {
-        var state = this.getSnapshotBeforeUpdate();
-        if (this.state !== state) {
-            this.mapCircle();
+
+    // Think this should fix the issue of a profile not updating given new parameters.
+    componentDidUpdate(prevProps) {
+        if (this.props.user !== prevProps.user) {
+          this.mapCircle();
+        };
+    };
+
+    renderCategory(userType) {
+        switch (userType) {
+            case "JOB_SEARCHER":
+                return (
+                    <h4><i className="material-icons">account_box</i> Job Searcher</h4>
+                )
+            case "RECRUITER":
+                return (
+                    <h4><i className="material-icons">account_circle</i> Employer/Recruiter</h4>
+                )
         }
+    }
+
+    listSocials(socials) {
+        return socials.map((social) => (
+            <a key={social} href={social}>{social}</a>
+        ))
     }
 
     getCircle() {
@@ -87,7 +106,9 @@ class ProfileBio extends React.Component {
     }
 
     render() {
+
         return (
+            
             <div className="bioContainer">
                 {/* Render name if it has been fetched from parent */}
                 {
@@ -108,6 +129,15 @@ class ProfileBio extends React.Component {
                             <img src="../noprofile.jpg" alt="Profile Picture" />
                        </div>
                    )
+                }
+                <hr />
+                {/* Render user type */}
+                {
+                    (this.props.user.bio) && (
+                        <div>
+                            <div>{this.renderCategory(this.props.user.bio.category)}</div>
+                        </div>
+                    )
                 }
                 <hr />
                 {/* Render description if it has been fetched from parent */} {/* Currently not in DB */}
@@ -142,6 +172,18 @@ class ProfileBio extends React.Component {
                    )
                 }
                 <hr />
+                {/* Render socials */}
+                {
+                    this.props.user.bio && (
+                        this.props.user.bio.socials.length > 0 && (
+                            <div>
+                                <h4>Links:</h4>
+                                <div>{this.listSocials(this.props.user.bio.socials)}</div>
+                            </div>
+                        )
+                    )
+                }
+                { /* Render circle */}
                 {
                     (this.props.user.circle.length > 0) ? (
                         <div>
