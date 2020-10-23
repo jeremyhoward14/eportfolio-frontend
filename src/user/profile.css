@@ -13,6 +13,10 @@
     display: table-cell;
 }
 
+.profileBody img {
+    max-width: 100%;
+}
+
 .circleEntry {
     box-shadow: 0 0 3px 3px #ecb2b2;
     padding: 10px;
