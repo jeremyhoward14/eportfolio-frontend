@@ -12,10 +12,21 @@ class ProfileBio extends React.Component {
         this.state = {
             circleList: []
         }
+
+        //this.mapCircle();
     }
 
-    componentDidUpdate() {
+    componentDidMount() {
         this.mapCircle();
+    }
+    getSnapshotBeforeUpdate() {
+        return this.state;
+    }
+    componentDidUpdate() {
+        var state = this.getSnapshotBeforeUpdate();
+        if (this.state !== state) {
+            this.mapCircle();
+        }
     }
 
     getCircle() {
