@@ -86,7 +86,7 @@ class ListEntry extends React.Component {
         }
 
         var attachments = convertedAttachments.map((url, index) => (
-            <li className="attachment" key={url}>
+            <li className="attachment"key={url}>
                 {url}
                 <button className="listEntryDelete" onClick={ () => {this.deleteAttachment(this.state.urls[index])}}><i class="material-icons">delete</i></button>
             </li>
