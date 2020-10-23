@@ -14,7 +14,7 @@ class ProfileBio extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         this.mapCircle();
     }
 
@@ -53,10 +53,17 @@ class ProfileBio extends React.Component {
         circleResponse.then(response => {
             //console.log(response);
             var renderResult = response.map((user) => (
-            <a href={"/profile/"+user.username} style={{"text-decoration": "none"}}>
-                <div key={user.username} className="circleEntry">
-                    <img src="../noprofile.jpg" alt="User Profile Picture"/>
-                    <h4 >{user.firstname + " " + user.lastname}</h4>
+            <a key={user.username} href={"/profile/"+user.username} style={{"textDecoration": "none"}}>
+                <div className="circleEntry">
+                    {
+                        user.picture ? (
+                            <img src={user.picture} alt="User Profile Picture"/>
+                        ) :
+                        (
+                            <img src={"../noprofile.jpg"} alt="User Profile Picture"/>
+                        )
+                    }
+                    <h4>{user.firstname + " " + user.lastname}</h4>
                 </div>
             </a>
             
