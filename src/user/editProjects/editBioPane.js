@@ -135,7 +135,7 @@ class EditBioPane extends React.Component {
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
                 <div className="overlayButtonsContainer">
-                    <button className="cancelButton" onClick={this.cancelHandler}><i class="material-icons">close</i></button> 
+                    <button className="cancelButton" onClick={this.cancelHandler}><i className="material-icons">close</i></button> 
                 </div>
                     {
                         this.props.user && (
