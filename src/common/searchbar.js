@@ -16,6 +16,20 @@ class SearchBar extends React.Component {
         this.handlePeopleSubmit = this.handlePeopleSubmit.bind(this);
         this.handleProjectSubmit = this.handleProjectSubmit.bind(this);
     }
+
+    componentDidUpdate(){
+        if (this.props.peopleRedirect != this.state.peopleRedirect){
+            this.setState({
+                peopleRedirect: false
+            })
+        }
+        if (this.props.projectRedirect != this.state.projectRedirect){
+            this.setState({
+                projectRedirect: false
+            })
+        }
+    }
+
     handleChange(event) {
         this.setState({searchContents: event.target.value})
     }
@@ -42,19 +56,11 @@ class SearchBar extends React.Component {
 
     render() {
         if (this.state.peopleRedirect) {
-            return <Redirect to={{
-                pathname: "/people",
-                state: { search: this.state.searchContents }
-             }}
-            />
+            return <Redirect to={'/people/' + this.state.searchContents} />
         }
 
         if (this.state.projectRedirect) {
-            return <Redirect to={{
-                pathname: "/projects",
-                state: { search: this.state.searchContents }
-             }}
-            />
+            return <Redirect to={'/projects/' + this.state.searchContents} />
         }
 
         return (

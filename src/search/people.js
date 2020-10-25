@@ -24,11 +24,23 @@ export default class PeopleSearchPage extends React.Component {
         };
 
         this.getSearch = this.getSearch.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+    }
+
+    async componentDidUpdate(){
+        // only update search if the search changes
+        if (this.props.match.params.query != this.state.search){
+            await this.updateSearch();
+        }
     }
 
     async componentDidMount(){
+        await this.updateSearch();        
+    }
+
+    async updateSearch(){
         this.setState( {
-            search: this.props.location.state.search
+            search: this.props.match.params.query
         })
 
         // fetch users from API

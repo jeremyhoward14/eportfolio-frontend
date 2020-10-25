@@ -26,7 +26,7 @@ export default class ProjectsSearchPage extends React.Component {
 
     async componentDidMount(){
         this.setState( {
-            search: this.props.location.state.search
+            search: this.props.match.params.query
         })
 
         // fetch users from API
@@ -53,9 +53,10 @@ export default class ProjectsSearchPage extends React.Component {
 
         this.fuse = new Fuse(this.state.projectdata, {
             keys: [
-                'tags',
-                'title',
-                'text',
+                'username',
+                'project.tags',
+                'project.title',
+                'project.text'
             ],
             includeScore: true
         })

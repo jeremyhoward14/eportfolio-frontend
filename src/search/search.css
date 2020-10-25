@@ -13,15 +13,26 @@
 .searchResult {
     box-shadow: 0 0 5px 5px #dddddd;
     margin: 10px;
+    height: max(10vh, 150px);
 
 }
 
-.searchResult h3, p, img {
+.searchResult .searchImage {
+    float: right;
+    height: 85%;
+    /* background-color: rgb(92, 92, 92); */
+    width: 10vw;
+    margin: 10px;
+}
+
+.searchResult h3, p {
     padding: 5px;
 }
 
-.searchResult img {
-    float: right;
+.searchResult .searchImage img {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
 }
 
 .searchResult a {

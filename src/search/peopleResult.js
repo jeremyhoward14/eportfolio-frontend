@@ -13,15 +13,18 @@ export default class PeopleResult extends React.Component {
     // }
 
     render() {
+        // only print the first 150 characters of the biotext
+        var biotext = this.props.user.bio.text.substring(0, 150) + " ...";
+
         return (
-            <div className="searchResult">
-                
-                <img src={this.props.user.image} alt={this.props.user.username}/>
+            <div className="searchResult"> 
+                <div className="searchImage">
+                    <img src={this.props.user.picture} alt={this.props.user.username}/>
+                </div>              
                 <Link to={"/profile/" + this.props.user.username}>
-                    <h3><a href={this.props.user.url}>{this.props.user.firstname} {this.props.user.lastname}</a></h3>
+                    <h3>{this.props.user.firstname} {this.props.user.lastname}</h3>
                 </Link>
-                <p><strong>{this.props.user.headline}</strong></p>
-                <p>{this.props.user.bio}</p>
+                <p>{biotext}</p>
                 
             </div>
         )
