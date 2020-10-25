@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./search.css";
 // export default function PeopleResult() {
 //     return (
@@ -7,17 +8,40 @@ import "./search.css";
 // }
 
 export default class PeopleResult extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+
+        this.imageRender = this.imageRender.bind(this);
+    }
+
+    imageRender() {
+        if (this.props.user.picture === ""){
+            return (
+                <div className="searchImage">
+                    <img src="../noprofile.jpg" />
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="searchImage">
+                    <img src={this.props.user.picture} alt={this.props.user.username}/>
+                </div>     
+            )
+        }
+    }
 
     render() {
+        // only print the first 150 characters of the biotext
+        var biotext = this.props.user.bio.text.substring(0, 150) + " ...";
+
         return (
-            <div className="searchResult">
-                <img src={this.props.user.image} alt={this.props.user.name}/>
-                <h3><a href={this.props.user.url}>{this.props.user.name}</a></h3>
-                <p><strong>{this.props.user.headline}</strong></p>
-                <p>{this.props.user.bio}</p>
+            <div className="searchResult"> 
+                {this.imageRender()}
+                <Link to={"/profile/" + this.props.user.username}>
+                    <h3>{this.props.user.firstname} {this.props.user.lastname}</h3>
+                </Link>
+                <p>{biotext}</p>
                 
             </div>
         )
