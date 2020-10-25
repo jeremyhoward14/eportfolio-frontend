@@ -11,7 +11,9 @@ class EditBioPane extends React.Component {
             saveBioText: "Save",
             firstname: this.props.user.firstname,
             lastname: this.props.user.lastname,
-            bio: this.props.user.bio.text,
+            bioText: this.props.user.bio.text,
+            socials: this.props.user.bio.socials,
+            category: this.props.user.bio.category,
             picture: {},
             changeDPText: "Upload",
             loading: false
@@ -68,7 +70,9 @@ class EditBioPane extends React.Component {
             "lastname": this.state.lastname
         }
         var bioBody = {
-            "bio": this.state.bio
+            "text": this.state.bioText,
+            "socials": this.state.socials,
+            "category": this.state.category
         }
 
         var config = {

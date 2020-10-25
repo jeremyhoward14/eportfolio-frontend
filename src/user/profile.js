@@ -82,6 +82,7 @@ class ProfilePage extends React.Component {
             this.setState({
               userdata: res.data
             });
+            //console.log(res.data);
             //console.log(this.state.userdata);
           }
         )
@@ -228,6 +229,7 @@ class ProfilePage extends React.Component {
 
     var userProjects = [];
     var projList = [];
+    var userInfo = {};
 
     if (Object.keys(this.state.userdata).length > 0) {
       // this.checkIfInCircle();
@@ -243,6 +245,9 @@ class ProfilePage extends React.Component {
     const user = this.props.user;
     if (this.props.auth.isAuthenticated && user !== null) {
       editAllowed = (this.props.match.params.userid === user.username);
+      if (editAllowed) {
+        userInfo = this.props.user;
+      }
     }
     else {
       editAllowed = false;
@@ -252,8 +257,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
-          <EditBioPane history={this.props.history} auth={this.props.auth} user={this.state.userdata} onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
+          
           <div className="profilePageContainer">
             <div className="profileBody">
               <div className="profileBioBody">
@@ -268,6 +272,8 @@ class ProfilePage extends React.Component {
                       <div className="editButtons">
                         <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
                         <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                        <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+                        <EditBioPane history={this.props.history} auth={this.props.auth} user={userInfo} onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
                       </div>
                     ) :
                     (
