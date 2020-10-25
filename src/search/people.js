@@ -4,7 +4,6 @@ import PeopleResult from "./peopleResult";
 import "./search.css";
 import Fuse from 'fuse.js';
 import axios from 'axios';
-import peopleExample from "../datasets/peopleExample.json"
 import { API_DOMAIN } from "../config";
 
 // export default function PeopleSearch() {
@@ -24,6 +23,27 @@ export default class PeopleSearchPage extends React.Component {
         };
 
         this.getSearch = this.getSearch.bind(this);
+    }
+
+    async componentDidUpdate(){
+        if (decodeURI(this.props.match.params.query) != this.state.search){
+            this.setState({
+                search: decodeURI(this.props.match.params.query)
+            })
+
+            // fetch users from API
+            await axios.get(API_DOMAIN+'/users')
+            .then(res => {
+                this.setState({
+                    userdata: res.data
+                });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+            this.getSearch(); 
+        }
     }
 
     async componentDidMount(){

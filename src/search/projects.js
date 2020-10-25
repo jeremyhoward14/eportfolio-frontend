@@ -5,7 +5,6 @@ import "./search.css";
 import Fuse from 'fuse.js';
 import axios from 'axios';
 import { API_DOMAIN } from "../config";
-import projectExample from "../datasets/projectExample.json"
 
 // export default function PeopleSearch() {
 //     return (
@@ -22,6 +21,27 @@ export default class ProjectsSearchPage extends React.Component {
             searchResults: []
             // projects: projectExample
         };
+    }
+
+    async componentDidUpdate(){
+        if (decodeURI(this.props.match.params.query) != this.state.search){
+            this.setState({
+                search: decodeURI(this.props.match.params.query)
+            })
+
+            // fetch users from API
+            await axios.get(API_DOMAIN+'/projects')
+            .then(res => {
+                this.setState({
+                    projectdata: res.data
+                });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+            this.getSearch();
+        }
     }
 
     async componentDidMount(){

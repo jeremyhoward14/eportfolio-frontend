@@ -1,15 +1,14 @@
 import React from "react";
 import './searchbar.css'
 import {Redirect} from "react-router-dom";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             searchContents: '',
-            peopleRedirect: props.peopleRedirect,
-            projectRedirect: props.projectRedirect    
+            peopleRedirect: false,
+            projectRedirect: false    
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -18,14 +17,25 @@ class SearchBar extends React.Component {
     }
 
     componentDidUpdate(){
-        if (this.props.peopleRedirect != this.state.peopleRedirect){
+        // if (this.props.peopleRedirect != this.state.peopleRedirect){
+        //     this.setState({
+        //         peopleRedirect: this.props.peopleRedirect
+        //     })
+        // }
+        // if (this.props.projectRedirect != this.state.projectRedirect){
+        //     this.setState({
+        //         projectRedirect: this.props.projectRedirect
+        //     })
+        // }
+        if (this.state.peopleRedirect){
             this.setState({
-                peopleRedirect: this.props.peopleRedirect
+                peopleRedirect: false
             })
         }
-        if (this.props.projectRedirect != this.state.projectRedirect){
+
+        if (this.state.projectRedirect){
             this.setState({
-                projectRedirect: this.props.projectRedirect
+                projectRedirect: false
             })
         }
     }
@@ -56,11 +66,15 @@ class SearchBar extends React.Component {
 
     render() {
         if (this.state.peopleRedirect) {
-            return <Redirect to={'/people/' + encodeURI(this.state.searchContents)} />
+            return <Redirect push to={{
+                pathname: '/people/' + encodeURI(this.state.searchContents)
+            }} />
         }
 
         if (this.state.projectRedirect) {
-            return <Redirect to={'/projects/' + encodeURI(this.state.searchContents)} />
+            return <Redirect push to={{
+                pathname: '/projects/' + encodeURI(this.state.searchContents)
+            }} />
         }               
 
         return (

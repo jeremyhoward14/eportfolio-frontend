@@ -18,7 +18,7 @@ export default class PeopleResult extends React.Component {
         if (this.props.user.picture === ""){
             return (
                 <div className="searchImage">
-                    <img src="../public/noprofile.jpg" />
+                    <img src="../noprofile.jpg" />
                 </div>
             )
         }
