@@ -12,16 +12,23 @@ class MediaSlide extends React.Component {
 
         this.MediaDiv = this.MediaDiv.bind(this);
         this.getFiletype = this.getFiletype.bind(this);
+        this.showFirstSlide = this.showFirstSlide.bind(this);
     }
 
     getFiletype() {
         return (this.props.url).split(/[#?]/)[0].split('.').pop().trim();
     }
 
+    showFirstSlide() {
+        //console.log(this.props.projid + " 1")
+        var firstSlide = document.getElementById(this.props.projid + " 1");
+        console.log(firstSlide);
+    }
+
     MediaDiv() {
         // get filetype
         const filetype = this.getFiletype();
-
+        
         // create div based on filetype
         switch(filetype) {
             case "JPG":
@@ -31,23 +38,23 @@ class MediaSlide extends React.Component {
             case "PNG":
             case "png":
                 return(
-                    <img src={this.props.url} />
+                    <img id={this.props.projid + " " + (this.index + 1)} src={this.props.url} />
                 )
             case "pdf":
                 return(
-                    <object data={this.props.url} type="application/pdf">
+                    <object id={this.props.projid + " " + (this.index + 1)} data={this.props.url} type="application/pdf">
                         <embed src={this.props.url} type="application/pdf" />
                     </object>
                 )
             case "doc":
                 return(
-                    <object data={this.props.url} type="application/msword">
+                    <object id={this.props.projid + " " + (this.index + 1)} data={this.props.url} type="application/msword">
                         <embed src={this.props.url} type="application/msword" />
                     </object>
                 )
             case "docx":
                 return (
-                    <object data={this.url} type="application/msword">
+                    <object id={this.props.projid + " " + (this.index + 1)} data={this.url} type="application/msword">
                         <embed src={this.url} type="application/msword" />
                     </object> 
                 )
@@ -55,17 +62,28 @@ class MediaSlide extends React.Component {
     }
 
     render() {
+        var displayFirstSlide;
+        if (this.props.index === 0) {
+            displayFirstSlide = {
+                display: "block"
+            }
+        }
+        else {
+            displayFirstSlide = {
+                display: "none"
+            }
+        }
+        
         if (this.props.url == null) {
             return null;
         }
         return (
-            <div className={"mediaSlide " + (this.props.projid)}>
+            <div style={displayFirstSlide} className={"mediaSlide " + (this.props.projid)}>
                 <div className="numbertext">{this.index + 1} / {this.total}</div>
                     <div className="media">
                         {this.MediaDiv()}
+                        {/* {this.showFirstSlide()} */}
                     </div>
-
-
             </div>
             // <div>
             //     { (this.props.index == 0) ? 

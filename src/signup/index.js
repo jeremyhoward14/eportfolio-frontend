@@ -1,7 +1,7 @@
 import React from "react";
 import "../login/login.css"
 import ReactDOM from "react-dom";
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect, withRouter, Link } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -156,6 +156,9 @@ class SignupForm extends React.Component {
         }
         return (
             <div className="bg">
+                <div className="backButton">
+                    <Link to="/">&#8592; Back to Home</Link>
+                </div>
                 <div className="container">
                 <img alt="CircleSpace" src='./Logo.svg' />
                 <h2>Sign up</h2>

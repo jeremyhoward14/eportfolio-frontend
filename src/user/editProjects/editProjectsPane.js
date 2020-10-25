@@ -24,7 +24,8 @@ class EditProjectsPane extends React.Component {
             attachmentsCount: 0,
             files: [],
             uploads: [],
-            numUploads: 0
+            numUploads: 0,
+            timeoutText: ""
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -41,13 +42,24 @@ class EditProjectsPane extends React.Component {
 
     static propTypes = {
         auth: PropTypes.object.isRequired
-      }
+    }
 
     createProjectHandler(event) {
         event.preventDefault();
+        var trimmedTitle = this.state.createTitle;
+        trimmedTitle = trimmedTitle.trim();
         this.setState({
-            createSubmitText: "Creating..."
+            createSubmitText: "Creating...",
+            createTitle: trimmedTitle
         })
+        if (trimmedTitle.length < 3) {
+            this.setState({
+                timeoutText: "Project title must be at least 3 characters long.",
+                createSubmitText: "Create Project"
+            })
+            return;
+        }
+
         const config = {
             headers: {
                 "Content-type": "application/json",
@@ -55,24 +67,48 @@ class EditProjectsPane extends React.Component {
             }
         }
         const body = {
-            "title": this.state.createTitle,
+            "title": trimmedTitle,
             "text": this.state.createText,
-            "tags": [] // insert tags here when schema has changed
+            "tags": this.state.createTags // insert tags here when schema has changed
         }
+
+        var timeout = false;
+        function startTimeout(){
+            setTimeout(function(){ 
+                timeout = true; 
+            }, 30000);
+        }
+        startTimeout();
         axios.post(API_DOMAIN+'/projects/create', body, config)
         .then(res => {
             console.log(res);
-            var allfiles = []
+            if (this.state.attachmentsCount === 0) {
+                this.setState({
+                    createSubmitText: "Create Project",
+                    showCreateForm: false
+                });
+    
+                this.props.history.push(window.location.pathname);
+            }
+
             // POST request to add attachments
             for (var i=0; i<this.state.attachmentsCount; i++) {
+
+                // Time out if not finished after 30 seconds
+                if (timeout) {
+                    this.setState({
+                        createSubmitText: "Create Project",
+                        timeoutText: "Sorry! Our server timed out. Please try again."
+                        // Delete project that was just created with API here.
+                    });
+                    this.props.history.push(window.location.pathname);
+                    break;
+                }
+
                 var input = document.getElementById(this.state.files[i].index);
-                console.log(input.files)
                 var fileBody = new FormData();
                 fileBody.append(this.state.files[i].name, input.files[0]);
-                //console.log(fileBody.entries());
-                for(var pair of fileBody.entries()) {
-                    console.log(pair[0]+', '+pair[1]);
-                }
+
                 const fileConfig = {
                     headers: {
                         "accept": "application/json",
@@ -88,9 +124,12 @@ class EditProjectsPane extends React.Component {
                         self.setState({
                             numUploads: self.state.numUploads + 1
                         })
-                        if (self.state.numUploads == self.state.attachmentsCount) {
+                        if (self.state.numUploads >= self.state.attachmentsCount) {
+                            console.log("Hit upload refresh")
                             self.setState({
-                                createSubmitText: "Create Project"
+                                createSubmitText: "Create Project",
+                                numUploads: 0,
+                                attachmentsCount: 0
                             });
                             self.props.history.push(window.location.pathname);
                             self.setState({
@@ -99,15 +138,15 @@ class EditProjectsPane extends React.Component {
                         }
                     }
                 }
-
-                postFile(this, fileBody, fileConfig);
-                
-            }
-
-            
+                postFile(this, fileBody, fileConfig);            
+            } 
         })
         .catch(err => {
             console.error(err);
+            this.setState({
+                timeoutText: "Something went wrong! Please try again.",
+                createSubmitText: "Create Project"
+            })
         });
     }
 
@@ -142,13 +181,16 @@ class EditProjectsPane extends React.Component {
                 break;
             }
         }
-        tempFiles.push({"index": event.target.id, "name": event.target.name, "filename": event.target.value})
+        tempFiles.unshift({"index": event.target.id, "name": event.target.name, "filename": event.target.value})
         this.setState({files: tempFiles});
         console.log(this.state.files);
     }
 
     cancelHandler(e) {
         this.props.onCancel(e.target.value);
+        this.setState({
+            createSubmitText: "Create Project"
+        })
     };
 
     selectProject(projid) {
@@ -176,18 +218,25 @@ class EditProjectsPane extends React.Component {
         if (!this.props.showPane){
             return null;
         }
-        if ((this.state.uploads.length === this.state.attachmentsCount) && (this.state.uploads.length > 0)) {
+        if ((this.state.numUploads === this.state.attachmentsCount) && (this.state.numUploads > 0)) {
             this.setState({
-                createSubmitText: "Create Project"
+                createSubmitText: "Create Project",
+                numUploads: 0,
+                attachmentsCount: 0
             })
             this.props.history.push(window.location.pathname); // refresh user profile 
         }
         return (
             <div className="editProjectsOverlay">
                 <div className="editProjectsOverlayContainer">
+                    <div className="overlayButtonsContainer">
+                        <button className="cancelButton" onClick={this.cancelHandler}><i class="material-icons">close</i></button> 
+                    </div>
+                    <br></br>
+                    <br></br>
                     <div className="editProjectsContainer">
                         <div className="projectsList">
-                            <ProjectList onSelect={this.selectProject} projidList={this.props.projects}/>
+                            <ProjectList history={this.props.history} onSelect={this.selectProject} projidList={this.props.projects}/>
                         </div>
                         <div className="rightContainer">
                             <div className="projectButtonsContainer">
@@ -196,21 +245,30 @@ class EditProjectsPane extends React.Component {
                                     this.state.showCreateForm && (
                                         <div>
                                             <form onSubmit={this.createProjectHandler}>
-                                                <input type="text" placeholder="Project title" onChange={this.createTitleChange}/>
+                                                <input type="text" required placeholder="Project title" onChange={this.createTitleChange}/>
                                                 <br></br>
-                                                <textarea placeholder="Project description" onChange={this.createTextChange}/>
+                                                <textarea required placeholder="Project description" onChange={this.createTextChange}/>
                                                 <br></br>
                                                 <textarea placeholder="Tags, (comma separated)" onChange={this.createTagsChange}/>
                                                 <br></br>
                                                 <div>
                                                     <h3> Attachments: </h3>
                                                     <label>Number of attachments: </label>
-                                                    <input type="number" min="0" max="10" onChange={this.attachmentsCountChange} />
+                                                    <input type="number" placeholder="0" min="0" max="10" onChange={this.attachmentsCountChange} />
                                                     <div>
                                                         {this.fileInputs()}
                                                     </div>
-                                                    <p>Files uploaded: {this.state.numUploads} / {this.state.attachmentsCount}</p>
-                                                    
+                                                    {
+                                                        (this.state.attachmentsCount > 0) &&
+                                                        (
+                                                            <p>Files uploaded: {this.state.numUploads} of {this.state.attachmentsCount}</p>
+                                                        )
+                                                    }
+                                                    {
+                                                        (this.state.timeoutText.length > 0) && (
+                                                            <p>{this.state.timeoutText}</p>
+                                                        )
+                                                    }
                                                 </div>
                                                 <input type="submit" value={this.state.createSubmitText} />
                                             </form>
@@ -218,16 +276,7 @@ class EditProjectsPane extends React.Component {
                                     )
                                 }
                             </div>
-                            <div className="editProjectForm">
-                                <EditProjectForm projid={this.state.projid}/>
-                            </div>
                         </div>
-                    </div>
-                    
-                    <div className="overlayButtonsContainer">
-                        <button className="confirmButton">Confirm Changes</button>
-                        <button className="cancelButton" onClick={this.cancelHandler}>Cancel</button>
-                        
                     </div>
                 </div>
             </div>
