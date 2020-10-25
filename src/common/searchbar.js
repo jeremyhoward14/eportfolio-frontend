@@ -20,12 +20,12 @@ class SearchBar extends React.Component {
     componentDidUpdate(){
         if (this.props.peopleRedirect != this.state.peopleRedirect){
             this.setState({
-                peopleRedirect: false
+                peopleRedirect: this.props.peopleRedirect
             })
         }
         if (this.props.projectRedirect != this.state.projectRedirect){
             this.setState({
-                projectRedirect: false
+                projectRedirect: this.props.projectRedirect
             })
         }
     }
@@ -56,12 +56,12 @@ class SearchBar extends React.Component {
 
     render() {
         if (this.state.peopleRedirect) {
-            return <Redirect to={'/people/' + this.state.searchContents} />
+            return <Redirect to={'/people/' + encodeURI(this.state.searchContents)} />
         }
 
         if (this.state.projectRedirect) {
-            return <Redirect to={'/projects/' + this.state.searchContents} />
-        }
+            return <Redirect to={'/projects/' + encodeURI(this.state.searchContents)} />
+        }               
 
         return (
             <div className="row">

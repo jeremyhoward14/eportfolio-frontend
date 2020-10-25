@@ -24,23 +24,11 @@ export default class PeopleSearchPage extends React.Component {
         };
 
         this.getSearch = this.getSearch.bind(this);
-        this.updateSearch = this.updateSearch.bind(this);
-    }
-
-    async componentDidUpdate(){
-        // only update search if the search changes
-        if (this.props.match.params.query != this.state.search){
-            await this.updateSearch();
-        }
     }
 
     async componentDidMount(){
-        await this.updateSearch();        
-    }
-
-    async updateSearch(){
         this.setState( {
-            search: this.props.match.params.query
+            search: decodeURI(this.props.match.params.query)
         })
 
         // fetch users from API
@@ -54,8 +42,7 @@ export default class PeopleSearchPage extends React.Component {
                 console.error(err);
             });
 
-        this.getSearch();
-        
+        this.getSearch();     
     }
 
     getSearch() {

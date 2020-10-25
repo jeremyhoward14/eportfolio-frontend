@@ -26,7 +26,7 @@ export default class ProjectsSearchPage extends React.Component {
 
     async componentDidMount(){
         this.setState( {
-            search: this.props.match.params.query
+            search: decodeURI(this.props.match.params.query)
         })
 
         // fetch users from API
