@@ -93,10 +93,16 @@ export default class PeopleSearchPage extends React.Component {
     }
 
     render() {
-        if (this.state.searchResults == []){
+        if (this.state.searchResults.length == 0){
             return(
                 <div>
                     <NavBar isHome={false} />
+                    <div className="resultsContainer">
+                        <div className="searchDescription">
+                            <h2>No results found for {this.state.search}</h2>
+                            <p>Make sure the spelling is correct or try other keywords</p>
+                        </div>
+                    </div>
                 </div>
             )
         }
