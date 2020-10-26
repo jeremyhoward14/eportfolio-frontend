@@ -2,8 +2,9 @@ import React from "react";
 import NavBar from '../common/navbar.js';
 import ProfileBio from './profileBio.js';
 import ProjectCard from './projectCard.js';
-import EditProjectsPane from './editProjects/editProjectsPane.js';
-import EditBioPane from './editProjects/editBioPane.js';
+import EditProjectsPane from './editPanes/editProjectsPane.js';
+import EditBioPane from './editPanes/editBioPane.js';
+import EditPicturePane from './editPanes/editPicturePane';
 import './profile.css'
 import axios from 'axios';
 
@@ -24,7 +25,8 @@ class ProfilePage extends React.Component {
       inCircle: false,
       authCircle: [],
       adding: false,
-      removing: false
+      removing: false,
+      picturePane: false
     };
 
     this.showEditPane = this.showEditPane.bind(this);
@@ -32,6 +34,9 @@ class ProfilePage extends React.Component {
 
     this.showBioPane = this.showBioPane.bind(this);
     this.closeBioPane = this.closeBioPane.bind(this);
+
+    this.showPicturePane = this.showPicturePane.bind(this);
+    this.closePicturePane = this.closePicturePane.bind(this);
 
     this.checkIfInCircle = this.checkIfInCircle.bind(this);
     this.addToCircle = this.addToCircle.bind(this);
@@ -82,6 +87,7 @@ class ProfilePage extends React.Component {
             this.setState({
               userdata: res.data
             });
+            //console.log(res.data);
             //console.log(this.state.userdata);
           }
         )
@@ -112,6 +118,18 @@ class ProfilePage extends React.Component {
   closeBioPane() {
     this.setState({
       bioPane: false
+    })
+  }
+
+  showPicturePane() {
+    this.setState({
+      picturePane: true
+    })
+  }
+
+  closePicturePane() {
+    this.setState({
+      picturePane: false
     })
   }
 
@@ -218,11 +236,17 @@ class ProfilePage extends React.Component {
 
   render() {
     if (this.state.userdata == null) {
-      return null;
+      return (
+        <div className='loadingScreen'>
+          <i className="material-icons w3-spin">refresh</i>
+        </div>
+      )
+      
     }
 
     var userProjects = [];
     var projList = [];
+    var userInfo = {};
 
     if (Object.keys(this.state.userdata).length > 0) {
       // this.checkIfInCircle();
@@ -238,6 +262,9 @@ class ProfilePage extends React.Component {
     const user = this.props.user;
     if (this.props.auth.isAuthenticated && user !== null) {
       editAllowed = (this.props.match.params.userid === user.username);
+      if (editAllowed) {
+        userInfo = this.props.user;
+      }
     }
     else {
       editAllowed = false;
@@ -247,8 +274,7 @@ class ProfilePage extends React.Component {
     return (
         <div className="profileContainer">
           <NavBar userid={this.state.userid} isHome={false}/>
-          <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
-          <EditBioPane history={this.props.history} auth={this.props.auth} user={this.state.userdata} onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
+          
           <div className="profilePageContainer">
             <div className="profileBody">
               <div className="profileBioBody">
@@ -263,6 +289,10 @@ class ProfilePage extends React.Component {
                       <div className="editButtons">
                         <button className="editProjectsButton" onClick={this.showEditPane}>Edit Projects</button>
                         <button className="editProfileButton" onClick={this.showBioPane}>Edit Profile</button>
+                        <button className="editProjectsButton" onClick={this.showPicturePane}>Change Profile Picture</button>
+                        <EditProjectsPane history={this.props.history} projects={userProjects} onCancel={this.closeEditPane} showPane={this.state.editPane}/>
+                        <EditBioPane history={this.props.history} auth={this.props.auth} user={userInfo} onCancel={this.closeBioPane} showPane={this.state.bioPane}/>
+                        <EditPicturePane history={this.props.history} auth={this.props.auth} user={userInfo} onCancel={this.closePicturePane} showPane={this.state.picturePane}/>
                       </div>
                     ) :
                     (

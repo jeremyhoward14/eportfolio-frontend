@@ -290,7 +290,13 @@ class ListEntry extends React.Component {
         this.setState({
             uploadText: "Uploading..."
         })
-
+        console.log(this.state.attachmentsCount);
+        if (this.state.attachmentsCount == 0) {
+            this.setState({
+                uploadText: "Upload"
+            })
+            return;
+        }
         var timeout = false;
         function startTimeout(){
             setTimeout(function(){ 
@@ -314,6 +320,14 @@ class ListEntry extends React.Component {
             }
 
             var input = document.getElementById(this.state.files[i].index);
+            if (input === null) {
+                this.setState({
+                    changeDPText: "Upload",
+                    loading: false,
+                    timoutText: "An error occured. Please try again."
+                })
+                return;
+            }
             var fileBody = new FormData();
             fileBody.append(this.state.files[i].name, input.files[0]);
 

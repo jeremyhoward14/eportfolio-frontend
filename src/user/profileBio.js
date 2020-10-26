@@ -44,7 +44,11 @@ class ProfileBio extends React.Component {
 
     listSocials(socials) {
         return socials.map((social) => (
-            <a key={social} href={social}>{social}</a>
+            <div key={social}>
+                <a href={social}>{social}</a>
+                <br></br><br></br>
+            </div>
+            
         ))
     }
 
