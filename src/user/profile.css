@@ -48,6 +48,15 @@
     border: 1px solid black;
 }
 
+.editButtons .cancelButton {
+    border: none;
+}
+
+.editButtons .cancelButton:hover {
+    border: none
+}
+
+
 /* fallback */
 @font-face {
     font-family: 'Material Icons';
@@ -70,6 +79,7 @@
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+    border: none;
   }
 
 .loadingScreen {

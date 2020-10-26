@@ -28,6 +28,7 @@
     background-color: white;
     vertical-align: middle;
     animation: editSlideDown 0.5s;
+    border: none;
 
 }
 
@@ -68,6 +69,8 @@
     margin-right: 5px;
     float: right;
     background: none;
+    border: none;
+    outline: none;
 }
 
 .confirmDeletion {

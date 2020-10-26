@@ -54,8 +54,67 @@ class EditBioPane extends React.Component {
 
     bioChange = event => {
         this.setState({
-            bio: event.target.value
+            bioText: event.target.value
         })
+    }
+
+    // Break up social media links by new line character
+    socialsChange = event => {
+
+        var socialString = event.target.value;
+        var socialsList = socialString.split("\n");
+        console.log(socialsList);
+        this.setState({
+            socials: socialsList
+        })
+
+    }
+
+    // Render social media links on new lines in edit form
+    renderSocials(socials) {
+        var socialString = socials.join();
+        var outputString = "";
+        for (let i=0; i<socialString.length; i++) {
+            if (socialString[i] === ",") {
+                outputString += "\n"
+            }
+            else {
+                outputString += socialString[i]
+            }
+        }
+        return outputString;
+    }
+
+    categoryChange = event => {
+        this.setState({
+            category: event.target.value
+        })
+    }
+    renderCategoryInputs() {
+        if (this.state.category === 'JOB_SEARCHER') {
+            return (
+                <div onChange={this.categoryChange}>
+                    <input type="radio" name="category" value="JOB_SEARCHER" defaultChecked/>
+                    <label htmlFor="JOB_SEARCHER">Job Searcher</label><br />
+                    <input type="radio" name="category" value="RECRUITER" />
+                    <label htmlFor="RECRUITER">Employer/Recruiter</label><br />
+                    <br></br>
+                </div> 
+            )
+        }
+        else {
+            return (
+                <div onChange={this.categoryChange}>
+                    <input type="radio" name="category" value="JOB_SEARCHER" />
+                    <label htmlFor="JOB_SEARCHER">Job Searcher</label><br />
+                    <input type="radio" name="category" value="RECRUITER" defaultChecked/>
+                    <label htmlFor="RECRUITER">Employer/Recruiter</label><br />
+                    <br></br>
+                </div>
+            )
+            
+        }
+        
     }
 
     handleSubmit = event => {
@@ -74,7 +133,7 @@ class EditBioPane extends React.Component {
             "socials": this.state.socials,
             "category": this.state.category
         }
-
+        console.log(bioBody);
         var config = {
             headers: {
                 "x-auth-token": this.props.auth.token
@@ -123,7 +182,7 @@ class EditBioPane extends React.Component {
             }
         }
 
-        axios.post(API_DOMAIN+"/users/uploadDP", fileBody, fileConfig)
+        axios.post(API_DOMAIN+"/profile/uploadDP", fileBody, fileConfig)
         .then(res => {
             console.log(res);
             window.location.reload();
@@ -155,40 +214,29 @@ class EditBioPane extends React.Component {
                         this.props.user && (
                             <div className="editProjectsContainer">
                                 <div className="editBioForm">
-                                    <div className="column">
+                                    <div>
                                         <h3>Profile Information</h3>
                                         <form onSubmit={this.handleSubmit}>
-                                            <label>Name:</label>
+                                            <label>My name is:</label>
                                             <br></br>
                                             <input type="text" onChange={this.firstnameChange} defaultValue={this.props.user.firstname}/>
                                             <br></br>
                                             <input type="text" onChange={this.lastnameChange} defaultValue={this.props.user.lastname}/>
                                             <br></br>
-                                            <label>Bio: </label>
+                                            <label>I am a:</label>
+                                            <br></br>
+                                            {this.renderCategoryInputs()}
+                                            <label>My Bio:</label>
                                             <br></br>
                                             <textarea onChange={this.bioChange} defaultValue={this.props.user.bio.text}/>
                                             <br></br>
-                                            <input type="submit" value={this.state.saveBioText} />
+                                            <label>My Social Media Links:</label>
                                             <br></br>
+                                            <textarea onChange={this.socialsChange} defaultValue={this.renderSocials(this.props.user.bio.socials)}/>
+                                            <br></br>
+                                            <input type="submit" value={this.state.saveBioText} />
+                                            
                                         </form>
-                                    </div>
-                                    <div className="column">
-                                        {/* <button onClick={this.showProfilePicEdit}>Change Profile Picture</button> */}
-                                        {/* {
-                                            this.state.changePicture && ( */}
-                                        <div>
-                                            <h3>Profile Picture</h3>
-                                            <img src={this.props.user.picture} alt="User Profile Picture" />
-                                            <form onSubmit={this.handleDPSubmit}>
-                                                <label>Upload Profile Picture: </label>
-                                                <br></br><br></br>
-                                                <input onChange={this.handleFileChange} type="file" id="dpUpload" name="userFile"/>
-                                                <br></br><br></br>
-                                                <input type="submit" value={this.state.changeDPText} />
-                                            </form>
-                                        </div>
-                                        {/* )
-                                            } */}
                                     </div>
                                 </div>
                             </div>
