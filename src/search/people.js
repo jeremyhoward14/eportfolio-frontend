@@ -19,7 +19,7 @@ export default class PeopleSearchPage extends React.Component {
             // users: peopleExample,
             search: null,
             userdata: null,
-            searchResults: []
+            searchResults: null
         };
 
         this.getSearch = this.getSearch.bind(this);
@@ -27,7 +27,9 @@ export default class PeopleSearchPage extends React.Component {
 
     async componentDidUpdate(){
         if (decodeURI(this.props.match.params.query) != this.state.search){
+            // reset searchresults while setting search to new query
             this.setState({
+                searchResults: null,
                 search: decodeURI(this.props.match.params.query)
             })
 
@@ -93,7 +95,19 @@ export default class PeopleSearchPage extends React.Component {
     }
 
     render() {
-        if (this.state.searchResults.length == 0){
+        if (this.state.searchResults === null){
+            return(
+                <div>
+                    <NavBar isHome={false} />
+                    <div className="resultsContainer">
+                        <div className="searchDescription">
+                            <h2>Searching for {this.state.search}</h2>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else if (this.state.searchResults.length === 0){
             return(
                 <div>
                     <NavBar isHome={false} />
