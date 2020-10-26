@@ -4,7 +4,7 @@ import EditProjectForm from "./editProjectForm.js";
 import './editProjectsPane.css';
 import axios from 'axios'
 import { API_DOMAIN } from "../../config"
-
+import $ from 'jquery';
 // Redux imports
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
@@ -82,7 +82,7 @@ class EditProjectsPane extends React.Component {
         axios.post(API_DOMAIN+'/projects/create', body, config)
         .then(res => {
             console.log(res);
-            if (this.state.attachmentsCount === 0) {
+            if (this.state.attachmentsCount == 0) {
                 this.setState({
                     createSubmitText: "Create Project",
                     showCreateForm: false

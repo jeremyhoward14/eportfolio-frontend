@@ -9,6 +9,8 @@
     margin-right: 30pt;
     position: relative;
     animation: bioSlideInLeft 2s;
+    max-width: 30ch;
+    word-wrap: break-word;
 }
 
 .circleEntry {

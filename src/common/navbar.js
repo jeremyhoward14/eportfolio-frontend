@@ -39,12 +39,12 @@ class NavBar extends React.Component {
         let profilelink = '/profile/' + username;
         return (
             <div className="row">
-                <Link to={profilelink}>
+                <a href={profilelink}>
                     {/* should link to profile */}
                     {/* profile picture */}
                     {/* profile name */}
                     <h2>Profile</h2>
-                </Link>
+                </a>
                 <Link onClick={this.props.logout} to='/'>
                     <h2>Logout</h2>
                 </Link>
