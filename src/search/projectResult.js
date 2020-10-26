@@ -29,7 +29,7 @@ export default class ProjectResult extends React.Component {
         // only print the first 150 characters of the text
         var text;
         if (this.props.project.project.text.length > 300) {
-            text = this.props.project.project.text.sstring(0, 300) + " ...";
+            text = this.props.project.project.text.substring(0, 300) + " ...";
         }
         else {
             text = this.props.project.project.text;
