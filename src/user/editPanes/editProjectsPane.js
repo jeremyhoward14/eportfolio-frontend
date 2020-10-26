@@ -82,7 +82,7 @@ class EditProjectsPane extends React.Component {
         axios.post(API_DOMAIN+'/projects/create', body, config)
         .then(res => {
             console.log(res);
-            if (this.state.attachmentsCount === 0) {
+            if (this.state.attachmentsCount == 0) {
                 this.setState({
                     createSubmitText: "Create Project",
                     showCreateForm: false
