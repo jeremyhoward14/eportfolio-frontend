@@ -12,8 +12,7 @@ class About extends React.Component {
                         thesis you've worked hard on over several years, or a small 
                         passion project that you're proud of, we are the platform
                         to share it on. If you are a job hunter, student, or just someone
-                        that wants their work published somewhere accessible to
-                        anyone interested, our platform is perfect for you. Or if you 
+                        that wants their work published somewhere, our platform is perfect for you. Or if you 
                         are an employer, talent recruiter, or just interested in exploring
                         people's ideas and projects, our platform provides all
                         the connectivity that you'll need.
