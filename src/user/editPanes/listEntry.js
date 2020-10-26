@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { API_DOMAIN } from "../../config";
+import $ from 'jquery';
 
 // Redux imports
 import { connect } from 'react-redux'
@@ -48,6 +49,8 @@ class ListEntry extends React.Component {
         this.confirmDelete = this.confirmDelete.bind(this);
         this.uploadAttachments = this.uploadAttachments.bind(this);
         this.deleteAttachment = this.deleteAttachment.bind(this);
+        this.scroll = this.scroll.bind(this);
+
     }
 
     // Prop type for redux state (used to get jwt of user)
@@ -55,8 +58,19 @@ class ListEntry extends React.Component {
         auth: PropTypes.object.isRequired
     }
 
+    scroll(buttonID) {
+        $(function (){
+            $(buttonID).on(function (){
+                $('html, body').animate({
+                    scrollTop: $(buttonID).offset().top
+                }, 2000);
+            });
+        });
+    }
+
     // Select a project when clicking on it, and show its edit options
     onProjectSelect(){
+        this.scroll(this.props.project.title);
         this.setState({
             showEdit: !this.state.showEdit
         })
@@ -398,8 +412,8 @@ class ListEntry extends React.Component {
 
     render() {
         return (
-            <div className="listEntry">
-                <button className="listEntryProject" onClick={this.onProjectSelect}>{this.props.project.title}</button>
+            <div className="listEntry" id={this.props.project.title}>
+                <button className="listEntryProject" id={'button '+this.props.project.title} onClick={this.onProjectSelect}>{this.props.project.title}</button>
                 <button className="listEntryDelete" onClick={this.confirmDelete}><i class="material-icons">delete</i></button>
                 {/* Overlay to show/hide confirm delete window. -Show if this.state.showConfirmDelete === true */}
                 {

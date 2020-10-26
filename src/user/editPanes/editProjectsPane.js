@@ -4,7 +4,7 @@ import EditProjectForm from "./editProjectForm.js";
 import './editProjectsPane.css';
 import axios from 'axios'
 import { API_DOMAIN } from "../../config"
-
+import $ from 'jquery';
 // Redux imports
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
