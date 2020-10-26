@@ -7,18 +7,15 @@ class About extends React.Component {
             <div className="aboutContainer">
                 <div className="card">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Ut ut libero ut massa pretium commodo faucibus non ipsum. Morbi bibendum, dui sit amet maximus tempor,
-                        velit odio maximus felis, vel vehicula magna sem ut nisi. 
-                        Vivamus ac ex pellentesque, ultrices lacus sit amet, imperdiet erat. 
-                        Integer ut lectus vestibulum, pretium dolor id, malesuada diam. 
-                        Sed pellentesque fermentum diam vitae ultrices. 
-                        Aliquam enim sem, cursus ac diam a, vestibulum porta orci. 
-                        Quisque eu ex vel nisi ultricies lacinia vitae eget ante. 
-                        Vivamus at risus sit amet sapien hendrerit tristique vel ut neque. 
-                        Aenean malesuada, enim eget maximus vehicula, neque quam faucibus nunc, eu auctor ipsum sem eu tellus. 
-                        Fusce in vehicula elit, ut feugiat lacus. Ut mollis magna vel tortor luctus, aliquam pretium nisi ornare. 
-                        Duis mi orci, bibendum et hendrerit lobortis, euismod tristique tellus.
+                        CircleSpace is all about sharing your projects and experiences
+                        for others to view, connect, and engage with. Whether it's a 
+                        thesis you've worked hard on over several years, or a small 
+                        passion project that you're proud of, we are the platform
+                        to share it on. If you are a job hunter, student, or just someone
+                        that wants their work published somewhere, our platform is perfect for you. Or if you 
+                        are an employer, talent recruiter, or just interested in exploring
+                        people's ideas and projects, our platform provides all
+                        the connectivity that you'll need.
                     </p>
                 </div>           
             </div>
