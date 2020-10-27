@@ -38,9 +38,9 @@ export default class ProjectResult extends React.Component {
         return (
             <div className="searchResult">
                 {this.imageRender()}
-                <Link to={"/profile/" + this.props.project.username}>
+                <a href={"/profile/" + this.props.project.username + "#" + this.props.project.project.title}>
                     <h3>{this.props.project.project.title}</h3>
-                </Link>
+                </a>
                 <p>{text}</p>
                 
             </div>

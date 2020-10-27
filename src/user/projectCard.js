@@ -24,7 +24,7 @@ class ProjectCard extends React.Component {
 
     render() {
         return (
-            <div className="cardContainer">
+            <div id={this.props.project.title} className="cardContainer">
                 {/* <p>projid: {this.props.projid}</p> */}
                 {
                     (this.props.project.attachments.length > 0) && (
