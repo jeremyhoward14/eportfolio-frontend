@@ -32,14 +32,21 @@
     /* width: 90%; */
 }
 
+@media screen and (max-width: 1000px) {
+    /* .header .centre {
+        display: none;
+    } */
+}
+
 .header .right {
-    /* float: right; */
+    float: right;
     /* margin-right: 20pt; */
+    /* right: 0; */
     margin: min(10px, 1vw);
 }
 
 .header .right .row * {
-    display: inline;
+    /* display: inline; */
     /* text-decoration: none; */
     padding: min(10px, 1vw);
 }

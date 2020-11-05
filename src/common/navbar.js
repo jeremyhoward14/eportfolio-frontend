@@ -83,8 +83,8 @@ class NavBar extends React.Component {
     }
 
     SearchRender() {
-        if (!this.state.isHome) {
-            console.log("displaying searchbar");
+        console.log(this.state.isHome)
+        if (!this.state.isHome && (window.innerWidth > 1000)) {
             return (
                 <Searchbar peopleRedirect={false} projectRedirect={false} />
             );
@@ -104,10 +104,6 @@ class NavBar extends React.Component {
         // else {
         //     centre = null
         // }
-
-        if (!this.state.isHome) {
-            console.log("not at home");
-        }
 
         return (
             <div className="header">

@@ -105,3 +105,40 @@
 .w3-spin{animation:w3-spin 2s infinite linear}
 
 
+@media screen and (max-width: 1000px) {
+    .projectListContainer {
+        width: 100%;
+        display: inline;
+    }
+
+    .profilePageContainer {
+        text-align: center;
+    }
+    .profileBody {
+        text-align: center;
+    }
+    .profileBioBody {
+        width: 100%;
+        display: inline;
+        text-align: center;
+    }
+    .bioContainer {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .profileBody {
+        width: 100%;
+        display: inline;
+    }
+    
+    .profileBody .profileBioBody {
+        width: 100%;
+        display: inline;
+    }
+    
+    .profileBody .profileCardsList {
+        width: 100%;
+        display: inline;
+    }
+}
