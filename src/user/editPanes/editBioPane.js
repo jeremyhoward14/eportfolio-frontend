@@ -16,13 +16,20 @@ class EditBioPane extends React.Component {
             category: this.props.user.bio.category,
             picture: {},
             changeDPText: "Upload",
-            loading: false
+            loading: false,
+            changePasswordError: "",
+            oldPassword: "",
+            newPassword: "",
+            confirmPassword: ""
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
         this.showProfilePicEdit = this.showProfilePicEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.oldPasswordChange = this.oldPasswordChange.bind(this);
+        this.newPasswordChange = this.newPasswordChange.bind(this);
+        this.newPasswordConfirm = this.newPasswordConfirm.bind(this);
 
     }
 
@@ -63,7 +70,13 @@ class EditBioPane extends React.Component {
 
         var socialString = event.target.value;
         var socialsList = socialString.split("\n");
-        console.log(socialsList);
+
+        for (let i=0; i<socialsList.length; i++) {
+            if (socialsList[i][0] !== 'h') {
+                socialsList[i] = "https://"+socialsList[i];
+            }
+        }
+
         this.setState({
             socials: socialsList
         })
@@ -90,6 +103,65 @@ class EditBioPane extends React.Component {
             category: event.target.value
         })
     }
+
+    oldPasswordChange = event => {
+        this.setState({
+            oldPassword: event.target.value
+        })
+    }
+
+    newPasswordChange = event => {
+        this.setState({
+            newPassword: event.target.value
+        })
+    }
+
+    newPasswordConfirm = event => {
+        this.setState({
+            confirmPassword: event.target.value
+        })
+    }
+
+
+    changePassword = event => {
+        event.preventDefault();
+        if (this.state.newPassword !== this.state.confirmPassword) {
+            this.setState({
+                changePasswordError: "New passwords don't match"
+            })
+            return;
+        }
+
+        this.setState({
+            loading: true
+        })
+
+        const config = {
+            headers: {
+                'x-auth-token': this.props.auth.token
+            }
+        }
+
+        const body = {
+            'oldPassword': this.state.oldPassword,
+            'newPassword': this.state.newPassword
+        }
+
+        axios.post(API_DOMAIN+"/users/changePassword", body, config)
+        .then(res => {
+            console.log(res);
+            window.location.reload();
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                changePasswordError: "Password is incorrect",
+                loading: false
+            })
+        })
+    }
+
+
     renderCategoryInputs() {
         if (this.state.category === 'JOB_SEARCHER') {
             return (
@@ -151,6 +223,9 @@ class EditBioPane extends React.Component {
                 })
                 .catch(err => {
                     console.log(err);
+                    this.setState({
+                        loading: false
+                    })
                 })
             }
             else {
@@ -237,16 +312,28 @@ class EditBioPane extends React.Component {
                                             <input type="submit" value={this.state.saveBioText} />
                                             
                                         </form>
+                                        <h3>Change Password</h3>
+                                        <p id="changePasswordErrorText">{this.state.changePasswordError}</p>
+                                        <form onSubmit={this.changePassword}>
+                                            <label>Old password:</label>
+                                            <br></br>
+                                            <input type='password' onChange={this.oldPasswordChange} required/>
+                                            <br></br>
+                                            <label>New password:</label>
+                                            <br></br>
+                                            <input type='password' onChange={this.newPasswordChange} required/>
+                                            <br></br>
+                                            <label>Confirm new password:</label>
+                                            <br></br>
+                                            <input type='password' onChange={this.newPasswordConfirm} required/>
+                                            <br></br>
+                                            <input type='submit' value="Confirm changes" />
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         )
                     }
-
-                    
-                    
-                    
-
                 </div>
             </div>
         )

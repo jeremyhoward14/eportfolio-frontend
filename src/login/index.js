@@ -143,7 +143,7 @@ class LoginForm extends React.Component {
                     <input type="submit" value={this.state.loginText}></input>
                 </form>
                 <br></br>
-                <button id="forgotPassword">Forgot password?</button>
+                <p id="forgotPasswordText">Forgot your password? Please get in touch with us at circlespace123@gmail.com.</p>
           </div>
       </div>
     );
