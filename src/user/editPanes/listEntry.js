@@ -33,7 +33,8 @@ class ListEntry extends React.Component {
             timeoutText: "",
             saveProjectText: "Save Project Information",
             timeoutText: "",
-            showConfirmDelete: false
+            showConfirmDelete: false,
+            loading: false
         }
 
         this.onProjectSelect = this.onProjectSelect.bind(this);
@@ -50,6 +51,8 @@ class ListEntry extends React.Component {
         this.uploadAttachments = this.uploadAttachments.bind(this);
         this.deleteAttachment = this.deleteAttachment.bind(this);
         this.scroll = this.scroll.bind(this);
+        this.incrementAttachments = this.incrementAttachments.bind(this);
+        this.decrementAttachments = this.decrementAttachments.bind(this);
 
     }
 
@@ -221,6 +224,9 @@ class ListEntry extends React.Component {
 
     // Submit POST request to delete a project after user confirmation
     deleteProject() {
+        this.setState({
+            loading: true
+        })
         const config = {
             headers: {
                 "x-auth-token": this.props.auth.token
@@ -296,6 +302,18 @@ class ListEntry extends React.Component {
             )
         }
         return inputs;
+    }
+
+    incrementAttachments = () => {
+        if (this.state.attachmentsCount < (10 - this.state.attachments.length)) {
+            this.setState({attachmentsCount: this.state.attachmentsCount + 1})
+        }
+    }
+
+    decrementAttachments = () => {
+        if (this.state.attachmentsCount > 0) {
+            this.setState({attachmentsCount: this.state.attachmentsCount - 1})
+        }
     }
 
     // Submit POST request to upload attachments from edit project menu
@@ -425,6 +443,12 @@ class ListEntry extends React.Component {
                                     <p>Are you sure you want to delete this project?</p>
                                     <button onClick={this.deleteProject}>Yes</button>
                                     <button onClick={this.confirmDelete}>No</button>
+                                    <br></br>
+                                    { 
+                                        this.state.loading && (
+                                            <i className="material-icons w3-spin">refresh</i>
+                                        )
+                                    }
                                 </div>
                             </div>
                             
@@ -471,8 +495,12 @@ class ListEntry extends React.Component {
 
                                 <form onSubmit={this.uploadAttachments}>
                                     <h3> Upload Attachments (page will refresh): </h3>
-                                    <label>Number of attachments: </label>
-                                    <input type="number" placeholder="0" min="0" max={10 - this.state.urls.length} onChange={this.attachmentsCountChange} />
+                                    <button id="decrementAttachment" type="button" onClick={this.decrementAttachments}>
+                                        <i className="material-icons">remove</i>
+                                    </button>
+                                    <button id="incrementAttachment" type="button" onClick={this.incrementAttachments}>
+                                        <i className="material-icons">add</i>
+                                    </button>
                                     <div>
                                         {this.fileInputs()}
                                     </div>

@@ -38,6 +38,8 @@ class EditProjectsPane extends React.Component {
         this.attachmentsCountChange = this.attachmentsCountChange.bind(this);
         this.fileInputs = this.fileInputs.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.incrementAttachments = this.incrementAttachments.bind(this);
+        this.decrementAttachments = this.decrementAttachments.bind(this);
     }
 
     static propTypes = {
@@ -173,6 +175,18 @@ class EditProjectsPane extends React.Component {
         this.setState({attachmentsCount: event.target.value})
     }
 
+    incrementAttachments = () => {
+        if (this.state.attachmentsCount < 10) {
+            this.setState({attachmentsCount: this.state.attachmentsCount + 1})
+        }
+    }
+
+    decrementAttachments = () => {
+        if (this.state.attachmentsCount > 0) {
+            this.setState({attachmentsCount: this.state.attachmentsCount - 1})
+        }
+    }
+
     handleFileChange = (event) => {
         var tempFiles = this.state.files;
         for (let i=0; i<tempFiles.length; i++) {
@@ -252,9 +266,14 @@ class EditProjectsPane extends React.Component {
                                                 <textarea placeholder="Tags, (comma separated)" onChange={this.createTagsChange}/>
                                                 <br></br>
                                                 <div>
-                                                    <h3> Attachments: </h3>
-                                                    <label>Number of attachments: </label>
-                                                    <input type="number" placeholder="0" min="0" max="10" onChange={this.attachmentsCountChange} />
+                                                    <h3> Add Attachments: </h3>
+                                                    {/* <input type="number" placeholder="0" min="0" max="10" onChange={this.attachmentsCountChange} /> */}
+                                                    <button id="decrementAttachment" type="button" onClick={this.decrementAttachments}>
+                                                        <i className="material-icons">remove</i>
+                                                    </button>
+                                                    <button id="incrementAttachment" type="button" onClick={this.incrementAttachments}>
+                                                        <i className="material-icons">add</i>
+                                                    </button>
                                                     <div>
                                                         {this.fileInputs()}
                                                     </div>
