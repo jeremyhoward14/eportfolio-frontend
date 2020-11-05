@@ -22,6 +22,15 @@ class ProjectCard extends React.Component {
         );
     }
 
+    renderTags() {
+        var tags = String(this.props.project.tags);
+        if (tags.length > 0) {
+            return (
+                <p><b>Tags:</b> {tags}</p>
+            )
+        }
+    }
+
     render() {
         return (
             <div className="cardContainer">
@@ -34,6 +43,7 @@ class ProjectCard extends React.Component {
                 {this.getProjectName()}
                 {/* replace proj media with a project media component that displays the media*/}
                 {this.getProjectDescription()}
+                {this.renderTags()}
             </div>
         )
     }
