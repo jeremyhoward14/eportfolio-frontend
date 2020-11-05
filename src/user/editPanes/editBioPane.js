@@ -72,7 +72,7 @@ class EditBioPane extends React.Component {
         var socialsList = socialString.split("\n");
 
         for (let i=0; i<socialsList.length; i++) {
-            if (socialsList[i][0] !== 'h') {
+            if (!socialsList[i].includes("https://") && !socialsList.includes("http://")) {
                 socialsList[i] = "https://"+socialsList[i];
             }
         }
