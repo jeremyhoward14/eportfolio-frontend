@@ -20,7 +20,8 @@ class EditBioPane extends React.Component {
             changePasswordError: "",
             oldPassword: "",
             newPassword: "",
-            confirmPassword: ""
+            confirmPassword: "",
+            deleteAccount: false
         }
 
         this.cancelHandler = this.cancelHandler.bind(this);
@@ -237,6 +238,41 @@ class EditBioPane extends React.Component {
         });
     }
 
+    confirmDelete = () => {
+        this.setState({
+            deleteAccount: true
+        })
+    }
+
+    cancelDelete = () => {
+        this.setState({
+            deleteAccount: false
+        })
+    }
+
+    confirmDeleteAccount = event => {
+        event.preventDefault();
+        this.setState({
+            loading: true
+        })
+        const config = {
+            headers: {
+                'x-auth-token': this.props.auth.token
+            }
+        }
+        const body = {}
+        axios.post(API_DOMAIN+"/users/delete", body, config)
+        .then(() => {
+            window.location.replace('/');
+        })
+        .catch(err => {
+            this.setState({
+                loading: false
+            })
+            console.log(err);
+        })
+    }
+
     handleDPSubmit = event => {
         event.preventDefault();
 
@@ -329,6 +365,24 @@ class EditBioPane extends React.Component {
                                             <br></br>
                                             <input type='submit' value="Confirm changes" />
                                         </form>
+                                        <div id="deleteAccountDiv">
+                                            { 
+                                                this.state.deleteAccount && (
+                                                    <div className='editProjectsOverlay'>
+                                                        <div className="editProjectsOverlayContainerTwo">
+                                                            <div className="editProjectsContainer">
+                                                                <h3>Delete Account</h3>
+                                                                <p>Are you sure you want to delete your account?</p>
+                                                                <p>This cannot be undone.</p>
+                                                                <button onClick={this.confirmDeleteAccount}>Confirm</button>
+                                                                <button onClick={this.cancelDelete}>Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                            <button onClick={this.confirmDelete} id="deleteAccountButton">Delete Account</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
