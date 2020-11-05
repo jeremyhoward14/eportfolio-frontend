@@ -38,7 +38,7 @@
 }
 
 .editButtons button {
-    background: none;
+    background: white;
     border: 1px solid darkgrey;
     padding: 5px;
     margin: 10px;
@@ -50,6 +50,7 @@
 
 .editButtons .cancelButton {
     border: none;
+    background: none;
 }
 
 .editButtons .cancelButton:hover {
