@@ -74,3 +74,10 @@ input[type=text]:focus, input[type=password]:focus {
     padding: 4px;
     cursor: pointer;
 }
+
+#forgotPasswordText {
+    bottom: 0;
+    position: fixed;
+    width: 100vw;
+    text-align: center;
+}
