@@ -18,6 +18,7 @@ export default class ProjectsSearchPage extends React.Component {
         super(props);
         this.state = {
             search: null,
+            hideIndices: [],
             projectdata: null,
             searchResults: null
             // projects: projectExample
@@ -25,10 +26,11 @@ export default class ProjectsSearchPage extends React.Component {
 
         this.getSearch = this.getSearch.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
+        this.renderResults = this.renderResults.bind(this);
     }
 
     async componentDidUpdate(){
-        if (decodeURI(this.props.match.params.query) != this.state.search){
+        if (decodeURI(this.props.match.params.query) !== this.state.search){
             // reset searchresults while setting search to new query
             this.setState({
                 searchResults: null,
@@ -66,18 +68,19 @@ export default class ProjectsSearchPage extends React.Component {
                 console.error(err);
             });
 
-        this.getSearch();
+        await this.getSearch();
         
     }
     
-    getSearch() {
-        if (this.state.projectdata == null){
+    async getSearch() {
+        if (this.state.projectdata === null){
+            console.log("No project data found");
             this.setState({
                 searchResults: []
             });
         }
 
-        this.fuse = new Fuse(this.state.projectdata, {
+        var fuse = new Fuse(this.state.projectdata, {
             keys: [
                 'username',
                 'project.tags',
@@ -88,26 +91,32 @@ export default class ProjectsSearchPage extends React.Component {
         })
 
         // automatically orders results by how cloesly it matches
-        const results = this.fuse.search(this.state.search);
+        const results = fuse.search(this.state.search);
 
         this.setState({
             searchResults: results.map(result => result.item)
         });
 
-        console.log(this.state.searchResults);
+        // console.log(this.state.searchResults);
 
     }
-
-    handleFilter(tags){
-        // only keep projects in this.state.searchResults that have the filter
-        // tags verbatim
+    
+    async handleFilter(tags){
+        // add projects without tags in common (verbatim) to this.state.hideIndices
         // console.log("Handle filter called");
+        // reset hideIndices
+        this.setState({
+            hideIndices: []
+        });
+
         // console.log(tags);
 
         // update this.state.searchResults
         this.getSearch();
+        // console.log(this.state.searchResults);
         
         var length = this.state.searchResults.length;
+        var localHideIndices = []
 
         if (tags.length !== 0) {
             for (var i = 0; i < length; i++) {
@@ -121,21 +130,42 @@ export default class ProjectsSearchPage extends React.Component {
                 // console.log(projTags);
                 // console.log("Tags in common:");
                 // console.log(intersectionTags);
-    
-                if (intersectionTags.length === 0){
-                    console.log(this.state.searchResults);
-                    // remove this result from this.state.searchResults
-                    this.setState({
-                        searchResults: this.state.searchResults.splice(i, 1)
-                    })
 
-                    // decrement length and i by 1 since we removed a project
-                    i = i - 1;
-                    length = length - 1;
-    
+                // if no tags in common, then this project should be hidden
+                if (intersectionTags.length === 0){
+                    // console.log("Adding %d to localHideIndices", i);
+                    localHideIndices.push(i);
                 }
             }
-        }       
+        } 
+
+        // console.log("localHideIndices:");
+        // console.log(localHideIndices);
+
+        await this.setHideIndicesAsync({
+            hideIndices: localHideIndices
+        });
+
+        // console.log("New hideIndices");
+        // console.log(this.state.hideIndices);
+    }
+
+    setHideIndicesAsync(state) {
+        return new Promise((resolve) => {
+            this.setState(state, resolve)
+        });
+    }
+
+    renderResults(){
+        return (
+            this.state.searchResults.map(
+                (projectItem, i) => {
+                    if (!this.state.hideIndices.includes(i)){
+                        return <ProjectResult project={projectItem} key={i} />
+                    }
+                }
+            )
+        )
     }
 
     render() {
@@ -151,7 +181,7 @@ export default class ProjectsSearchPage extends React.Component {
                 </div>
             )
         }
-        else if (this.state.searchResults.length == 0){
+        else if (this.state.searchResults.length === 0 || this.state.hideIndices.length === this.state.searchResults.length){
             return(
                 <div>
                     <NavBar isHome={false} />
@@ -159,7 +189,7 @@ export default class ProjectsSearchPage extends React.Component {
                         <div className="searchDescription">
                             <h2>No results found for {this.state.search}</h2>
                             <FilterSearch onFilterSearch={this.handleFilter}/>
-                            <p>Make sure the spelling is correct or try other keywords</p>
+                            <p>Make sure the spelling is correct, try other keywords, or try filtering on other tags</p>
                         </div>
                     </div>
                 </div>
@@ -172,9 +202,10 @@ export default class ProjectsSearchPage extends React.Component {
                     <div className="searchDescription">
                         <h2> Search results for {this.state.search}</h2>
                         <FilterSearch onFilterSearch={this.handleFilter}/>
-                        {this.state.searchResults.map(function(projectItem, i){
+                        {/* {this.state.searchResults.map(function(projectItem, i){
                             return <ProjectResult project={projectItem} key={i} />;
-                        })}
+                        })} */}
+                        <this.renderResults />
                     </div> 
                 </div> 
             </div>

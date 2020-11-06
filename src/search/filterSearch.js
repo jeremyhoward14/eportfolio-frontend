@@ -5,7 +5,7 @@ export default class FilterSearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            filterSearchContents: null
+            filterSearchContents: ''
         }
 
         this.handleFilterSubmit = this.handleFilterSubmit.bind(this);
@@ -15,7 +15,7 @@ export default class FilterSearch extends React.Component {
     handleFilterSubmit(event){
         event.preventDefault();
         if (!(this.state.filterSearchContents === '')){
-            console.log("FILTER SEARCH");
+            // console.log("FILTER SEARCH");
             // separate tags by commas
             var tags = this.state.filterSearchContents.split(", ");
             this.props.onFilterSearch(tags);
