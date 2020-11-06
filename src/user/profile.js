@@ -251,7 +251,7 @@ class ProfilePage extends React.Component {
     if (Object.keys(this.state.userdata).length > 0) {
       // this.checkIfInCircle();
       //console.log('userdata is set');
-      userProjects = this.state.userdata.projects;
+      userProjects = this.state.userdata.projects.slice().reverse();
       //console.log(userProjects);
       projList = userProjects.map((project, index) => <ProjectCard projid={parseInt(index)} project={project} key={index} />)
       //console.log(projList);
