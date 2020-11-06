@@ -10,6 +10,22 @@
     /* margin-top: 100px; */
 }
 
+.searchDescription .filterContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.searchDescription .filterContainer form input {
+    margin-right: 10px;
+    height: 24px;
+    width: min(300px, 50vw);
+}
+
+.searchDescription .filterContainer form button {
+    padding: 5px;
+}
+
 .searchResult {
     box-shadow: 0 0 5px 5px #dddddd;
     margin: 10px;

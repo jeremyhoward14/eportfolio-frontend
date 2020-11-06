@@ -5,6 +5,7 @@ import "./search.css";
 import Fuse from 'fuse.js';
 import axios from 'axios';
 import { API_DOMAIN } from "../config";
+import FilterSearch from './filterSearch.js';
 
 // export default function PeopleSearch() {
 //     return (
@@ -21,6 +22,9 @@ export default class ProjectsSearchPage extends React.Component {
             searchResults: null
             // projects: projectExample
         };
+
+        this.getSearch = this.getSearch.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
     }
 
     async componentDidUpdate(){
@@ -94,6 +98,46 @@ export default class ProjectsSearchPage extends React.Component {
 
     }
 
+    handleFilter(tags){
+        // only keep projects in this.state.searchResults that have the filter
+        // tags verbatim
+        // console.log("Handle filter called");
+        // console.log(tags);
+
+        // update this.state.searchResults
+        this.getSearch();
+        
+        var length = this.state.searchResults.length;
+
+        if (tags.length !== 0) {
+            for (var i = 0; i < length; i++) {
+                var projTags = this.state.searchResults[i].project.tags;
+                
+                // case sensitive search for tags
+                var intersectionTags = projTags.filter(value => tags.includes(value))
+                
+                // console.log(i);
+                // console.log(this.state.searchResults[i].project.title);
+                // console.log(projTags);
+                // console.log("Tags in common:");
+                // console.log(intersectionTags);
+    
+                if (intersectionTags.length === 0){
+                    console.log(this.state.searchResults);
+                    // remove this result from this.state.searchResults
+                    this.setState({
+                        searchResults: this.state.searchResults.splice(i, 1)
+                    })
+
+                    // decrement length and i by 1 since we removed a project
+                    i = i - 1;
+                    length = length - 1;
+    
+                }
+            }
+        }       
+    }
+
     render() {
         if (this.state.searchResults === null){
             return(
@@ -114,6 +158,7 @@ export default class ProjectsSearchPage extends React.Component {
                     <div className="resultsContainer">
                         <div className="searchDescription">
                             <h2>No results found for {this.state.search}</h2>
+                            <FilterSearch onFilterSearch={this.handleFilter}/>
                             <p>Make sure the spelling is correct or try other keywords</p>
                         </div>
                     </div>
@@ -126,6 +171,7 @@ export default class ProjectsSearchPage extends React.Component {
                 <div className="resultsContainer">
                     <div className="searchDescription">
                         <h2> Search results for {this.state.search}</h2>
+                        <FilterSearch onFilterSearch={this.handleFilter}/>
                         {this.state.searchResults.map(function(projectItem, i){
                             return <ProjectResult project={projectItem} key={i} />;
                         })}
