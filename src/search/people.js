@@ -26,7 +26,7 @@ export default class PeopleSearchPage extends React.Component {
     }
 
     async componentDidUpdate(){
-        if (decodeURI(this.props.match.params.query) != this.state.search){
+        if (decodeURI(this.props.match.params.query) !== this.state.search){
             // reset searchresults while setting search to new query
             this.setState({
                 searchResults: null,
