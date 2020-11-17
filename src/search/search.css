@@ -12,17 +12,22 @@
 
 .searchDescription .filterContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 10px;
 }
 
-.searchDescription .filterContainer form input {
+.searchDescription .filterContainer .filterForm {
+    display: flex;
+    flex-direction: row;
+}
+
+.searchDescription .filterContainer .filterForm form input {
     margin-right: 10px;
     height: 24px;
     width: min(300px, 50vw);
 }
 
-.searchDescription .filterContainer form button {
+.searchDescription .filterContainer .filterForm form button {
     padding: 5px;
 }
 
@@ -30,7 +35,6 @@
     box-shadow: 0 0 5px 5px #dddddd;
     margin: 10px;
     height: max(10vh, 150px);
-
 }
 
 .searchResult .searchImage {
@@ -62,4 +66,19 @@
 .searchResult a:focus, a:visited, a:active {
     color: black;
     text-decoration: none;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .searchResult {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .searchResult .searchImage {
+        height: 150px;
+        width: auto;
+    }
+
 }

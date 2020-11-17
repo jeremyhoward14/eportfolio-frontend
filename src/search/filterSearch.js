@@ -31,11 +31,14 @@ export default class FilterSearch extends React.Component {
 
     render() {
         return(
-            <div className="filterContainer">
-                <form onSubmit={this.handleFilterSubmit}>
-                    <input text="text" id="filter" placeholder="Enter comma separated tags" value={this.state.filterSearchContents} onChange={this.handleChange} />
-                    <button>Submit</button>
-                </form>
+            <div className="filterContainer">                
+                <p>Filter search results by tags:</p>
+                <div className="filterForm">
+                    <form onSubmit={this.handleFilterSubmit}>
+                        <input text="text" id="filter" placeholder="Enter comma separated tags" value={this.state.filterSearchContents} onChange={this.handleChange} />
+                        <button>Submit</button>
+                    </form>
+                </div>
             </div>
         )        
     }
