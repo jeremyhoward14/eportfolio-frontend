@@ -34,8 +34,8 @@ export default class PeopleResult extends React.Component {
     render() {
         // only print the first 150 characters of the biotext
         var biotext;
-        if (this.props.user.bio.text.length > 300) {
-            biotext = this.props.user.bio.text.substring(0, 300) + " ...";
+        if (this.props.user.bio.text.length > 250) {
+            biotext = this.props.user.bio.text.substring(0, 250) + " ...";
         }
         else {
             biotext = this.props.user.bio.text;

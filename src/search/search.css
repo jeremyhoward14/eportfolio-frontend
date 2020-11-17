@@ -12,17 +12,22 @@
 
 .searchDescription .filterContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 10px;
 }
 
-.searchDescription .filterContainer form input {
+.searchDescription .filterContainer .filterForm {
+    display: flex;
+    flex-direction: row;
+}
+
+.searchDescription .filterContainer .filterForm form input {
     margin-right: 10px;
     height: 24px;
     width: min(300px, 50vw);
 }
 
-.searchDescription .filterContainer form button {
+.searchDescription .filterContainer .filterForm form button {
     padding: 5px;
 }
 
